@@ -14,6 +14,7 @@ limitations under the License.
 package spider
 
 import (
+	"bytes"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -37,6 +38,8 @@ type Spider struct {
 func NewSpider(ipstring interface{}) (*Spider, error) {
 	spider := new(Spider)
 	spider.Header = http.Header{}
+	spider.Data = url.Values{}
+	spider.BData = []byte{}
 	if ipstring != nil {
 		client, err := NewProxyClient(ipstring.(string))
 		spider.Client = client
@@ -54,6 +57,8 @@ func NewSpider(ipstring interface{}) (*Spider, error) {
 func New(ipstring interface{}) (*Spider, error) {
 	spider := new(Spider)
 	spider.Header = http.Header{}
+	spider.Data = url.Values{}
+	spider.BData = []byte{}
 	if ipstring != nil {
 		client, err := NewProxyClient(ipstring.(string))
 		spider.Client = client
@@ -70,12 +75,18 @@ func New(ipstring interface{}) (*Spider, error) {
 
 // auto decide which method
 func (this *Spider) Go() (body []byte, e error) {
-	if strings.ToLower(this.Method) == "post" {
+	switch strings.ToLower(this.Method) {
+	case "post":
 		return this.Post()
-	} else {
+	case "postjson":
+		return this.PostJSON()
+	case "postxml":
+		return this.PostXML()
+	case "postfile":
+		return this.PostFILE()
+	default:
 		return this.Get()
 	}
-
 }
 
 // Get method,can take a client
@@ -138,6 +149,132 @@ func (this *Spider) Post() (body []byte, e error) {
 	request.Header = CloneHeader(this.Header)
 
 	request.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+
+	OutputMaps("---------request header--------", request.Header)
+
+	if this.Client == nil {
+		this.Client = Client
+	}
+	response, err := this.Client.Do(request)
+	if err != nil {
+		this.Errortimes++
+		return nil, err
+	}
+
+	defer response.Body.Close()
+
+	OutputMaps("----------response header-----------", response.Header)
+	Logger.Debugf("Status：%v:%v", response.Status, response.Proto)
+	this.UrlStatuscode = response.StatusCode
+	body, e = ioutil.ReadAll(response.Body)
+
+	//设置新Cookie
+	//MergeCookie(Cookieb, response.Cookies())
+	this.Fetchtimes++
+	return
+}
+
+func (this *Spider) PostJSON() (body []byte, e error) {
+	Wait(this.Wait)
+
+	Logger.Debug("POST url:" + this.Url)
+
+	var request = &http.Request{}
+
+	//post data
+	if this.Data != nil {
+		pr := ioutil.NopCloser(bytes.NewReader(this.BData))
+		request, _ = http.NewRequest("POST", this.Url, pr)
+	} else {
+		request, _ = http.NewRequest("POST", this.Url, nil)
+	}
+	request.Header = CloneHeader(this.Header)
+
+	request.Header.Set("Content-Type", "application/json")
+
+	OutputMaps("---------request header--------", request.Header)
+
+	if this.Client == nil {
+		this.Client = Client
+	}
+	response, err := this.Client.Do(request)
+	if err != nil {
+		this.Errortimes++
+		return nil, err
+	}
+
+	defer response.Body.Close()
+
+	OutputMaps("----------response header-----------", response.Header)
+	Logger.Debugf("Status：%v:%v", response.Status, response.Proto)
+	this.UrlStatuscode = response.StatusCode
+	body, e = ioutil.ReadAll(response.Body)
+
+	//设置新Cookie
+	//MergeCookie(Cookieb, response.Cookies())
+	this.Fetchtimes++
+	return
+}
+
+func (this *Spider) PostXML() (body []byte, e error) {
+	Wait(this.Wait)
+
+	Logger.Debug("POST url:" + this.Url)
+
+	var request = &http.Request{}
+
+	//post data
+	if this.Data != nil {
+		pr := ioutil.NopCloser(bytes.NewReader(this.BData))
+		request, _ = http.NewRequest("POST", this.Url, pr)
+	} else {
+		request, _ = http.NewRequest("POST", this.Url, nil)
+	}
+	request.Header = CloneHeader(this.Header)
+
+	request.Header.Set("Content-Type", "text/xml")
+
+	OutputMaps("---------request header--------", request.Header)
+
+	if this.Client == nil {
+		this.Client = Client
+	}
+	response, err := this.Client.Do(request)
+	if err != nil {
+		this.Errortimes++
+		return nil, err
+	}
+
+	defer response.Body.Close()
+
+	OutputMaps("----------response header-----------", response.Header)
+	Logger.Debugf("Status：%v:%v", response.Status, response.Proto)
+	this.UrlStatuscode = response.StatusCode
+	body, e = ioutil.ReadAll(response.Body)
+
+	//设置新Cookie
+	//MergeCookie(Cookieb, response.Cookies())
+	this.Fetchtimes++
+	return
+}
+
+func (this *Spider) PostFILE() (body []byte, e error) {
+	Wait(this.Wait)
+
+	Logger.Debug("POST url:" + this.Url)
+
+	var request = &http.Request{}
+
+	//post data
+	if this.Data != nil {
+		pr := ioutil.NopCloser(bytes.NewReader(this.BData))
+		request, _ = http.NewRequest("POST", this.Url, pr)
+	} else {
+		request, _ = http.NewRequest("POST", this.Url, nil)
+	}
+	request.Header = CloneHeader(this.Header)
+
+	request.Header.Set("Content-Type", "multipart/form-data")
 
 	OutputMaps("---------request header--------", request.Header)
 
