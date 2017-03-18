@@ -33,6 +33,9 @@ func Wait(waittime int) {
 
 //Header map[string][]string ,can use to copy a http header, so that they are not effect each other
 func CopyM(h http.Header) http.Header {
+	if h == nil || len(h) == 0 {
+		return h
+	}
 	h2 := make(http.Header, len(h))
 	for k, vv := range h {
 		vv2 := make([]string, len(vv))

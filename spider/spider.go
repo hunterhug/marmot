@@ -25,7 +25,8 @@ type Spider struct {
 	UrlStatuscode int    // the last url response code,such as 404
 	Method        string // Get Post
 	Header        http.Header
-	Data          url.Values // post data
+	Data          url.Values // post form data
+	BData         []byte     // binary data
 	Wait          int        // sleep time
 	Client        *http.Client
 	Fetchtimes    int    // url fetch number times
@@ -34,6 +35,23 @@ type Spider struct {
 }
 
 func NewSpider(ipstring interface{}) (*Spider, error) {
+	spider := new(Spider)
+	spider.Header = http.Header{}
+	if ipstring != nil {
+		client, err := NewProxyClient(ipstring.(string))
+		spider.Client = client
+		spider.Ipstring = ipstring.(string)
+		return spider, err
+	} else {
+		client, err := NewClient()
+		spider.Client = client
+		spider.Ipstring = "localhost"
+		return spider, err
+	}
+
+}
+
+func New(ipstring interface{}) (*Spider, error) {
 	spider := new(Spider)
 	spider.Header = http.Header{}
 	if ipstring != nil {
