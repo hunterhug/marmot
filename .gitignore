@@ -1,3 +1,5 @@
 .idea/*
 bin/*
 log/*.log
+*.exe
+example/taobao/image
