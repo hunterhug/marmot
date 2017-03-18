@@ -33,25 +33,26 @@ $ glide up                                # 更新库，创建glide.lock
 ## 二.使用
 
 ## 例子
-1.任意图片下载,见[例子1](example/taobao/README.md)
+1. 任意图片下载,见[例子1](example/taobao/README.md)
 
 ## 三.记录
 20170318 
 
-1.新增glide管理第三方库
-2.更新若干函数
-3.修改README.md等
-4.增加任意图片下载示例
+1. 新增glide管理第三方库
+2. 更新若干函数
+3. 修改README.md等
+4. 增加任意图片下载示例
 
 
 ## 联系
 
-QQ：569929309 一只尼玛
-公众号：lenggirlcom(搬砖的陈大师)
+1. QQ：569929309 一只尼玛
+2. 公众号：lenggirlcom(搬砖的陈大师)
+3. 个人网站:www.lenggirl.com
 
 # LICENSE
 
-欢迎加功能
+欢迎加功能(PR/issues)，请遵循Apache License协议(即可随意使用但每个文件下都需加此申明）
 
 ```
 Copyright 2017 hunterhug/一只尼玛.
