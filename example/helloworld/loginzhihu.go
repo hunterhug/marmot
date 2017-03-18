@@ -18,8 +18,7 @@ import (
 	"flag"
 	"fmt"
 	boss "github.com/hunterhug/GoSpider/spider"
-	"github.com/hunterhug/go_tool/util"
-	"strconv"
+	"github.com/hunterhug/GoSpider/util"
 	"strings"
 )
 
@@ -30,6 +29,21 @@ var (
 
 func init() {
 	flag.Parse()
+	if *password == "" || *email == "" {
+		pw, e := util.ReadfromFile(util.CurDir() + "/data/password.txt")
+		if e != nil {
+			fmt.Println("命令行为空，且文件也出错" + e.Error())
+			panic(0)
+		}
+		zhihupw := strings.Split(string(pw), ",")
+		if len(zhihupw) != 2 {
+			fmt.Println("文件中必须有email,password")
+			panic(0)
+		}
+		*password = strings.TrimSpace(zhihupw[1])
+		*email = strings.TrimSpace(zhihupw[0])
+	}
+	fmt.Printf("账号:%s,密码:%s\n", *email, *password)
 }
 func main() {
 	// 第二步：可选设置全局
@@ -63,22 +77,9 @@ func main() {
 	if err != nil {
 		log.Error(err.Error())
 	} else {
-		//log.Infof("%s", body) // 打印获取的数据
-
+		log.Infof("%s", body) // 打印获取的数据
 		// 待处理,json数据带有\\u
-		sUnicodev := strings.Split(string(body), "\\u")
-		var context string
-		for _, v := range sUnicodev {
-			if len(v) < 1 {
-				continue
-			}
-			temp, err := strconv.ParseInt(v, 16, 32)
-			if err != nil {
-				context += fmt.Sprintf("%s", v)
-			} else {
-				context += fmt.Sprintf("%c", temp)
-			}
-		}
+		context := util.JsonEncode(string(body))
 		// 登陆成功
 		log.Info(context)
 		util.SaveToFile(util.CurDir()+"/data/back.json", body)

@@ -24,19 +24,20 @@ import (
 	"strings"
 )
 
-var txt = flag.String("config", "taobao.txt", "你需要指定taobao.txt的文件地址")
+var txt = flag.String("config", "taobao.csv", "你需要指定taobao.csv的文件地址")
 
 func main() {
 	flag.Parse()
+	spider.SetGlobalTimeout(2)
 	//spider.SetLogLevel("debug")
 	fmt.Println(`
 	-------------------------------
 	欢迎使用淘宝天猫图片下载小工具
-	需指定taobao.txt所在位置
-	taobao.txt按行写入 淘宝链接,文件夹
+	需指定taobao.csv所在位置
+	taobao.csv按行写入 淘宝链接,文件夹
 	使用方法：
-	go run taobao.go -config=taobao.txt
-	taobao.exe -config=taobao.txt
+	go run taobao.go -config=taobao.csv
+	taobao.exe -config=taobao.csv
 
 	联系QQ：569929309
 	一只尼玛
@@ -46,7 +47,7 @@ func main() {
 	fmt.Println("---------------以上详情页中图片会保存在taobao目录-----------------------")
 	c, e := util.ReadfromFile(*txt)
 	if e != nil {
-		fmt.Println("打开taobao.txt出错:" + e.Error())
+		fmt.Println("打开taobao.csv出错:" + e.Error())
 		flag.PrintDefaults()
 	} else {
 		urls := strings.Split(string(c), "\n")
@@ -56,6 +57,7 @@ func main() {
 				fmt.Println("跳过" + url)
 				continue
 			}
+			fmt.Println("下载:" + url)
 			downlod(url)
 		}
 
@@ -71,7 +73,7 @@ func downlod(urlmany string) {
 	if len(temp) >= 2 {
 		filename = temp[1]
 	}
-	dir := util.CurDir() + "/image/" + filename
+	dir := "./image/" + filename
 	util.MakeDir(dir)
 	s, e := spider.NewSpider(nil)
 	if e != nil {
@@ -134,7 +136,7 @@ func downlod(urlmany string) {
 							if e == nil {
 								fmt.Println("成功保存在" + dir + "/" + filename)
 							}
-							util.Sleep(2)
+							util.Sleep(1)
 							fmt.Println("暂停两秒")
 						}
 					}

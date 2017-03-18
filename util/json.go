@@ -11,14 +11,34 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package main
+package util
 
 import (
 	"fmt"
-	"github.com/hunterhug/GoSpider/spider"
+	"strconv"
+	"strings"
 )
 
-func main() {
-	s, _ := spider.NewSpider(nil)
-	fmt.Printf("%#v,%d", s, len(""))
+// 将JSON中的/u unicode乱码转回来
+func JsonEncode(raw string) string {
+	raw = strings.Replace(raw, "\"", "\\u\"", -1)
+	sUnicodev := strings.Split(raw, "\\u")
+	leng := len(sUnicodev)
+	if leng <= 1 {
+		return raw
+	}
+	var context string
+	for _, v := range sUnicodev {
+		if len(v) <= 1 {
+			context += fmt.Sprintf("%s", v)
+			continue
+		}
+		temp, err := strconv.ParseInt(v, 16, 32)
+		if err != nil {
+			context += fmt.Sprintf("%s", v)
+		} else {
+			context += fmt.Sprintf("%c", temp)
+		}
+	}
+	return context
 }
