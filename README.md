@@ -43,9 +43,8 @@ import (
 )
 
 func main() {
-
     // 第二步：可选设置全局
-	//boss.SetLogLevel("debug")   // 设置全局爬虫日志，可不设置，设置debug可打印出http请求轨迹
+    //boss.SetLogLevel("debug")   // 设置全局爬虫日志，可不设置，设置debug可打印出http请求轨迹
 	boss.SetGlobalTimeout(3)    // 爬虫超时时间，可不设置，默认超长时间
 	log := boss.Log()           // 爬虫为你提供的日志工具，可不用
 
@@ -101,15 +100,15 @@ type Spider struct {
 
 其他如表单提交（如登陆）,二进制提交(如文件上传,JSON上传），解析文件见[helloworld](example/helloworld/README.md)
 
-## 例子
+## 三.例子
 1. 简单基础示例,见[helloworld](example/helloworld/README.md)
 2. 任意图片下载,见[图片下载](example/taobao/README.md)
 
-## 备注
+## 四.备注
 1. 默认保存网站cookie
 2. 默认抓取时会使用火狐浏览器标志
 
-## 三.记录
+# Log
 20170318 
 
 1. 新增glide管理第三方库
@@ -119,7 +118,7 @@ type Spider struct {
 5. 增加任意图片下载示例（淘宝有特殊处理）
 
 
-## 联系
+# 联系
 
 1. QQ：569929309 一只尼玛
 2. 公众号：lenggirlcom(搬砖的陈大师)
