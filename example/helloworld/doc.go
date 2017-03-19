@@ -20,5 +20,18 @@ import (
 
 func main() {
 	s, _ := spider.NewSpider(nil)
-	fmt.Printf("%#v,%d", s, len(""))
+	// 打印spider对象
+	fmt.Printf("%#v,%d\n", s, len(""))
+	// 打印Ua
+	fmt.Printf("%#v\n",spider.Ua)
+	spider.UaInit()
+	// 再打印
+	fmt.Printf("%#v\n",spider.Ua)
+	// 随机Ua
+	fmt.Printf("%#v\n",spider.RandomUa())
+	fmt.Printf("%#v\n",spider.RandomUa())
+	fmt.Printf("%#v\n",spider.RandomUa())
+	fmt.Printf("%#v\n",spider.RandomUa())
+	fmt.Printf("%#v\n",spider.RandomUa())
+	fmt.Printf("%#v\n",spider.RandomUa())
 }

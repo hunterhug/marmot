@@ -101,12 +101,21 @@ type Spider struct {
 其他如表单提交（如知乎登陆）,二进制提交(如文件上传,JSON上传），解析文件见[helloworld](example/helloworld/README.md)
 
 ## 三.例子
-1. 简单基础示例,见[helloworld](example/helloworld/README.md)
-2. 任意图片下载,见[图片下载](example/taobao/README.md)
+1.入门
+
+a. 简单示例
+b. 知乎登录
+
+见[helloworld](example/helloworld/README.md)
+
+
+2.项目
+
+a. 任意图片下载,见[图片下载](example/taobao/README.md)
 
 ## 四.备注
-1. 默认保存网站cookie
-2. 默认抓取时会使用火狐浏览器标志
+1. 爬虫对象默认保存网站cookie
+2. 不设置Header User-Agent标志默认会使用火狐浏览器标志
 
 # Log
 20170318 
@@ -117,6 +126,15 @@ type Spider struct {
 4. 增加基础实例
 5. 增加任意图片下载示例（淘宝有特殊处理）
 6. 知乎登陆
+
+20170319
+
+1. 新增多User-Agent全局变量，默认支持几百个浏览器标志
+2. 增加随机User-Agent函数，可以随机提取一个标志
+3. 新增多浏览器池Pool，可以模拟若干个浏览器
+
+# 待做
+1. Redis 分布式抓取示例
 
 ![](girl.jpg)
 
