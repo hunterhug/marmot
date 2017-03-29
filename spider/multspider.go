@@ -21,7 +21,7 @@ import (
 )
 
 var (
-	// 浏览器池子
+	// 爬虫池子
 	Pool = &_Spider{brower: make(map[string]*Spider)}
 	Ua   = map[int]string{}
 )

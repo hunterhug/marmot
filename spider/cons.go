@@ -16,12 +16,22 @@ package spider
 import "net/http"
 
 const (
-	//暂停时间 default wait time
+	// 暂停时间 default wait time
 	WaitTime = 5
+
+	// HTTP方法
+	POST = "POST"
+	POSTJSON = "POSTJSON"
+	POSTXML = "POSTXML"
+	POSTFILE = "POSTFILE"
+
+	PUT = "PUT"
+	GET = "GET"
 )
 
 var (
-	//浏览器头部 default header ua
+	// 浏览器头部 default header ua
+	// 默认的
 	FoxfireLinux = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:46.0) Gecko/20100101 Firefox/46.0"
 	SpiderHeader = map[string][]string{
 		"User-Agent": {
@@ -29,14 +39,17 @@ var (
 		},
 	}
 	// http get and post No timeout
+	// 不设置时没有超时时间
 	DefaultTimeOut = 0
 )
 
+// 超时目前只能这样设置全局
 func SetGlobalTimeout(num int) {
 	DefaultTimeOut = num
 }
 
 // usually a header has ua,host and refer
+// 浏览器标志，主机名，来源
 func NewHeader(ua interface{}, host string, refer interface{}) map[string][]string {
 	if ua == nil {
 		ua = FoxfireLinux
@@ -66,7 +79,8 @@ func NewHeader(ua interface{}, host string, refer interface{}) map[string][]stri
 	return h
 }
 
-//merge Cookie，后来的覆盖前来的
+// merge Cookie，后来的覆盖前来的
+// 暂时没有用的
 func MergeCookie(before []*http.Cookie, after []*http.Cookie) []*http.Cookie {
 	cs := make(map[string]*http.Cookie)
 
@@ -92,6 +106,7 @@ func MergeCookie(before []*http.Cookie, after []*http.Cookie) []*http.Cookie {
 }
 
 // clone a header
+// 克隆头部，因为是引用
 func CloneHeader(h map[string][]string) map[string][]string {
 	if h == nil || len(h) == 0 {
 		h = SpiderHeader

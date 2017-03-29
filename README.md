@@ -31,8 +31,7 @@ $ glide up                                # 更新库，创建glide.lock
 默认所有第三方库已经保存在vendor
 
 ## 二.使用
-
-最简单的HelloWorld 看代码注释
+HelloWorld Simple，看代码注释
 ```go
 package main
 
@@ -79,36 +78,17 @@ func main() {
 }
 ```
 
-Spider对象结构体如下：
-```
-type Spider struct {
-	Url           string // the last fetch url
-	UrlStatuscode int    // the last url response code,such as 404
-	Method        string // Get Post
-	Header        http.Header
-	Data          url.Values // post form data
-	BData         []byte     // binary data
-	Wait          int        // sleep time
-	Client        *http.Client
-	Fetchtimes    int    // url fetch number times
-	Errortimes    int    // error times
-	Ipstring      string // spider ip,just for user to record their proxyip
-}
-
-&spider.Spider{Url:"", UrlStatuscode:0, Method:"", Header:http.Header{}, Data:url.Values(nil), BData:[]uint8(nil), Wait:0, Client:(*http.Client)(0xc0820b3320), Fetchtimes:0, Errortimes:0, Ipstring:"localhost"}
-```
-
 其他如表单提交（如知乎登陆）,二进制提交(如文件上传,JSON上传），解析文件见[helloworld](example/helloworld/README.md)
 
 ## 三.例子
 ### 1.入门
 
-a. 简单示例<br/>
-b. 知乎登录
+a. 基础简单示例<br/>
+b. 中级知乎登录
 
 见[helloworld](example/helloworld/README.md)
 
-### 2.项目
+### 2.示例项目
 a. 任意图片下载,见[图片下载](example/taobao/README.md)
 
 ## 四.备注
@@ -116,6 +96,17 @@ a. 任意图片下载,见[图片下载](example/taobao/README.md)
 2. 不设置Header User-Agent标志默认会使用火狐浏览器标志
 
 # Log
+20170329
+
+1. 增加默认爬虫
+2. 单只爬虫加锁
+
+20170319
+
+1. 新增多User-Agent全局变量，默认支持几百个浏览器标志
+2. 增加随机User-Agent函数，可以随机提取一个标志
+3. 新增多浏览器池Pool，可以模拟若干个浏览器
+
 20170318 
 
 1. 新增glide管理第三方库
@@ -125,14 +116,10 @@ a. 任意图片下载,见[图片下载](example/taobao/README.md)
 5. 增加任意图片下载示例（淘宝有特殊处理）
 6. 知乎登陆
 
-20170319
-
-1. 新增多User-Agent全局变量，默认支持几百个浏览器标志
-2. 增加随机User-Agent函数，可以随机提取一个标志
-3. 新增多浏览器池Pool，可以模拟若干个浏览器
-
 # 待做
-1. Redis 分布式抓取示例
+1. JavaBean链式配置爬虫待写
+2. 抽离CatchConfig出来，重构解耦，链式配置可直接传CatchConfig，默认逐链覆盖
+2. Redis 分布式抓取示例
 
 ![](girl.jpg)
 

@@ -10,7 +10,7 @@ http://pic.yesky.com/492/97556992.shtml,meitu
 
 链接分为两部分，前面是链接，后面是图片保存的目录名，`#`表示忽略这一个网站
 
-跑起来，-config后面是taobao.csv的位置,如果在/data/app下，那么需-config=/data/app/taobao.csv
+跑起来，-config后面是taobao.csv的位置,如果在/data/app下，那么需-config=/data/app/taobao.csv， 相对路径时路径是相对于跑程序的地方
 
 ```
 go run taobao.go -config=taobao.csv

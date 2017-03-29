@@ -18,8 +18,10 @@ import (
 	"os"
 )
 
+// 全局日志
 var Logger = logging.MustGetLogger("go_tool_spider")
 
+// 格式
 var format = logging.MustStringFormatter(
 	"%{color}%{time:2006-01-02 15:04:05.000} %{longpkg}:%{longfunc} [%{level:.5s}]:%{color:reset} %{message}",
 )
@@ -35,6 +37,7 @@ var LevelNames = []string{
 }
 
 // init log record
+// 初始化日志
 func init() {
 	backend := logging.NewLogBackend(os.Stderr, "", 0)
 	backendFormatter := logging.NewBackendFormatter(backend, format)
@@ -42,12 +45,14 @@ func init() {
 	logging.SetLevel(logging.INFO, "go_tool_spider")
 }
 
+// 设置日志级别
 // set log level
 func SetLogLevel(level string) {
 	lvl, _ := logging.LogLevel(level)
 	logging.SetLevel(lvl, "go_tool_spider")
 }
 
+// 返回全局对象
 // return global log
 func Log() *logging.Logger {
 	return Logger

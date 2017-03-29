@@ -38,15 +38,15 @@ func TestSpider(t *testing.T) {
 	// wait times,can zero
 	spiders.Wait = 2
 	// which url fetch
-	spiders.Url = "http://www.goole.com"
+	spiders.Url = "http://www.baidu.com"
 
 	// a new header,default ua, no refer
-	spiders.NewHeader(nil, "www.google.com", nil)
+	spiders.NewHeader(nil, "www.baidu.com", nil)
 
 	// go!fetch url --||
 	body, err := spiders.Go()
 	if err != nil {
-		Log().Error(err)
+		Log().Error(err.Error())
 	} else {
 		// bytes get!
 		fmt.Printf("%s", string(body))

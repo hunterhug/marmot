@@ -19,22 +19,47 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+	"sync"
 )
 
-type Spider struct {
-	Url           string // the last fetch url
-	UrlStatuscode int    // the last url response code,such as 404
-	Method        string // Get Post
-	Header        http.Header
-	Data          url.Values // post form data
-	BData         []byte     // binary data
-	Wait          int        // sleep time
-	Client        *http.Client
-	Fetchtimes    int    // url fetch number times
-	Errortimes    int    // error times
-	Ipstring      string // spider ip,just for user to record their proxyip
+// 全局爬虫
+var defaultspider *Spider
+
+func init() {
+	spider := new(Spider)
+	spider.Header = http.Header{}
+	spider.Data = url.Values{}
+	spider.BData = []byte{}
+	spider.Client = Client
+	// 全局爬虫使用全局客户端
+	defaultspider = spider
 }
 
+// 获取默认Spider
+// Todo
+// 应该给爬虫对象，一些JavaBean的链式方法
+func GetSpider() *Spider{
+	return defaultspider
+}
+
+// 爬虫结构体
+type Spider struct {
+	Preurl        string       // pre url 上一次访问的URL
+	Url           string       // now fetch url 这次要抓取的Url
+	UrlStatuscode int          // the last url response code,such as 404 响应状态码
+	Method        string       // Get Post 请求方法
+	Header        http.Header  // 请求头部
+	Data          url.Values   // post form data 表单字段
+	BData         []byte       // binary data 文件上传二进制流
+	Wait          int          // sleep time 等待时间
+	Client        *http.Client // 真正客户端
+	Fetchtimes    int          // url fetch number times 抓取次数
+	Errortimes    int          // error times 失败次数
+	Ipstring      string       // spider ip,just for user to record their proxyip 代理IP地址，没有代理默认localhost
+	mux           sync.RWMutex // 锁，一个爬虫不能并发抓取，并发请建多只爬虫
+}
+
+// 新建一个爬虫，如果ipstring是一个代理IP地址，那使用代理客户端
 func NewSpider(ipstring interface{}) (*Spider, error) {
 	spider := new(Spider)
 	spider.Header = http.Header{}
@@ -54,43 +79,50 @@ func NewSpider(ipstring interface{}) (*Spider, error) {
 
 }
 
+// 新建爬虫别名函数
 func New(ipstring interface{}) (*Spider, error) {
+	return NewSpider(ipstring)
+}
+
+// 通过官方Client来新建爬虫，方便您更灵活
+func NewSpiderByClient(client *http.Client) (*Spider) {
 	spider := new(Spider)
 	spider.Header = http.Header{}
 	spider.Data = url.Values{}
 	spider.BData = []byte{}
-	if ipstring != nil {
-		client, err := NewProxyClient(ipstring.(string))
-		spider.Client = client
-		spider.Ipstring = ipstring.(string)
-		return spider, err
-	} else {
-		client, err := NewClient()
-		spider.Client = client
-		spider.Ipstring = "localhost"
-		return spider, err
-	}
-
+	spider.Client = client
+	return spider
 }
 
 // auto decide which method
+// 自动根据方法调用相应函数，默认GET方法
 func (this *Spider) Go() (body []byte, e error) {
-	switch strings.ToLower(this.Method) {
-	case "post":
+	// 下面这些调用的函数很冗余， 可减少代码量，可是会复制化， 所以放弃
+	switch strings.ToUpper(this.Method) {
+	case POST:
 		return this.Post()
-	case "postjson":
+	case POSTJSON:
 		return this.PostJSON()
-	case "postxml":
+	case POSTXML:
 		return this.PostXML()
-	case "postfile":
+	case POSTFILE:
 		return this.PostFILE()
 	default:
 		return this.Get()
 	}
 }
 
+func Go() (body []byte, e error) {
+	return defaultspider.Go()
+}
+
 // Get method,can take a client
+// 手动调用方法
 func (this *Spider) Get() (body []byte, e error) {
+
+	this.mux.Lock()
+	defer this.mux.Unlock()
+
 	// wait but 0 second not
 	Wait(this.Wait)
 
@@ -128,11 +160,22 @@ func (this *Spider) Get() (body []byte, e error) {
 	//返回内容 return bytes
 	body, e = ioutil.ReadAll(response.Body)
 	this.Fetchtimes++
+
+	this.Preurl = this.Url
 	return
+}
+
+// 默认Get()
+func Get() (body []byte, e error) {
+	return defaultspider.Get()
 }
 
 // Post附带信息 can take a client
 func (this *Spider) Post() (body []byte, e error) {
+
+	this.mux.Lock()
+	defer this.mux.Unlock()
+
 	Wait(this.Wait)
 
 	Logger.Debug("POST url:" + this.Url)
@@ -171,10 +214,20 @@ func (this *Spider) Post() (body []byte, e error) {
 	//设置新Cookie
 	//MergeCookie(Cookieb, response.Cookies())
 	this.Fetchtimes++
+
+	this.Preurl = this.Url
 	return
 }
 
+func Post() (body []byte, e error) {
+	return defaultspider.Post()
+}
+
 func (this *Spider) PostJSON() (body []byte, e error) {
+
+	this.mux.Lock()
+	defer this.mux.Unlock()
+
 	Wait(this.Wait)
 
 	Logger.Debug("POST url:" + this.Url)
@@ -213,10 +266,20 @@ func (this *Spider) PostJSON() (body []byte, e error) {
 	//设置新Cookie
 	//MergeCookie(Cookieb, response.Cookies())
 	this.Fetchtimes++
+
+	this.Preurl = this.Url
 	return
 }
 
+func PostJSON() (body []byte, e error) {
+	return defaultspider.Post()
+}
+
 func (this *Spider) PostXML() (body []byte, e error) {
+
+	this.mux.Lock()
+	defer this.mux.Unlock()
+
 	Wait(this.Wait)
 
 	Logger.Debug("POST url:" + this.Url)
@@ -255,10 +318,20 @@ func (this *Spider) PostXML() (body []byte, e error) {
 	//设置新Cookie
 	//MergeCookie(Cookieb, response.Cookies())
 	this.Fetchtimes++
+
+	this.Preurl = this.Url
 	return
 }
 
+func PostXML() (body []byte, e error) {
+	return defaultspider.Post()
+}
+
 func (this *Spider) PostFILE() (body []byte, e error) {
+
+	this.mux.Lock()
+	defer this.mux.Unlock()
+
 	Wait(this.Wait)
 
 	Logger.Debug("POST url:" + this.Url)
@@ -297,10 +370,19 @@ func (this *Spider) PostFILE() (body []byte, e error) {
 	//设置新Cookie
 	//MergeCookie(Cookieb, response.Cookies())
 	this.Fetchtimes++
+
+	this.Preurl = this.Url
 	return
 }
 
+func PostFILE() (body []byte, e error) {
+	return defaultspider.Post()
+}
+
 // class method
+// 创建新头部快捷方法
 func (this *Spider) NewHeader(ua interface{}, host string, refer interface{}) {
+	this.mux.Lock()
+	defer this.mux.Unlock()
 	this.Header = NewHeader(ua, host, refer)
 }

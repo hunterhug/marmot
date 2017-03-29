@@ -22,6 +22,7 @@ import (
 )
 
 //cookie record
+// 记录Cookie
 func NewJar() *cookiejar.Jar {
 	cookieJar, _ := cookiejar.New(nil)
 	return cookieJar
@@ -29,6 +30,7 @@ func NewJar() *cookiejar.Jar {
 
 var (
 	//default client to ask get or post
+	// 默认的官方客户端，带cookie,方便使用，没有超时时间，不带cookie的客户端不提供
 	Client = &http.Client{
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {
 			Logger.Debugf("-----------Redirect:%v------------", req.URL)
@@ -39,6 +41,7 @@ var (
 )
 
 // a proxy client
+// 带代理客户端，全部有带cookie
 func NewProxyClient(proxystring string) (*http.Client, error) {
 	proxy, err := url.Parse(proxystring)
 	if err != nil {
@@ -60,6 +63,7 @@ func NewProxyClient(proxystring string) (*http.Client, error) {
 }
 
 // a client
+// 不带代理客户端
 func NewClient() (*http.Client, error) {
 	client := &http.Client{
 		// allow redirect
