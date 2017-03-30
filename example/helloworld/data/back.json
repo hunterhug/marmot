@@ -1,10 +1,10 @@
 {
     "r": 1,
-    "errcode": 100000,
+    "errcode": 1991829,
     
-    "data": {"account":"email \u5bf9\u5e94\u7684\u8d26\u6237\u4e0d\u5b58\u5728"},
+    "data": {"captcha":"\u9a8c\u8bc1\u7801\u9519\u8bef"},
     
     
-    "msg": "email \u5bf9\u5e94\u7684\u8d26\u6237\u4e0d\u5b58\u5728"
+    "msg": "\u9a8c\u8bc1\u7801\u9519\u8bef"
     
 }

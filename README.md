@@ -31,7 +31,7 @@ $ glide up                                # 更新库，创建glide.lock
 默认所有第三方库已经保存在vendor
 
 ## 二.使用
-HelloWorld Simple，看代码注释
+HelloWorld Simple一般情况，看代码注释
 ```go
 package main
 
@@ -44,29 +44,37 @@ import (
 func main() {
 
 	// 第二步：可选设置全局
-	//boss.SetLogLevel("debug")   // 设置全局爬虫日志，可不设置，设置debug可打印出http请求轨迹
-	boss.SetGlobalTimeout(3) // 爬虫超时时间，可不设置，默认超长时间
-	log := boss.Log()        // 爬虫为你提供的日志工具，可不用
+	// 设置全局爬虫日志，可不设置，设置debug可打印出http请求轨迹
+	boss.SetLogLevel("debug")
 
-	// 第三步： 新建一个爬虫对象，nil表示不使用代理IP，可选代理
-	spiders, err := boss.NewSpider(nil) // 也可以使用boss.New(nil),同名函数
-	//spiders, err := boss.NewSpider("http://smart:smart2016@104.128.121.46:808")
+	// 爬虫超时时间，可不设置，默认超长时间
+	boss.SetGlobalTimeout(3)
+
+	// 爬虫为你提供的日志工具，可不用
+	log := boss.Log()
+
+	// 第三步： 必须新建一个爬虫对象，nil表示不使用代理IP，可选代理
+	// 也可以使用boss.New(nil),同名函数
+	// 代理使用：spiders, err := boss.NewSpider("http://smart:smart2016@104.128.121.46:808")
+	spiders, err := boss.NewSpider(nil)
 
 	if err != nil {
 		panic(err)
 	}
 
-	// 第四步：设置抓取方式和网站
-	//spiders.Method = "get"  // HTTP方法可以是POST或GET，可不设置，默认GET
-	//spiders.Wait = 2        // 暂停时间，可不设置，默认不暂停
-	spiders.Url = "http://www.lenggirl.com" // 抓取的网址，必须
+	// 第四步：设置抓取方式和网站，可链式结构设置
+	// SetUrl:Url必须设置
+	// SetMethod:HTTP方法可以是POST或GET，可不设置，默认GET，传错值默认为GET
+	// SetWaitTime:暂停时间，可不设置，默认不暂停
+	// SetHeaderParm：自定义头部，可不设置，默认UA是火狐
+	spiders.SetUrl("http://www.zhihu.com").SetMethod("get").SetWaitTime(2)
+	spiders.SetHeaderParm("User-Agent", "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:46.0) Gecko/20100101 Firefox/46.0")
+	// 可用spiders.SetHeaderParm("User-Agent", boss.RandomUa())设置随机浏览器标志
+	spiders.SetHeaderParm("Host", "www.zhihu.com")
 
-	// 第五步：自定义头部，可不设置，默认UA是火狐
-	spiders.Header.Set("User-Agent", "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:46.0) Gecko/20100101 Firefox/46.0")
-	//spiders.Header.Set("Host","www.lenggirl.com")
-
-	// 第六步：开始爬
-	body, err := spiders.Go() // 可使用spiders.Get()或spiders.Post()
+	// 第五步：开始爬
+	// 可使用spiders.Get()或spiders.Post()
+	body, err := spiders.Go()
 	if err != nil {
 		log.Error(err.Error())
 	} else {
@@ -78,7 +86,76 @@ func main() {
 }
 ```
 
-其他如表单提交（如知乎登陆）,二进制提交(如文件上传,JSON上传），解析文件见[helloworld](example/helloworld/README.md)
+表单提交（如知乎登陆）
+```
+package main
+
+import (
+	// 第一步：引入库
+	"flag"
+	"fmt"
+	boss "github.com/hunterhug/GoSpider/spider"
+	"github.com/hunterhug/GoSpider/util"
+	"strings"
+)
+
+// go run loginzhihu.go -email=122233 -password=44646
+var (
+	password = flag.String("password", "", "zhihu password you must set")
+	email    = flag.String("email", "", "zhihu email you must set")
+)
+
+func init() {
+	flag.Parse()
+	if *password == "" || *email == "" {
+		pw, e := util.ReadfromFile(util.CurDir() + "/data/password.txt")
+		if e != nil {
+			fmt.Println("命令行为空，且文件也出错" + e.Error())
+			panic(0)
+		}
+		zhihupw := strings.Split(string(pw), ",")
+		if len(zhihupw) != 2 {
+			fmt.Println("文件中必须有email,password")
+			panic(0)
+		}
+		*password = strings.TrimSpace(zhihupw[1])
+		*email = strings.TrimSpace(zhihupw[0])
+	}
+	fmt.Printf("账号:%s,密码:%s\n", *email, *password)
+}
+func main() {
+	// 第一步：可选设置全局
+	boss.SetLogLevel("debug") // 设置全局爬虫日志，可不设置，设置debug可打印出http请求轨迹
+	boss.SetGlobalTimeout(3)  // 爬虫超时时间，可不设置，默认超长时间
+	log := boss.Log()         // 爬虫为你提供的日志工具，可不用
+
+	// 第二步： 新建一个爬虫对象，nil表示不使用代理IP，可选代理
+	spiders, err := boss.NewSpider(nil) // 也可以使用boss.New(nil),同名函数
+
+	if err != nil {
+		panic(err)
+	}
+
+	// 第三步：设置头部
+	spiders.SetMethod(boss.POST).SetUrl("https://www.zhihu.com/login/email").SetUa(boss.RandomUa())
+	spiders.SetHost("www.zhihu.com").SetRefer("https://www.zhihu.com")
+	spiders.SetFormParm("email", *email).SetFormParm("password", *password)
+
+	// 第四步：开始爬
+	body, err := spiders.Post()
+	if err != nil {
+		log.Error(err.Error())
+	} else {
+		log.Info(spiders.ToString()) // 打印获取的数据，也可以string(body)
+		// 待处理,json数据带有\\u
+		context,_ := util.JsonEncode2(body)
+		// 登陆成功
+		log.Info(string(context))
+	}
+}
+```
+
+二进制提交(如文件上传,JSON上传），解析文件见[helloworld](example/helloworld/README.md)
 
 ## 三.例子
 ### 1.入门
@@ -91,11 +168,16 @@ b. 中级知乎登录
 ### 2.示例项目
 a. 任意图片下载,见[图片下载](example/taobao/README.md)
 
-## 四.备注
+## 四.备注(强制)
 1. 爬虫对象默认保存网站cookie
 2. 不设置Header User-Agent标志默认会使用火狐浏览器标志
 
 # Log
+20170330
+1. 抽离SpiderConfig出来，重构解耦，链式配置可直接传SpiderConfig，默认逐链覆盖
+2. POST之后获取JSON数据可能被编码成\u9a8c，增加JsonToString爬虫对象方法获取数据
+3. 例子重构
+
 20170329
 
 1. 增加默认爬虫
@@ -117,9 +199,7 @@ a. 任意图片下载,见[图片下载](example/taobao/README.md)
 6. 知乎登陆
 
 # 待做
-1. JavaBean链式配置爬虫待写
-2. 抽离CatchConfig出来，重构解耦，链式配置可直接传CatchConfig，默认逐链覆盖
-2. Redis 分布式抓取示例
+1. Redis 分布式抓取示例
 
 ![](girl.jpg)
 

@@ -20,6 +20,7 @@ import (
 	"net/url"
 	"strings"
 	"sync"
+	"github.com/hunterhug/GoSpider/util"
 )
 
 // 全局爬虫
@@ -27,6 +28,7 @@ var defaultspider *Spider
 
 func init() {
 	spider := new(Spider)
+	spider.SpiderConfig = new(SpiderConfig)
 	spider.Header = http.Header{}
 	spider.Data = url.Values{}
 	spider.BData = []byte{}
@@ -38,20 +40,24 @@ func init() {
 // 获取默认Spider
 // Todo
 // 应该给爬虫对象，一些JavaBean的链式方法
-func GetSpider() *Spider{
+func GetSpider() *Spider {
 	return defaultspider
 }
 
+type SpiderConfig struct {
+	Url    string      // now fetch url 这次要抓取的Url
+	Method string      // Get Post 请求方法
+	Header http.Header // 请求头部
+	Data   url.Values  // post form data 表单字段
+	BData  []byte      // binary data 文件上传二进制流
+	Wait   int         // sleep time 等待时间
+}
 // 爬虫结构体
 type Spider struct {
+	*SpiderConfig
 	Preurl        string       // pre url 上一次访问的URL
-	Url           string       // now fetch url 这次要抓取的Url
+	Raw           []byte       // 抓取到的二进制流
 	UrlStatuscode int          // the last url response code,such as 404 响应状态码
-	Method        string       // Get Post 请求方法
-	Header        http.Header  // 请求头部
-	Data          url.Values   // post form data 表单字段
-	BData         []byte       // binary data 文件上传二进制流
-	Wait          int          // sleep time 等待时间
 	Client        *http.Client // 真正客户端
 	Fetchtimes    int          // url fetch number times 抓取次数
 	Errortimes    int          // error times 失败次数
@@ -59,9 +65,82 @@ type Spider struct {
 	mux           sync.RWMutex // 锁，一个爬虫不能并发抓取，并发请建多只爬虫
 }
 
+// Java Bean链式结构
+func (config *SpiderConfig)SetHeader(header http.Header) *SpiderConfig {
+	config.Header = header
+	return config
+}
+
+func (config *SpiderConfig)SetHeaderParm(k, v string) *SpiderConfig {
+	config.Header.Set(k, v)
+	return config
+}
+
+func (config *SpiderConfig)SetUa(ua string) *SpiderConfig {
+	config.Header.Set("User-Agent", ua)
+	return config
+}
+
+func (config *SpiderConfig)SetRefer(refer string) *SpiderConfig {
+	config.Header.Set("Referer", refer)
+	return config
+}
+
+func (config *SpiderConfig)SetHost(host string) *SpiderConfig {
+	config.Header.Set("Host", host)
+	return config
+}
+
+func (config *SpiderConfig)SetUrl(url string) *SpiderConfig {
+	config.Url = url
+	return config
+}
+
+func (config *SpiderConfig)SetMethod(method string) *SpiderConfig {
+	temp := GET
+	switch method {
+	case POST:
+		temp = POST
+	case POSTFILE:
+		temp = POSTFILE
+	case POSTJSON:
+		temp = POSTJSON
+	case PUT:
+		temp = PUT
+	case POSTXML:
+		temp = POSTXML
+	default:
+	}
+	config.Method = temp
+	return config
+}
+
+func (config *SpiderConfig)SetWaitTime(num int) *SpiderConfig {
+	if num > 0 {
+		num = 0
+	}
+	config.Wait = num
+	return config
+}
+
+func (config *SpiderConfig)SetBData(data []byte) *SpiderConfig {
+	config.BData = data
+	return config
+}
+
+func (config *SpiderConfig)SetForm(form url.Values) *SpiderConfig {
+	config.Data = form
+	return config
+}
+
+func (config *SpiderConfig)SetFormParm(k, v string) *SpiderConfig {
+	config.Data.Set(k, v)
+	return config
+}
 // 新建一个爬虫，如果ipstring是一个代理IP地址，那使用代理客户端
 func NewSpider(ipstring interface{}) (*Spider, error) {
 	spider := new(Spider)
+	spider.SpiderConfig = new(SpiderConfig)
 	spider.Header = http.Header{}
 	spider.Data = url.Values{}
 	spider.BData = []byte{}
@@ -159,6 +238,8 @@ func (this *Spider) Get() (body []byte, e error) {
 
 	//返回内容 return bytes
 	body, e = ioutil.ReadAll(response.Body)
+	this.Raw = body
+
 	this.Fetchtimes++
 
 	this.Preurl = this.Url
@@ -210,6 +291,7 @@ func (this *Spider) Post() (body []byte, e error) {
 	Logger.Debugf("Status：%v:%v", response.Status, response.Proto)
 	this.UrlStatuscode = response.StatusCode
 	body, e = ioutil.ReadAll(response.Body)
+	this.Raw = body
 
 	//设置新Cookie
 	//MergeCookie(Cookieb, response.Cookies())
@@ -262,6 +344,7 @@ func (this *Spider) PostJSON() (body []byte, e error) {
 	Logger.Debugf("Status：%v:%v", response.Status, response.Proto)
 	this.UrlStatuscode = response.StatusCode
 	body, e = ioutil.ReadAll(response.Body)
+	this.Raw = body
 
 	//设置新Cookie
 	//MergeCookie(Cookieb, response.Cookies())
@@ -314,6 +397,7 @@ func (this *Spider) PostXML() (body []byte, e error) {
 	Logger.Debugf("Status：%v:%v", response.Status, response.Proto)
 	this.UrlStatuscode = response.StatusCode
 	body, e = ioutil.ReadAll(response.Body)
+	this.Raw = body
 
 	//设置新Cookie
 	//MergeCookie(Cookieb, response.Cookies())
@@ -366,6 +450,7 @@ func (this *Spider) PostFILE() (body []byte, e error) {
 	Logger.Debugf("Status：%v:%v", response.Status, response.Proto)
 	this.UrlStatuscode = response.StatusCode
 	body, e = ioutil.ReadAll(response.Body)
+	this.Raw = body
 
 	//设置新Cookie
 	//MergeCookie(Cookieb, response.Cookies())
@@ -385,4 +470,24 @@ func (this *Spider) NewHeader(ua interface{}, host string, refer interface{}) {
 	this.mux.Lock()
 	defer this.mux.Unlock()
 	this.Header = NewHeader(ua, host, refer)
+}
+
+// 将抓到的数据变成字符串
+func (this *Spider)ToString() string {
+	if this.Raw == nil {
+		return ""
+	}
+	return string(this.Raw)
+}
+
+// 将抓到的数据变成字符串，但数据是编码的JSON
+func (this *Spider)JsonToString() (string, error) {
+	if this.Raw == nil {
+		return "", nil
+	}
+	temp, err := util.JsonEncode2(this.Raw)
+	if err != nil {
+		return "", err
+	}
+	return string(temp), nil
 }

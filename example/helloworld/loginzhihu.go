@@ -22,6 +22,7 @@ import (
 	"strings"
 )
 
+// go run loginzhihu.go -email=122233 -password=44646
 var (
 	password = flag.String("password", "", "zhihu password you must set")
 	email    = flag.String("email", "", "zhihu email you must set")
@@ -46,50 +47,32 @@ func init() {
 	fmt.Printf("账号:%s,密码:%s\n", *email, *password)
 }
 func main() {
-	// 第二步：可选设置全局
+	// 第一步：可选设置全局
 	boss.SetLogLevel("debug") // 设置全局爬虫日志，可不设置，设置debug可打印出http请求轨迹
 	boss.SetGlobalTimeout(3)  // 爬虫超时时间，可不设置，默认超长时间
 	log := boss.Log()         // 爬虫为你提供的日志工具，可不用
 
-	// 第三步： 新建一个爬虫对象，nil表示不使用代理IP，可选代理
+	// 第二步： 新建一个爬虫对象，nil表示不使用代理IP，可选代理
 	spiders, err := boss.NewSpider(nil) // 也可以使用boss.New(nil),同名函数
 
 	if err != nil {
 		panic(err)
 	}
 
-	// 第四步：设置抓取方式和网站
-	spiders.Method = "post"
-	//spiders.Wait = 2        // 暂停时间，可不设置，默认不暂停
-	spiders.Url = "https://www.zhihu.com/login/email" // 抓取的网址，必须
+	// 第三步：设置头部
+	spiders.SetMethod(boss.POST).SetUrl("https://www.zhihu.com/login/email").SetUa(boss.RandomUa())
+	spiders.SetHost("www.zhihu.com").SetRefer("https://www.zhihu.com")
+	spiders.SetFormParm("email", *email).SetFormParm("password", *password)
 
-	// 第五步：自定义头部，可不设置，默认UA是火狐
-	spiders.Header.Set("User-Agent", "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:46.0) Gecko/20100101 Firefox/46.0")
-	spiders.Header.Set("Referer", "https://www.zhihu.com")
-	spiders.Header.Set("Host", "www.zhihu.com")
-	// 相当于以下方法
-	//spiders.NewHeader("Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:46.0) Gecko/20100101 Firefox/46.0","www.zhihu.com","https://www.zhihu.com")
-	spiders.Data.Set("email", *email)
-	spiders.Data.Set("password", *password)
-
-	// 第六步：开始爬
+	// 第四步：开始爬
 	body, err := spiders.Post()
 	if err != nil {
 		log.Error(err.Error())
 	} else {
-		log.Infof("%s", body) // 打印获取的数据
+		log.Info(spiders.ToString()) // 打印获取的数据，也可以string(body)
 		// 待处理,json数据带有\\u
-		context := util.JsonEncode(string(body))
+		context,_ := util.JsonEncode2(body)
 		// 登陆成功
-		log.Info(context)
-		util.SaveToFile(util.CurDir()+"/data/back.json", body)
-	}
-	spiders.Url = "https://www.zhihu.com"
-	index, e := spiders.Get()
-	if e != nil {
-		log.Error(e.Error())
-	} else {
-		//log.Info(string(index))
-		util.SaveToFile(util.CurDir()+"/data/index.html", index)
+		log.Info(string(context))
 	}
 }

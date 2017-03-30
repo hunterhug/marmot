@@ -17,9 +17,10 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"encoding/json"
 )
 
-// 将JSON中的/u unicode乱码转回来
+// 将JSON中的/u unicode乱码转回来，笨方法，弃用
 func JsonEncode(raw string) string {
 	raw = strings.Replace(raw, "\"", "\\u\"", -1)
 	sUnicodev := strings.Split(raw, "\\u")
@@ -41,4 +42,12 @@ func JsonEncode(raw string) string {
 		}
 	}
 	return context
+}
+
+// 最好的方法
+func JsonEncode2(s []byte) ([]byte, error) {
+	temp := new(interface{})
+	json.Unmarshal(s, temp)
+	resut, err := json.Marshal(temp)
+	return resut, err
 }
