@@ -1,5 +1,11 @@
 # Golang Spider
 
+Golang爬虫封装包，支持Cookie持久，用户代理，多浏览器模拟等，可敏捷开发。
+
+项目代号：土拨鼠（tobo）
+
+![土拨](tubo.jpg)
+
 ## 一.下载
 
 自己封装的爬虫库，类似于Python的requests，又不像，你只需通过该方式获取库
@@ -199,15 +205,7 @@ a. 任意图片下载,见[图片下载](example/taobao/README.md)
 6. 知乎登陆
 
 # 待做
-1. Redis 分布式抓取示例
-
-![](girl.jpg)
-
-# 联系
-
-1. QQ：569929309 一只尼玛
-2. 公众号：lenggirlcom(搬砖的陈大师)
-3. 个人网站:www.lenggirl.com
+1. 大型项目爬虫若干（2017.5-10）
 
 # LICENSE
 
