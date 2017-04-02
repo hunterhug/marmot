@@ -4,7 +4,7 @@ Golang爬虫封装包，支持Cookie持久，用户代理，多浏览器模拟�
 
 项目代号：土拨鼠（tobo）
 
-![土拨](tubo.jpg)
+![土拨](tobo.jpg)
 
 ## 一.下载
 
