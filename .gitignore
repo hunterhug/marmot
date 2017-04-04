@@ -1,7 +1,9 @@
-.idea/*
+.idea/
 bin/*
 log/*.log
 *.exe
 example/taobao/image
-example/helloworld/data/index.html
-test/*
+example/helloworld/data/*.html
+test/
+data/
+example/huaban/data/

@@ -1,6 +1,7 @@
 # Golang Spider
 
 Golang爬虫封装包，组件化开发，支持Cookie持久，用户代理，多浏览器模拟等，封装了redis和mysql,可敏捷开发。
+爬虫需谨慎，有风险
 
 项目代号：土拨鼠（tubo）
 
