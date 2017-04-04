@@ -1,5 +1,5 @@
 /*
-Copyright 2017 hunterhug/一只尼玛.
+Copyright 2017 by GoSpider author.
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -15,12 +15,12 @@ package spider
 
 import (
 	"bytes"
+	"github.com/hunterhug/GoSpider/util"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
 	"sync"
-	"github.com/hunterhug/GoSpider/util"
 )
 
 // 全局爬虫
@@ -52,6 +52,7 @@ type SpiderConfig struct {
 	BData  []byte      // binary data 文件上传二进制流
 	Wait   int         // sleep time 等待时间
 }
+
 // 爬虫结构体
 type Spider struct {
 	*SpiderConfig
@@ -66,37 +67,37 @@ type Spider struct {
 }
 
 // Java Bean链式结构
-func (config *SpiderConfig)SetHeader(header http.Header) *SpiderConfig {
+func (config *SpiderConfig) SetHeader(header http.Header) *SpiderConfig {
 	config.Header = header
 	return config
 }
 
-func (config *SpiderConfig)SetHeaderParm(k, v string) *SpiderConfig {
+func (config *SpiderConfig) SetHeaderParm(k, v string) *SpiderConfig {
 	config.Header.Set(k, v)
 	return config
 }
 
-func (config *SpiderConfig)SetUa(ua string) *SpiderConfig {
+func (config *SpiderConfig) SetUa(ua string) *SpiderConfig {
 	config.Header.Set("User-Agent", ua)
 	return config
 }
 
-func (config *SpiderConfig)SetRefer(refer string) *SpiderConfig {
+func (config *SpiderConfig) SetRefer(refer string) *SpiderConfig {
 	config.Header.Set("Referer", refer)
 	return config
 }
 
-func (config *SpiderConfig)SetHost(host string) *SpiderConfig {
+func (config *SpiderConfig) SetHost(host string) *SpiderConfig {
 	config.Header.Set("Host", host)
 	return config
 }
 
-func (config *SpiderConfig)SetUrl(url string) *SpiderConfig {
+func (config *SpiderConfig) SetUrl(url string) *SpiderConfig {
 	config.Url = url
 	return config
 }
 
-func (config *SpiderConfig)SetMethod(method string) *SpiderConfig {
+func (config *SpiderConfig) SetMethod(method string) *SpiderConfig {
 	temp := GET
 	switch method {
 	case POST:
@@ -115,7 +116,7 @@ func (config *SpiderConfig)SetMethod(method string) *SpiderConfig {
 	return config
 }
 
-func (config *SpiderConfig)SetWaitTime(num int) *SpiderConfig {
+func (config *SpiderConfig) SetWaitTime(num int) *SpiderConfig {
 	if num > 0 {
 		num = 0
 	}
@@ -123,20 +124,28 @@ func (config *SpiderConfig)SetWaitTime(num int) *SpiderConfig {
 	return config
 }
 
-func (config *SpiderConfig)SetBData(data []byte) *SpiderConfig {
+func (config *SpiderConfig) SetBData(data []byte) *SpiderConfig {
 	config.BData = data
 	return config
 }
 
-func (config *SpiderConfig)SetForm(form url.Values) *SpiderConfig {
+func (config *SpiderConfig) SetForm(form url.Values) *SpiderConfig {
 	config.Data = form
 	return config
 }
 
-func (config *SpiderConfig)SetFormParm(k, v string) *SpiderConfig {
+func (config *SpiderConfig) SetFormParm(k, v string) *SpiderConfig {
 	config.Data.Set(k, v)
 	return config
 }
+
+func (config *SpiderConfig) Clear() *SpiderConfig {
+	config.Header = http.Header{}
+	config.Data = url.Values{}
+	config.BData = []byte{}
+	return config
+}
+
 // 新建一个爬虫，如果ipstring是一个代理IP地址，那使用代理客户端
 func NewSpider(ipstring interface{}) (*Spider, error) {
 	spider := new(Spider)
@@ -164,8 +173,9 @@ func New(ipstring interface{}) (*Spider, error) {
 }
 
 // 通过官方Client来新建爬虫，方便您更灵活
-func NewSpiderByClient(client *http.Client) (*Spider) {
+func NewSpiderByClient(client *http.Client) *Spider {
 	spider := new(Spider)
+	spider.SpiderConfig = new(SpiderConfig)
 	spider.Header = http.Header{}
 	spider.Data = url.Values{}
 	spider.BData = []byte{}
@@ -189,10 +199,6 @@ func (this *Spider) Go() (body []byte, e error) {
 	default:
 		return this.Get()
 	}
-}
-
-func Go() (body []byte, e error) {
-	return defaultspider.Go()
 }
 
 // Get method,can take a client
@@ -246,11 +252,6 @@ func (this *Spider) Get() (body []byte, e error) {
 	return
 }
 
-// 默认Get()
-func Get() (body []byte, e error) {
-	return defaultspider.Get()
-}
-
 // Post附带信息 can take a client
 func (this *Spider) Post() (body []byte, e error) {
 
@@ -299,10 +300,6 @@ func (this *Spider) Post() (body []byte, e error) {
 
 	this.Preurl = this.Url
 	return
-}
-
-func Post() (body []byte, e error) {
-	return defaultspider.Post()
 }
 
 func (this *Spider) PostJSON() (body []byte, e error) {
@@ -354,10 +351,6 @@ func (this *Spider) PostJSON() (body []byte, e error) {
 	return
 }
 
-func PostJSON() (body []byte, e error) {
-	return defaultspider.Post()
-}
-
 func (this *Spider) PostXML() (body []byte, e error) {
 
 	this.mux.Lock()
@@ -405,10 +398,6 @@ func (this *Spider) PostXML() (body []byte, e error) {
 
 	this.Preurl = this.Url
 	return
-}
-
-func PostXML() (body []byte, e error) {
-	return defaultspider.Post()
 }
 
 func (this *Spider) PostFILE() (body []byte, e error) {
@@ -460,10 +449,6 @@ func (this *Spider) PostFILE() (body []byte, e error) {
 	return
 }
 
-func PostFILE() (body []byte, e error) {
-	return defaultspider.Post()
-}
-
 // class method
 // 创建新头部快捷方法
 func (this *Spider) NewHeader(ua interface{}, host string, refer interface{}) {
@@ -473,7 +458,7 @@ func (this *Spider) NewHeader(ua interface{}, host string, refer interface{}) {
 }
 
 // 将抓到的数据变成字符串
-func (this *Spider)ToString() string {
+func (this *Spider) ToString() string {
 	if this.Raw == nil {
 		return ""
 	}
@@ -481,7 +466,7 @@ func (this *Spider)ToString() string {
 }
 
 // 将抓到的数据变成字符串，但数据是编码的JSON
-func (this *Spider)JsonToString() (string, error) {
+func (this *Spider) JsonToString() (string, error) {
 	if this.Raw == nil {
 		return "", nil
 	}

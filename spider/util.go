@@ -1,5 +1,5 @@
 /*
-Copyright 2017 hunterhug/一只尼玛.
+Copyright 2017 by GoSpider author.
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -16,7 +16,7 @@ package spider
 import (
 	"errors"
 	"fmt"
-	"github.com/hunterhug/go_tool/util"
+	"github.com/hunterhug/GoSpider/util"
 	"net/http"
 )
 

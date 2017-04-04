@@ -1,5 +1,5 @@
 /*
-Copyright 2017 hunterhug/一只尼玛.
+Copyright 2017 by GoSpider author.
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -14,10 +14,10 @@ limitations under the License.
 package util
 
 import (
+	"encoding/json"
 	"fmt"
 	"strconv"
 	"strings"
-	"encoding/json"
 )
 
 // 将JSON中的/u unicode乱码转回来，笨方法，弃用

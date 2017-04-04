@@ -1,5 +1,5 @@
 /*
-Copyright 2017 hunterhug/一只尼玛.
+Copyright 2017 by GoSpider author.
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -14,7 +14,6 @@ limitations under the License.
 package main
 
 import (
-	"fmt"
 	// 第一步：引入库
 	boss "github.com/hunterhug/GoSpider/spider"
 )
@@ -56,7 +55,7 @@ func main() {
 	if err != nil {
 		log.Error(err.Error())
 	} else {
-		fmt.Printf("%s", string(body)) // 打印获取的数据
+		log.Infof("%s", string(body)) // 打印获取的数据
 	}
 
 	// 不设置全局log为debug是不会出现这个东西的

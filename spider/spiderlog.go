@@ -1,5 +1,5 @@
 /*
-Copyright 2017 hunterhug/一只尼玛.
+Copyright 2017 by GoSpider author.
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -19,7 +19,7 @@ import (
 )
 
 // 全局日志
-var Logger = logging.MustGetLogger("go_tool_spider")
+var Logger = logging.MustGetLogger("GoSpider")
 
 // 格式
 var format = logging.MustStringFormatter(
@@ -42,14 +42,14 @@ func init() {
 	backend := logging.NewLogBackend(os.Stderr, "", 0)
 	backendFormatter := logging.NewBackendFormatter(backend, format)
 	logging.SetBackend(backendFormatter)
-	logging.SetLevel(logging.INFO, "go_tool_spider")
+	logging.SetLevel(logging.INFO, "GoSpider")
 }
 
 // 设置日志级别
 // set log level
 func SetLogLevel(level string) {
 	lvl, _ := logging.LogLevel(level)
-	logging.SetLevel(lvl, "go_tool_spider")
+	logging.SetLevel(lvl, "GoSpider")
 }
 
 // 返回全局对象
