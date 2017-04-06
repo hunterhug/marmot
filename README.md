@@ -26,7 +26,7 @@ cd src/github.com/hunterhug
 git clone https://github.com/hunterhug/GoSpider
 ```
 
-默认所有第三方库已经保存在vendor
+默认所有第三方库已经保存在vendor，如果使用包冲突了，请把vendor下的包移到GOPATH下，谨记！！！
 
 文件目录（组件化开发）
 
