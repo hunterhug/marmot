@@ -11,6 +11,8 @@ Golang爬虫封装包，组件化开发，支持Cookie持久，用户代理，�
 ## 待做
 1. 大型项目爬虫若干（2017.5-10）
 
+已完成特大亚马逊分布式爬虫：https://github.com/hunterhug/AmazonBigSpider
+
 ## 一.下载
 
 自己封装的爬虫库，类似于Python的requests，又不像，你只需通过该方式获取库
