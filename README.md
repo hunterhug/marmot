@@ -7,11 +7,9 @@ Golang爬虫封装包，组件化开发，支持Cookie持久，用户代理，�
 
 ![土拨](tubo.png)
 
-
-## 待做
-1. 大型项目爬虫若干（2017.5-10）
-
 已完成特大亚马逊分布式爬虫：https://github.com/hunterhug/AmazonBigSpider
+
+其他大示例见[http://www.github.com/hunterhug/GoSpiderExample](http://www.github.com/hunterhug/GoSpiderExample)
 
 ## 一.下载
 
@@ -28,19 +26,20 @@ cd src/github.com/hunterhug
 git clone https://github.com/hunterhug/GoSpider
 ```
 
-默认所有第三方库已经保存在vendor，如果使用包冲突了，请把vendor下的包移到GOPATH下，谨记！！！
+默认所有第三方库已经保存在vendor，如果使用包冲突了，请把vendor下的包移到GOPATH下，谨记！！！GOPATH文件夹下的包为不适宜放在vendor下，请手动移动
 
 文件目录（组件化开发）
 
 ```
-    ---example   爬虫示例
-    ---query     内容解析库
-    ---spider    爬虫库
+    ---example   爬虫示例，新爬虫已经转移到新仓库
+    ---query     内容解析库，只封装了两个方法
+    ---spider    爬虫核心库
     ---store     存储库
         ---myredis
         ---mysql
     ---util      杂项工具
     ---vendor    第三方依赖包
+    ---GOPATH    不宜放在vendor的包
 ```
 
 ## 二.使用
@@ -181,11 +180,11 @@ b. 中级知乎登录
 a. 任意图片下载,见[图片下载](example/taobao/README.md)
 
 ## 四.备注
-1. 爬虫对象默认保存网站cookie
-2. 不设置Header User-Agent标志默认会使用火狐浏览器标志
+1. 爬虫对象默认保存网站cookie（爬虫很少不会用的没有cookie的）
+2. 不设置Header User-Agent标志默认会使用火狐浏览器标志（这样是为了覆盖Go官方的头部）
 3. 项目管理
 
-此库采用[Glide](https://github.com/Masterminds/glide)方式管理第三方库（使用者可以忽略,中国防火长城让我爪机）
+此库采用[Glide](https://github.com/Masterminds/glide)方式管理第三方库（使用者可以忽略,中国防火长城让我爪机，最终完全弃用，长城太猛）
 
 ```
 $ glide init                              # 创建工作区
@@ -199,6 +198,11 @@ $ glide up                                # 更新库，创建glide.lock
 ```
 
 # Log
+20170405
+1. 简单就是美
+2. 核心功能完成
+3. 示例转移到另外的仓库
+
 20170404
 1. 增加存储库redis和mysql
 2. 优化

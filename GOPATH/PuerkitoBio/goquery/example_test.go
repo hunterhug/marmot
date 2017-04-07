@@ -1,4 +1,4 @@
-package goquery_test
+package goquery
 
 import (
 	"fmt"
