@@ -213,15 +213,15 @@ return new_title
 */
 func ValidFileName(filename string)string{
 	patterns := []string{
-		" ", "",
-		"\\", "",
-		"/", "",
-		":", "",
-		"\"", "",
-		"?", "",
-		"<","",
-		">","",
-		"|","",
+		" ", "#",
+		"\\", "#",
+		"/", "#",
+		":", "#",
+		"\"", "#",
+		"?", "#",
+		"<","#",
+		">","#",
+		"|","#",
 	}
 	r := strings.NewReplacer(patterns...)
 	dudu := r.Replace(filename)
