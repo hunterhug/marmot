@@ -11,6 +11,8 @@ Golang爬虫封装包，组件化开发，支持Cookie持久，用户代理，�
 
 其他大示例见[http://www.github.com/hunterhug/GoSpiderExample](http://www.github.com/hunterhug/GoSpiderExample)
 
+jiandan项目完成！
+
 ## 一.下载
 
 自己封装的爬虫库，类似于Python的requests，又不像，你只需通过该方式获取库

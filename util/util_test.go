@@ -93,3 +93,8 @@ func TestUtil(t *testing.T) {
 
 	t.Log(Substr("123456", 0, 15))
 }
+
+func TestValidFileName(t *testing.T) {
+	s := ValidFileName("*sdvdsv*|sdvsd>sdv<sdvds-\"")
+	t.Log(s)
+}
