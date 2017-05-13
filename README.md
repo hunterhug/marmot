@@ -8,9 +8,9 @@ Golang爬虫封装包，组件化开发，支持Cookie持久，用户代理，�
 
 目前不从事网站开发和爬虫开发，兴趣所向，以前做数据挖掘（其实是爬虫）的同事也很牛逼，请移动到：http://www.tybai.com  我的技术博客为http://www.lenggirl.com
 
-# 爬虫需谨慎，有风险！
+爬虫需谨慎，有风险！
 
-项目代号：土拨鼠（tubo）
+# 项目代号：土拨鼠（tubo）
 
 ![土拨](tubo.png)
 
@@ -20,7 +20,7 @@ Golang爬虫封装包，组件化开发，支持Cookie持久，用户代理，�
 
 例子中已经实现jiandan煎蛋抓文章，抓meizi图。。
 
-# 请大家把好玩的网站，要抓的示例，需求赶紧提issues给我，我好开发变成示例。
+请大家把好玩的网站，要抓的示例，需求赶紧提issues给我，我好开发变成示例。
 
 ## 一.下载
 
@@ -55,76 +55,7 @@ git clone https://github.com/hunterhug/GoSpider
 
 ## 二.使用
 
-## 核心代码剖析
-
-API使用请看示例，这里介绍两个爬虫对象,核心代码spider/spider.go里：
-
-```go
-// 新建一个爬虫，如果ipstring是一个代理IP地址，那使用代理客户端
-func NewSpider(ipstring interface{}) (*Spider, error) {
-	spider := new(Spider)
-	spider.SpiderConfig = new(SpiderConfig)
-	spider.Header = http.Header{}
-	spider.Data = url.Values{}
-	spider.BData = []byte{}
-	if ipstring != nil {
-		client, err := NewProxyClient(ipstring.(string))
-		spider.Client = client
-		spider.Ipstring = ipstring.(string)
-		return spider, err
-	} else {
-		client, err := NewClient()
-		spider.Client = client
-		spider.Ipstring = "localhost"
-		return spider, err
-	}
-
-}
-```
-
-可以传入ipstring，表示使用代理，默认开启cookie记录，cookie会一直在内存中更新，默认有头部，如果要自定义http client客户端,使用：
-
-```go
-// 通过官方Client来新建爬虫，方便您更灵活
-func NewSpiderByClient(client *http.Client) *Spider {
-	spider := new(Spider)
-	spider.SpiderConfig = new(SpiderConfig)
-	spider.Header = http.Header{}
-	spider.Data = url.Values{}
-	spider.BData = []byte{}
-	spider.Client = client
-	return spider
-}
-```
-
-官方的http.Client是这么用的，看spider/client.go
-
-```go
-//cookie record
-// 记录Cookie
-func NewJar() *cookiejar.Jar {
-	cookieJar, _ := cookiejar.New(nil)
-	return cookieJar
-}
-
-var (
-	//default client to ask get or post
-	// 默认的官方客户端，带cookie,方便使用，没有超时时间，不带cookie的客户端不提供
-	Client = &http.Client{
-		CheckRedirect: func(req *http.Request, via []*http.Request) error {
-			Logger.Debugf("-----------Redirect:%v------------", req.URL)
-			return nil
-		},
-		Jar: NewJar(),
-	}
-)
-```
-
-该客户端重定向打印日志，支持cookie持久，你也可以设置超时时间，代理，SSH等。。。。
-
-下面是简单例子！！！
-
-## 友好简单示例
+### a.友好简单示例
 
 HelloWorld Simple一般情况，看代码注释，主要爬知乎首页。
 ```go
@@ -252,6 +183,73 @@ func main() {
 
 二进制提交(如文件上传,JSON上传），解析文件见[helloworld](example/helloworld/README.md)
 
+### b.核心代码剖析
+
+API使用请看具体示例，这里介绍两个爬虫对象,核心代码spider/spider.go里：
+
+```go
+// 新建一个爬虫，如果ipstring是一个代理IP地址，那使用代理客户端
+func NewSpider(ipstring interface{}) (*Spider, error) {
+	spider := new(Spider)
+	spider.SpiderConfig = new(SpiderConfig)
+	spider.Header = http.Header{}
+	spider.Data = url.Values{}
+	spider.BData = []byte{}
+	if ipstring != nil {
+		client, err := NewProxyClient(ipstring.(string))
+		spider.Client = client
+		spider.Ipstring = ipstring.(string)
+		return spider, err
+	} else {
+		client, err := NewClient()
+		spider.Client = client
+		spider.Ipstring = "localhost"
+		return spider, err
+	}
+
+}
+```
+
+可以传入ipstring，表示使用代理，默认开启cookie记录，cookie会一直在内存中更新，默认有头部，如果要自定义http client客户端,使用：
+
+```go
+// 通过官方Client来新建爬虫，方便您更灵活
+func NewSpiderByClient(client *http.Client) *Spider {
+	spider := new(Spider)
+	spider.SpiderConfig = new(SpiderConfig)
+	spider.Header = http.Header{}
+	spider.Data = url.Values{}
+	spider.BData = []byte{}
+	spider.Client = client
+	return spider
+}
+```
+
+官方的http.Client是这么用的，看spider/client.go
+
+```go
+//cookie record
+// 记录Cookie
+func NewJar() *cookiejar.Jar {
+	cookieJar, _ := cookiejar.New(nil)
+	return cookieJar
+}
+
+var (
+	//default client to ask get or post
+	// 默认的官方客户端，带cookie,方便使用，没有超时时间，不带cookie的客户端不提供
+	Client = &http.Client{
+		CheckRedirect: func(req *http.Request, via []*http.Request) error {
+			Logger.Debugf("-----------Redirect:%v------------", req.URL)
+			return nil
+		},
+		Jar: NewJar(),
+	}
+)
+```
+
+该客户端重定向打印日志，支持cookie持久，你也可以设置超时时间，代理，SSH等。。。。
+
 ## 三.具体例子
 ### 1.入门
 
@@ -285,6 +283,14 @@ $ glide up                                # 更新库，创建glide.lock
 ```
 
 # Log
+如果你觉得项目帮助到你，欢迎请我喝杯咖啡
+
+微信
+![微信](https://raw.githubusercontent.com/hunterhug/hunterhug.github.io/master/static/jpg/wei.png)
+
+支付宝
+![支付宝](https://raw.githubusercontent.com/hunterhug/hunterhug.github.io/master/static/jpg/ali.png)
+
 20170513
 1. 补充说明
 2. 呼喊需求！！
