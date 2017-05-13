@@ -282,7 +282,6 @@ $ go build                                # 试试可不可以跑
 $ glide up                                # 更新库，创建glide.lock
 ```
 
-# Log
 如果你觉得项目帮助到你，欢迎请我喝杯咖啡
 
 微信
@@ -291,43 +290,7 @@ $ glide up                                # 更新库，创建glide.lock
 支付宝
 ![支付宝](https://raw.githubusercontent.com/hunterhug/hunterhug.github.io/master/static/jpg/ali.png)
 
-20170513
-1. 补充说明
-2. 呼喊需求！！
-
-20170405
-1. 简单就是美
-2. 核心功能完成
-3. 示例转移到另外的仓库
-
-20170404
-1. 增加存储库redis和mysql
-2. 优化
-
-20170330
-1. 抽离SpiderConfig出来，重构解耦，链式配置可直接传SpiderConfig，默认逐链覆盖
-2. POST之后获取JSON数据可能被编码成\u9a8c，增加JsonToString爬虫对象方法获取数据
-3. 例子重构
-
-20170329
-
-1. 增加默认爬虫
-2. 单只爬虫加锁
-
-20170319
-
-1. 新增多User-Agent全局变量，默认支持几百个浏览器标志
-2. 增加随机User-Agent函数，可以随机提取一个标志
-3. 新增多浏览器池Pool，可以模拟若干个浏览器
-
-20170318
-
-1. 新增glide管理第三方库
-2. 更新若干函数
-3. 修改README.md等
-4. 增加基础实例
-5. 增加任意图片下载示例（淘宝有特殊处理）
-6. 知乎登陆
+版本日志信息见[日志](log.md)
 
 # LICENSE
 
