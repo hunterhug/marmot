@@ -1,16 +1,6 @@
-# Golang Spider
-
-前言：网站开发、搜索和爬虫是异曲同工的，开发过网站，弄过搜索，回到爬虫，觉得很有趣，以前开发大型python爬虫，项目管理难，且用的都是别人封装的库，而且要开发并发程序也难，坑多，有些写到最后一堆乱麻，不排除我的问题，知其所以然才是王道，Golang HTTP原生库你可以直接看到代码，学习到HTTP协议的实现，我的包是在原生库基础上进行封装，支持高并发，各种结构都加了锁，人类友好姿态API。--||
-
-Golang爬虫封装包，组件化开发，支持Cookie持久，用户代理，多浏览器模拟等，封装了redis和mysql,可敏捷开发。
-
-使用场景：网站测试自动化，脚本刷单（阿里要打我），写各种外挂（留言灌水，机器人！），对接阿里云、网易云音乐、新浪等API（等你们提需求，我要写token hmac1 mad5啥的加密登录），自动发文章（单平台写一篇发多个平台，要自己实现），爬各种数据（文章，图片，种子，这种很暴力，如爬天猫全网数据，京东啥的，有点风险，做这种工作的不太道德）
-
-目前不从事网站开发和爬虫开发，兴趣所向，以前做数据挖掘（其实是爬虫）的同事也很牛逼，请移动到：http://www.tybai.com  我的技术博客为http://www.lenggirl.com
-
-爬虫需谨慎，有风险！
-
 # 项目代号：土拨鼠（tubo）
+
+[前言](pre.md)
 
 ![土拨](tubo.png)
 
@@ -183,72 +173,7 @@ func main() {
 
 二进制提交(如文件上传,JSON上传），解析文件见[helloworld](example/helloworld/README.md)
 
-### b.核心代码剖析
-
-API使用请看具体示例，这里介绍两个爬虫对象,核心代码spider/spider.go里：
-
-```go
-// 新建一个爬虫，如果ipstring是一个代理IP地址，那使用代理客户端
-func NewSpider(ipstring interface{}) (*Spider, error) {
-	spider := new(Spider)
-	spider.SpiderConfig = new(SpiderConfig)
-	spider.Header = http.Header{}
-	spider.Data = url.Values{}
-	spider.BData = []byte{}
-	if ipstring != nil {
-		client, err := NewProxyClient(ipstring.(string))
-		spider.Client = client
-		spider.Ipstring = ipstring.(string)
-		return spider, err
-	} else {
-		client, err := NewClient()
-		spider.Client = client
-		spider.Ipstring = "localhost"
-		return spider, err
-	}
-
-}
-```
-
-可以传入ipstring，表示使用代理，默认开启cookie记录，cookie会一直在内存中更新，默认有头部，如果要自定义http client客户端,使用：
-
-```go
-// 通过官方Client来新建爬虫，方便您更灵活
-func NewSpiderByClient(client *http.Client) *Spider {
-	spider := new(Spider)
-	spider.SpiderConfig = new(SpiderConfig)
-	spider.Header = http.Header{}
-	spider.Data = url.Values{}
-	spider.BData = []byte{}
-	spider.Client = client
-	return spider
-}
-```
-
-官方的http.Client是这么用的，看spider/client.go
-
-```go
-//cookie record
-// 记录Cookie
-func NewJar() *cookiejar.Jar {
-	cookieJar, _ := cookiejar.New(nil)
-	return cookieJar
-}
-
-var (
-	//default client to ask get or post
-	// 默认的官方客户端，带cookie,方便使用，没有超时时间，不带cookie的客户端不提供
-	Client = &http.Client{
-		CheckRedirect: func(req *http.Request, via []*http.Request) error {
-			Logger.Debugf("-----------Redirect:%v------------", req.URL)
-			return nil
-		},
-		Jar: NewJar(),
-	}
-)
-```
-
-该客户端重定向打印日志，支持cookie持久，你也可以设置超时时间，代理，SSH等。。。。
+[API参考](api.md)
 
 ## 三.具体例子
 ### 1.入门
@@ -262,7 +187,6 @@ b. 中级知乎登录
 a. 任意图片下载,见[图片下载](example/taobao/README.md)
 
 其他：例子移动到[http://www.github.com/hunterhug/GoSpiderExample](http://www.github.com/hunterhug/GoSpiderExample)
-
 
 ## 四.备注
 1. 爬虫对象默认保存网站cookie，可用另外API传http.Client不保存（爬虫很少不会用的没有cookie的）
