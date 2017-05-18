@@ -1,6 +1,6 @@
 # 项目代号：土拨鼠（tubo）
 
-[前言](pre.md)
+[前言](doc/pre.md)
 
 ![土拨](tubo.png)
 
@@ -173,7 +173,11 @@ func main() {
 
 二进制提交(如文件上传,JSON上传），解析文件见[helloworld](example/helloworld/README.md)
 
-[API参考](api.md)
+1. 爬虫对象默认保存网站cookie，可用另外API传http.Client不保存（爬虫很少不会用没有cookie的）
+2. 不设置Header User-Agent标志默认会使用火狐浏览器标志（这样是为了覆盖Go官方的头部）
+3. 每次抓取网站后想清除头部或请求数据，请使用Clear()
+
+[API参考](doc/api.md)
 
 ## 三.具体例子
 ### 1.入门
@@ -189,9 +193,6 @@ a. 任意图片下载,见[图片下载](example/taobao/README.md)
 其他：例子移动到[http://www.github.com/hunterhug/GoSpiderExample](http://www.github.com/hunterhug/GoSpiderExample)
 
 ## 四.备注
-1. 爬虫对象默认保存网站cookie，可用另外API传http.Client不保存（爬虫很少不会用的没有cookie的）
-2. 不设置Header User-Agent标志默认会使用火狐浏览器标志（这样是为了覆盖Go官方的头部）
-3. 项目管理可使用
 
 此库采用[Glide](https://github.com/Masterminds/glide)方式管理第三方库（使用者可以忽略,中国防火长城让我爪机，最终完全弃用，长城太猛）
 
@@ -214,7 +215,7 @@ $ glide up                                # 更新库，创建glide.lock
 支付宝
 ![支付宝](https://raw.githubusercontent.com/hunterhug/hunterhug.github.io/master/static/jpg/ali.png)
 
-版本日志信息见[日志](log.md)
+版本日志信息见[日志](doc/log.md)
 
 # LICENSE
 

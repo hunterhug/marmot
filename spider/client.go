@@ -38,6 +38,14 @@ var (
 		},
 		Jar: NewJar(),
 	}
+
+	// 没有cookie的客户端
+	NoCookieClient = &http.Client{
+		CheckRedirect: func(req *http.Request, via []*http.Request) error {
+			Logger.Debugf("-----------Redirect:%v------------", req.URL)
+			return nil
+		},
+	}
 )
 
 // a proxy client

@@ -37,8 +37,7 @@ func init() {
 	defaultspider = spider
 }
 
-// 获取默认Spider
-// Todo
+// 获取默认Spider Todo
 // 应该给爬虫对象，一些JavaBean的链式方法
 func GetSpider() *Spider {
 	return defaultspider
@@ -181,6 +180,11 @@ func NewSpiderByClient(client *http.Client) *Spider {
 	spider.BData = []byte{}
 	spider.Client = client
 	return spider
+}
+
+// API爬虫，不用保存Cookie，可用于对接各种API，但仍然有默认UA
+func NewAPI() *Spider {
+	return NewSpiderByClient(NoCookieClient)
 }
 
 // auto decide which method
