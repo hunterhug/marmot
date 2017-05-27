@@ -1,6 +1,6 @@
 # 核心代码剖析
 
-遇上JSON的响应，防止乱码，请使用util.JsonEncode2)()
+遇上JSON的响应，防止乱码，请使用util.JsonBack()
 
 API使用请看具体示例，这里介绍两个爬虫对象,核心代码spider/spider.go里：
 

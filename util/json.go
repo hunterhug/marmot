@@ -45,7 +45,7 @@ func JsonEncode(raw string) string {
 }
 
 // 最好的方法
-func JsonEncode2(s []byte) ([]byte, error) {
+func JsonBack(s []byte) ([]byte, error) {
 	temp := new(interface{})
 	json.Unmarshal(s, temp)
 	resut, err := json.Marshal(temp)

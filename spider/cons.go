@@ -20,13 +20,19 @@ const (
 	WaitTime = 5
 
 	// HTTP方法
-	POST = "POST"
+	POST     = "POST"
 	POSTJSON = "POSTJSON"
-	POSTXML = "POSTXML"
+	POSTXML  = "POSTXML"
 	POSTFILE = "POSTFILE"
+	PUT      = "PUT"
+	GET      = "GET"
 
-	PUT = "PUT"
-	GET = "GET"
+	CRITICAL = "CRITICAL"
+	ERROR    = "ERROR"
+	WARNING  = "WARNING"
+	NOTICE   = "NOTICE"
+	INFO     = "INFO"
+	DEBUG    = "DEBUG"
 )
 
 var (

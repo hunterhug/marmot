@@ -71,7 +71,7 @@ func main() {
 	} else {
 		log.Info(spiders.ToString()) // 打印获取的数据，也可以string(body)
 		// 待处理,json数据带有\\u
-		context,_ := util.JsonEncode2(body)
+		context,_ := util.JsonBack(body)
 		// 登陆成功
 		log.Info(string(context))
 	}

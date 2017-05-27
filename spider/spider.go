@@ -474,7 +474,7 @@ func (this *Spider) JsonToString() (string, error) {
 	if this.Raw == nil {
 		return "", nil
 	}
-	temp, err := util.JsonEncode2(this.Raw)
+	temp, err := util.JsonBack(this.Raw)
 	if err != nil {
 		return "", err
 	}
