@@ -159,7 +159,7 @@ func main() {
 
 注意：每次抓取网站后,下次请求你可以覆盖原先的头部,但是没覆盖的头部还是上次的,所以清除头部或请求数据,请使用Clear()
 
-更多用法待写：如多只爬虫并发,使用爬虫池子,`boss.Pool.Set("myfirstspider", spiders)`
+更多用法：如多只爬虫并发,使用爬虫池子,`boss.Pool.Set("myfirstspider", spiders)`,参见[分布式文章爬取](http://www.lenggirl.com/spider/jiandan.html)
 
 [API参考](doc/api.md)
 
