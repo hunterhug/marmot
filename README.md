@@ -4,9 +4,13 @@
 
 ![土拨](tubo.png)
 
+用途： 微信开发/API对接/自动化测试/抢票脚本/网站监控/点赞插件/数据爬取
+
+Smile Tip: Chinese is easy to learn, you are smart enough! Show me the code. Don't sat any thing, Ahaha~
+
 ## 一.下载
 
-自己封装的爬虫库,类似于Python的requests,又不像,你只需通过该方式获取库
+自己封装的爬虫库,类似于Python的requests,你只需通过该方式获取库
 
 ```
 go get -v github.com/hunterhug/GoSpider
