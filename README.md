@@ -204,6 +204,52 @@ $ glide up                                # 更新库,创建glide.lock
 
 版本日志信息见[日志](doc/log.md)
 
+## 五.环境配置
+
+### Go安装
+
+a. Ubuntu安装
+
+下载源码解压.下载IDE也是解压设置环境变量.
+
+```
+vim /etc/profile.d/myenv.sh
+
+export GOROOT=/app/go
+export GOPATH=/home/jinhan/code
+export GOBIN=$GOROOT/bin
+export PATH=.:$PATH:/app/go/bin:$GOPATH/bin:/home/jinhan/software/Gogland-171.3780.106/bin
+
+source /etc/profile.d/myenv.sh
+```
+
+b. Windows安装
+
+[](https://yun.baidu.com/s/1jHKUGZG) 选择后缀为msi安装如1.6
+
+环境变量设置：
+
+```
+Path G:\smartdogo\bin
+GOBIN G:\smartdogo\bin
+GOPATH G:\smartdogo
+GOROOT C:\Go\
+```
+
+### MYSQL安装
+
+a. Ubuntu安装
+
+敲入以下命令按提示操作
+```
+sudo apt-get install mysql-server mysql-client
+```
+
+b. Windows安装
+
+[https://yun.baidu.com/s/1hrF0QC8](https://yun.baidu.com/s/1hrF0QC8) 找到mysql文件夹下面的5.6.17.0.msi根据说明安装.
+
+
 # LICENSE
 
 欢迎加功能(PR/issues),请遵循Apache License协议(即可随意使用但每个文件下都需加此申明）
