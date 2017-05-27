@@ -71,9 +71,9 @@ func main() {
 	// SetUrl:Url必须设置
 	// SetMethod:HTTP方法可以是POST或GET,可不设置,默认GET,传错值默认为GET
 	// SetWaitTime:暂停时间,可不设置,默认不暂停
-	spiders.SetUrl("http://www.lenggirl.com").SetMethod(boss.GET).SetWaitTime(2)
+	spiders.SetUrl("http://www.google.com").SetMethod(boss.GET).SetWaitTime(2)
 	spiders.SetUa(boss.RandomUa())                 //设置随机浏览器标志
-	spiders.SetRefer("http://www.baidu.com")       // 设置Refer头
+	spiders.SetRefer("http://www.google.com")      // 设置Refer头
 	spiders.SetHeaderParm("diyheader", "lenggirl") // 自定义头部
 
 	//spiders.SetBData([]byte("file data")) // 如果你要提交JSON数据/上传文件
@@ -99,16 +99,28 @@ func main() {
 	log.Debugf("%#v", spiders) // 不设置全局log为debug是不会出现这个东西的
 
 	spiders.Clear() // 爬取完毕后可以清除设置的Http头部和POST的表单数据/文件数据/JSON数据
+
+	// 爬虫池子
+	boss.Pool.Set("myfirstspider", spiders)
+	if poolspider, ok := boss.Pool.Get("myfirstspider"); ok {
+		poolspider.SetUrl("http://www.baidu.com")
+		data, _ := poolspider.Get()
+		log.Info(string(data))
+	}
 }
 ```
 
 使用特别简单,先`New`一只`Spider`,然后`SetUrl`,适当加头部,最后`spiders.Go()`即可。
+
+### 第一步
 
 爬虫有三种类型:
 
 1. `spiders, err := boss.NewSpider("http://smart:smart2016@104.128.121.46:808") ` // 代理IP爬虫 格式:`协议://代理帐号(可选):代理密码(可选)@ip:port` 别名函数`New()`
 2. `spiders, err := boss.NewSpider(nil)`  // 正常爬虫 默认带Cookie 别名函数`New()`
 3. `spiders, err := boss.NewAPI()` // API爬虫 默认不带Cookie
+
+### 第二步
 
 模拟爬虫设置头部:
 
@@ -123,6 +135,8 @@ func main() {
 
 更多自行查看源代码(高级)
 
+### 第三步
+
 爬虫启动方式有：
 1. `body, err := spiders.Go()` // 如果设置SetMethod(),采用,否则Get()
 2. `body, err := spiders.Post()` // POST表单请求,数据在SetFormParm()
@@ -130,6 +144,8 @@ func main() {
 4. `body, err := spiders.PostJSON()` // 提交JSON请求,数据在SetBData()
 5. `body, err := spiders.PostXML()` // 提交XML请求,数据在SetBData()
 6. `body, err := spiders.PostFILE()` // 提交文件上传请求,数据在SetBData()
+
+### 第四步
 
 爬取到的数据：
 
@@ -139,7 +155,7 @@ func main() {
 
 注意：每次抓取网站后,下次请求你可以覆盖原先的头部,但是没覆盖的头部还是上次的,所以清除头部或请求数据,请使用Clear()
 
-更多用法待写：如多只爬虫并发
+更多用法待写：如多只爬虫并发,使用爬虫池子,`boss.Pool.Set("myfirstspider", spiders)`
 
 [API参考](doc/api.md)
 

@@ -42,9 +42,9 @@ func main() {
 	// SetUrl:Url必须设置
 	// SetMethod:HTTP方法可以是POST或GET,可不设置,默认GET,传错值默认为GET
 	// SetWaitTime:暂停时间,可不设置,默认不暂停
-	spiders.SetUrl("http://www.lenggirl.com").SetMethod(boss.GET).SetWaitTime(2)
+	spiders.SetUrl("http://www.google.com").SetMethod(boss.GET).SetWaitTime(2)
 	spiders.SetUa(boss.RandomUa())                 //设置随机浏览器标志
-	spiders.SetRefer("http://www.baidu.com")       // 设置Refer头
+	spiders.SetRefer("http://www.google.com")      // 设置Refer头
 	spiders.SetHeaderParm("diyheader", "lenggirl") // 自定义头部
 
 	//spiders.SetBData([]byte("file data")) // 如果你要提交JSON数据/上传文件
@@ -70,4 +70,12 @@ func main() {
 	log.Debugf("%#v", spiders) // 不设置全局log为debug是不会出现这个东西的
 
 	spiders.Clear() // 爬取完毕后可以清除设置的Http头部和POST的表单数据/文件数据/JSON数据
+
+	// 爬虫池子
+	boss.Pool.Set("myfirstspider", spiders)
+	if poolspider, ok := boss.Pool.Get("myfirstspider"); ok {
+		poolspider.SetUrl("http://www.baidu.com")
+		data, _ := poolspider.Get()
+		log.Info(string(data))
+	}
 }

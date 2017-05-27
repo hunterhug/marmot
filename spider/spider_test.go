@@ -58,4 +58,5 @@ func TestSpider(t *testing.T) {
 	err = TooSortSizes(body, 500)
 
 	Log().Error(err.Error())
+
 }
