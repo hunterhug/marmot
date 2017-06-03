@@ -69,7 +69,8 @@ func main() {
 
 	log.Debugf("%#v", spiders) // 不设置全局log为debug是不会出现这个东西的
 
-	spiders.Clear() // 爬取完毕后可以清除设置的Http头部和POST的表单数据/文件数据/JSON数据
+	//spiders.ClearAll() // 爬取完毕后可以清除设置的Http头部和POST的表单数据/文件数据/JSON数据
+	spiders.Clear() // 爬取完毕后可以清除POST的表单数据/文件数据/JSON数据
 
 	// 爬虫池子
 	boss.Pool.Set("myfirstspider", spiders)

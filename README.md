@@ -102,7 +102,8 @@ func main() {
 
 	log.Debugf("%#v", spiders) // 不设置全局log为debug是不会出现这个东西的
 
-	spiders.Clear() // 爬取完毕后可以清除设置的Http头部和POST的表单数据/文件数据/JSON数据
+	//spiders.ClearAll() // 爬取完毕后可以清除设置的Http头部和POST的表单数据/文件数据/JSON数据
+	spiders.Clear() // 爬取完毕后可以清除POST的表单数据/文件数据/JSON数据
 
 	// 爬虫池子
 	boss.Pool.Set("myfirstspider", spiders)
@@ -157,7 +158,7 @@ func main() {
 2. `log.Infof("%s", string(spiders.Raw))` // 打印获取的数据,数据在http响应后会保存在Raw中
 3. `body, err := spiders.Go() util.JsonBack(body)` // 如果获取到的是JSON数据,转义回来,不然会乱码
 
-注意：每次抓取网站后,下次请求你可以覆盖原先的头部,但是没覆盖的头部还是上次的,所以清除头部或请求数据,请使用Clear()
+注意：每次抓取网站后,下次请求你可以覆盖原先的头部,但是没覆盖的头部还是上次的,所以清除头部或请求数据,请使用`Clear()`(只清除Post数据)或者`ClearAll()`(还清除http头部)
 
 更多用法：如多只爬虫并发,使用爬虫池子,`boss.Pool.Set("myfirstspider", spiders)`,参见[分布式文章爬取](http://www.lenggirl.com/spider/jiandan.html)
 

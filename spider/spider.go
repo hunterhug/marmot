@@ -86,13 +86,19 @@ func (config *SpiderConfig) SetRefer(refer string) *SpiderConfig {
 	return config
 }
 
-func (config *SpiderConfig) SetHost(host string) *SpiderConfig {
+func (config *SpiderConfig) setHost(host string) *SpiderConfig {
 	config.Header.Set("Host", host)
 	return config
 }
 
+// SetUrl的同时Set一下Host
 func (config *SpiderConfig) SetUrl(url string) *SpiderConfig {
 	config.Url = url
+	//https://www.zhihu.com/people/
+	temp := strings.Split(url, "//")
+	if len(temp) > 2 {
+		config.setHost(strings.Split(temp[1], "/")[0])
+	}
 	return config
 }
 
@@ -139,6 +145,13 @@ func (config *SpiderConfig) SetFormParm(k, v string) *SpiderConfig {
 }
 
 func (config *SpiderConfig) Clear() *SpiderConfig {
+	config.Data = url.Values{}
+	config.BData = []byte{}
+	return config
+}
+
+func (config *SpiderConfig) ClearAll() *SpiderConfig {
+	// 全部删除
 	config.Header = http.Header{}
 	config.Data = url.Values{}
 	config.BData = []byte{}

@@ -60,8 +60,7 @@ func main() {
 	}
 
 	// 第三步：设置头部
-	spiders.SetMethod(boss.POST).SetUrl("https://www.zhihu.com/login/email").SetUa(boss.RandomUa())
-	spiders.SetHost("www.zhihu.com").SetRefer("https://www.zhihu.com")
+	spiders.SetUrl("https://www.zhihu.com/login/email").SetUa(boss.RandomUa())
 	spiders.SetFormParm("email", *email).SetFormParm("password", *password)
 
 	// 第四步：开始爬
@@ -71,7 +70,7 @@ func main() {
 	} else {
 		log.Info(spiders.ToString()) // 打印获取的数据，也可以string(body)
 		// 待处理,json数据带有\\u
-		context,_ := util.JsonBack(body)
+		context, _ := util.JsonBack(body)
 		// 登陆成功
 		log.Info(string(context))
 	}
