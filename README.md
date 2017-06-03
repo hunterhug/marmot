@@ -132,7 +132,7 @@ func main() {
 1. `spiders.SetUrl("http://www.lenggirl.com")`  // 设置Http请求要抓取的网址,必须
 2. `spiders.SetMethod(boss.GET)`  // 设置Http请求的方法:`POST/GET/PUT/POSTJSON`等
 3. `spiders.SetWaitTime(2)` // 设置Http请求超时时间
-4. `spiders.SetUa(boss.RandomUa())`                // 设置Http请求浏览器标志,默认火狐,本项目提供445个浏览器标志
+4. `spiders.SetUa(boss.RandomUa())`                // 设置Http请求浏览器标志,本项目提供445个浏览器标志，可选设置
 5. `spiders.SetRefer("http://www.baidu.com")`       // 设置Http请求Refer头
 6. `spiders.SetHeaderParm("diyheader", "lenggirl")` // 设置Http请求自定义头部
 7. `spiders.SetBData([]byte("file data"))` // Http请求需要上传数据

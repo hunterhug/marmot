@@ -27,6 +27,8 @@ import (
 var defaultspider *Spider
 
 func init() {
+	// 初始化全部浏览器
+	UaInit()
 	spider := new(Spider)
 	spider.SpiderConfig = new(SpiderConfig)
 	spider.Header = http.Header{}
@@ -96,7 +98,7 @@ func (config *SpiderConfig) SetUrl(url string) *SpiderConfig {
 	config.Url = url
 	//https://www.zhihu.com/people/
 	temp := strings.Split(url, "//")
-	if len(temp) > 2 {
+	if len(temp) >= 2 {
 		config.setHost(strings.Split(temp[1], "/")[0])
 	}
 	return config

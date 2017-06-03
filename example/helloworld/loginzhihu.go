@@ -22,6 +22,7 @@ import (
 	"strings"
 )
 
+// 知乎登录有验证码！！
 // go run loginzhihu.go -email=122233 -password=44646
 var (
 	password = flag.String("password", "", "zhihu password you must set")
@@ -60,7 +61,7 @@ func main() {
 	}
 
 	// 第三步：设置头部
-	spiders.SetUrl("https://www.zhihu.com/login/email").SetUa(boss.RandomUa())
+	spiders.SetUrl("https://www.zhihu.com/login/email").SetRefer("https://www.zhihu.com/").SetUa(boss.RandomUa())
 	spiders.SetFormParm("email", *email).SetFormParm("password", *password)
 
 	// 第四步：开始爬

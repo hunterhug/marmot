@@ -37,7 +37,7 @@ const (
 
 var (
 	// 浏览器头部 default header ua
-	// 默认的
+	// 默认的,取消使用！！
 	FoxfireLinux = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:46.0) Gecko/20100101 Firefox/46.0"
 	SpiderHeader = map[string][]string{
 		"User-Agent": {
@@ -115,7 +115,8 @@ func MergeCookie(before []*http.Cookie, after []*http.Cookie) []*http.Cookie {
 // 克隆头部，因为是引用
 func CloneHeader(h map[string][]string) map[string][]string {
 	if h == nil || len(h) == 0 {
-		h = SpiderHeader
+		//h = SpiderHeader
+		return map[string][]string{}
 	}
 	return CopyM(h)
 }
