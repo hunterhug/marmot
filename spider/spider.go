@@ -124,8 +124,8 @@ func (config *SpiderConfig) SetMethod(method string) *SpiderConfig {
 }
 
 func (config *SpiderConfig) SetWaitTime(num int) *SpiderConfig {
-	if num > 0 {
-		num = 0
+	if num <= 0 {
+		num = 1
 	}
 	config.Wait = num
 	return config
