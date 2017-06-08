@@ -246,9 +246,69 @@ a. Ubuntu安装
 sudo apt-get install mysql-server mysql-client
 ```
 
+开关
+
+```
+开启  ./mysqld_safe &
+
+关闭  mysqladmin -uroot shutdown
+```
+
 b. Windows安装
 
 [https://yun.baidu.com/s/1hrF0QC8](https://yun.baidu.com/s/1hrF0QC8) 找到mysql文件夹下面的5.6.17.0.msi根据说明安装.
+
+## 六.高级配置（docker）
+
+我们的库可能要使用各种各样的工具，配置连我这种专业人员有时都搞不定，而且还可能会损坏，所以用docker方式随时随地开发。
+
+`Golang,Mysql,Redis`都可以通过这种方式快速搭起来，然后你在容器内部进行操作，我们的容器启动都采用一次性容器`--rm`,不怕你在后台跑后忘了，同时网络模式都是`--net=host`,共用主机端口和IP。
+
+先拉镜像
+
+```
+docker pull golang:1.8
+```
+
+Golang环境启动：
+
+```
+docker run --rm --net=host -it -v /home/jinhan/code:/go --name mygolang golang:1.8 /bin/bash
+
+root@27214c6216f5:/go# go env
+GOARCH="amd64"
+```
+
+其中`/home/jinhan/code`为你自己的本地文件夹（虚拟GOPATH），你在docker内`go get`产生在`/go`的文件会保留在这里，容器死掉，你的`/home/jinhan/code`还在，你可以随时修改文件配置。
+
+启动后你就可以在里面开发了。
+
+什么？你还需要Redis?
+
+拉：
+
+```
+docker pull redis:3.2
+```
+
+如果需要Redis服务器,请启动：
+
+```
+docker run --rm --net=host --name="myredis-server" -p 6379:6379 -v /home/jinhan/redis/data:/data  -it redis:3.2 redis-server --appendonly yes
+```
+
+- `-p 6379:6379` :将容器的6379端口映射到主机的6379端口，使用host模式其实是不用的
+- `-v /home/jinhan/redis/data` :将主机中/home/jinhan/redis/data文件夹挂载到容器的/data
+- `-it`: 表示前台跑，如果想后台，请`-d`，建议不要
+- `redis-server --appendonly yes` :在容器执行redis-server启动命令，并打开redis持久化配置
+
+使用Redis客户端访问：
+
+```
+docker run --rm --net=host --name="myredis-client" -it redis:3.2 redis-cli
+```
+
+什么？你还需要Mysql?这个太难配置，请装本地。
 
 
 # LICENSE
