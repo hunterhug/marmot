@@ -167,18 +167,13 @@ func main() {
 ## 三.具体例子
 ### 1.入门
 
-a. 基础简单示例<br/>
-b. 中级知乎登录
+a.见[helloworld](example/helloworld/README.md)
 
-见[helloworld](example/helloworld/README.md)
+b.见[图片下载](example/taobao/README.md)
 
 ### 2.示例项目
 
-a. 任意图片下载,见[图片下载](example/taobao/README.md)
-
-b. 已完成特大亚马逊分布式爬虫：[https://github.com/hunterhug/AmazonBigSpider](https://github.com/hunterhug/AmazonBigSpider)
-
-c. 其他大示例见[http://www.github.com/hunterhug/GoSpiderExample](http://www.github.com/hunterhug/GoSpiderExample)
+高级示例项目见[http://www.github.com/hunterhug/GoSpiderExample](http://www.github.com/hunterhug/GoSpiderExample)
 
 ## 四.备注
 
