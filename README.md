@@ -8,6 +8,8 @@
 
 Smile Tip: Chinese is easy to learn, you are smart enough! Show me the code. Don't sat any thing, Ahaha~
 
+知乎全能小工具示例正在开发中: [zhihuxx](https://github.com/hunterhug/zhihuxx)，入门必备！
+
 ## 一.下载
 
 自己封装的爬虫库,类似于Python的requests,你只需通过该方式获取库
