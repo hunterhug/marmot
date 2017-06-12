@@ -30,7 +30,7 @@ func NewJar() *cookiejar.Jar {
 
 var (
 	//default client to ask get or post
-	// 默认的官方客户端，带cookie,方便使用，没有超时时间，不带cookie的客户端不提供
+	// 默认的官方客户端，带cookie,方便使用，没有超时时间
 	Client = &http.Client{
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {
 			Logger.Debugf("-----------Redirect:%v------------", req.URL)

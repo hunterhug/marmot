@@ -14,9 +14,6 @@ limitations under the License.
 package spider
 
 import (
-	"github.com/hunterhug/GoSpider/util"
-	"math/rand"
-	"strings"
 	"sync"
 )
 
@@ -50,28 +47,4 @@ func (sb *_Spider) Delete(name string) {
 	delete(sb.brower, name)
 	sb.mux.Unlock()
 	return
-}
-
-// Ua初始化
-func UaInit() {
-	Ua[0] = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36"
-	temp, err := util.ReadfromFile(util.CurDir() + "/config/ua.txt")
-	if err != nil {
-		//panic(err.Error())
-	} else {
-		uas := strings.Split(string(temp), "\n")
-		for i, ua := range uas {
-			Ua[i] = strings.TrimSpace(strings.Replace(ua, "\r", "", -1))
-		}
-	}
-
-}
-
-// 返回随机Ua
-func RandomUa() string {
-	length := len(Ua)
-	if length == 0 {
-		return ""
-	}
-	return Ua[rand.Intn(length-1)]
 }

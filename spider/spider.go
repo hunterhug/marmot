@@ -14,7 +14,6 @@ limitations under the License.
 package spider
 
 import (
-	"bytes"
 	"github.com/hunterhug/GoSpider/util"
 	"io/ioutil"
 	"net/http"
@@ -27,20 +26,22 @@ import (
 var defaultspider *Spider
 
 func init() {
-	// 初始化全部浏览器
+	// 初始化全部浏览器, 可能不应该初始化，应该手动
 	UaInit()
-	spider := new(Spider)
-	spider.SpiderConfig = new(SpiderConfig)
-	spider.Header = http.Header{}
-	spider.Data = url.Values{}
-	spider.BData = []byte{}
-	spider.Client = Client
+
+	// 默认爬虫
+	spiderxx := new(Spider)
+	spiderxx.SpiderConfig = new(SpiderConfig)
+	spiderxx.Header = http.Header{}
+	spiderxx.Data = url.Values{}
+	spiderxx.BData = []byte{}
+	spiderxx.Client = Client
 	// 全局爬虫使用全局客户端
-	defaultspider = spider
+	defaultspider = spiderxx
+
 }
 
-// 获取默认Spider Todo
-// 应该给爬虫对象，一些JavaBean的链式方法
+// 获取默认Spider
 func GetSpider() *Spider {
 	return defaultspider
 }
@@ -57,13 +58,15 @@ type SpiderConfig struct {
 // 爬虫结构体
 type Spider struct {
 	*SpiderConfig
-	Preurl        string       // pre url 上一次访问的URL
-	Raw           []byte       // 抓取到的二进制流
-	UrlStatuscode int          // the last url response code,such as 404 响应状态码
-	Client        *http.Client // 真正客户端
-	Fetchtimes    int          // url fetch number times 抓取次数
-	Errortimes    int          // error times 失败次数
-	Ipstring      string       // spider ip,just for user to record their proxyip 代理IP地址，没有代理默认localhost
+	Preurl        string        // pre url 上一次访问的URL
+	Raw           []byte        // 抓取到的二进制流
+	UrlStatuscode int           // the last url response code,such as 404 响应状态码
+	Client        *http.Client  // 真正客户端
+	Fetchtimes    int           // url fetch number times 抓取次数
+	Errortimes    int           // error times 失败次数
+	Ipstring      string        // spider ip,just for user to record their proxyip 代理IP地址，没有代理默认localhost
+	request       *http.Request // 增加方便外部调试
+	response      *http.Response
 	mux           sync.RWMutex // 锁，一个爬虫不能并发抓取，并发请建多只爬虫
 }
 
@@ -106,7 +109,7 @@ func (config *SpiderConfig) SetUrl(url string) *SpiderConfig {
 
 func (config *SpiderConfig) SetMethod(method string) *SpiderConfig {
 	temp := GET
-	switch method {
+	switch strings.ToUpper(method) {
 	case POST:
 		temp = POST
 	case POSTFILE:
@@ -162,21 +165,21 @@ func (config *SpiderConfig) ClearAll() *SpiderConfig {
 
 // 新建一个爬虫，如果ipstring是一个代理IP地址，那使用代理客户端
 func NewSpider(ipstring interface{}) (*Spider, error) {
-	spider := new(Spider)
-	spider.SpiderConfig = new(SpiderConfig)
-	spider.Header = http.Header{}
-	spider.Data = url.Values{}
-	spider.BData = []byte{}
+	spiderxx := new(Spider)
+	spiderxx.SpiderConfig = new(SpiderConfig)
+	spiderxx.Header = http.Header{}
+	spiderxx.Data = url.Values{}
+	spiderxx.BData = []byte{}
 	if ipstring != nil {
 		client, err := NewProxyClient(ipstring.(string))
-		spider.Client = client
-		spider.Ipstring = ipstring.(string)
-		return spider, err
+		spiderxx.Client = client
+		spiderxx.Ipstring = ipstring.(string)
+		return spiderxx, err
 	} else {
 		client, err := NewClient()
-		spider.Client = client
-		spider.Ipstring = "localhost"
-		return spider, err
+		spiderxx.Client = client
+		spiderxx.Ipstring = "localhost"
+		return spiderxx, err
 	}
 
 }
@@ -188,13 +191,13 @@ func New(ipstring interface{}) (*Spider, error) {
 
 // 通过官方Client来新建爬虫，方便您更灵活
 func NewSpiderByClient(client *http.Client) *Spider {
-	spider := new(Spider)
-	spider.SpiderConfig = new(SpiderConfig)
-	spider.Header = http.Header{}
-	spider.Data = url.Values{}
-	spider.BData = []byte{}
-	spider.Client = client
-	return spider
+	spiderxx := new(Spider)
+	spiderxx.SpiderConfig = new(SpiderConfig)
+	spiderxx.Header = http.Header{}
+	spiderxx.Data = url.Values{}
+	spiderxx.BData = []byte{}
+	spiderxx.Client = client
+	return spiderxx
 }
 
 // API爬虫，不用保存Cookie，可用于对接各种API，但仍然有默认UA
@@ -204,52 +207,53 @@ func NewAPI() *Spider {
 
 // auto decide which method
 // 自动根据方法调用相应函数，默认GET方法
-func (this *Spider) Go() (body []byte, e error) {
+func (sp *Spider) Go() (body []byte, e error) {
 	// 下面这些调用的函数很冗余， 可减少代码量，可是会复制化， 所以放弃
-	switch strings.ToUpper(this.Method) {
+	switch strings.ToUpper(sp.Method) {
 	case POST:
-		return this.Post()
+		return sp.Post()
 	case POSTJSON:
-		return this.PostJSON()
+		return sp.PostJSON()
 	case POSTXML:
-		return this.PostXML()
+		return sp.PostXML()
 	case POSTFILE:
-		return this.PostFILE()
+		return sp.PostFILE()
 	default:
-		return this.Get()
+		return sp.Get()
 	}
 }
 
 // Get method,can take a client
 // 手动调用方法
-func (this *Spider) Get() (body []byte, e error) {
+func (sp *Spider) Get() (body []byte, e error) {
 
-	this.mux.Lock()
-	defer this.mux.Unlock()
+	sp.mux.Lock()
+	defer sp.mux.Unlock()
 
 	// wait but 0 second not
-	Wait(this.Wait)
+	Wait(sp.Wait)
 
 	//debug,can use SetLogLevel to change
-	Logger.Debug("GET url:" + this.Url)
+	Logger.Debug("GET url:" + sp.Url)
 
 	//a new request
-	request, _ := http.NewRequest("GET", this.Url, nil)
+	request, _ := http.NewRequest("GET", sp.Url, nil)
 
 	//clone a header
-	request.Header = CloneHeader(this.Header)
+	request.Header = CloneHeader(sp.Header)
+	sp.request = request
 
 	//debug the header
 	OutputMaps("---------request header--------", request.Header)
 
 	//start request
-	if this.Client == nil {
+	if sp.Client == nil {
 		// default client
-		this.Client = Client
+		sp.Client = Client
 	}
-	response, err := this.Client.Do(request)
+	response, err := sp.Client.Do(request)
 	if err != nil {
-		this.Errortimes++
+		sp.Errortimes++
 		return nil, err
 	}
 	defer response.Body.Close()
@@ -257,239 +261,113 @@ func (this *Spider) Get() (body []byte, e error) {
 	//debug
 	OutputMaps("----------response header-----------", response.Header)
 	Logger.Debugf("Status：%v:%v", response.Status, response.Proto)
-	this.UrlStatuscode = response.StatusCode
+	sp.UrlStatuscode = response.StatusCode
 	//设置新Cookie
 	//Cookieb = MergeCookie(Cookieb, response.Cookies())
 
 	//返回内容 return bytes
 	body, e = ioutil.ReadAll(response.Body)
-	this.Raw = body
+	sp.Raw = body
 
-	this.Fetchtimes++
+	sp.Fetchtimes++
 
-	this.Preurl = this.Url
+	sp.Preurl = sp.Url
+
+	sp.response = response
+	return
+}
+
+// 辅助POST
+func (sp *Spider) post(method, contenttype string) (body []byte, e error) {
+	sp.mux.Lock()
+	defer sp.mux.Unlock()
+	Wait(sp.Wait)
+
+	Logger.Debug("POST url:" + sp.Url)
+
+	var request = &http.Request{}
+
+	//post data
+	if sp.Data != nil {
+		pr := ioutil.NopCloser(strings.NewReader(sp.Data.Encode()))
+		request, _ = http.NewRequest(method, sp.Url, pr)
+	} else {
+		request, _ = http.NewRequest(method, sp.Url, nil)
+	}
+	request.Header = CloneHeader(sp.Header)
+
+	request.Header.Set("Content-Type", contenttype)
+	sp.request = request
+
+	OutputMaps("---------request header--------", request.Header)
+
+	if sp.Client == nil {
+		sp.Client = Client
+	}
+	response, err := sp.Client.Do(request)
+	if err != nil {
+		sp.Errortimes++
+		return nil, err
+	}
+
+	defer response.Body.Close()
+
+	OutputMaps("----------response header-----------", response.Header)
+	Logger.Debugf("Status：%v:%v", response.Status, response.Proto)
+	sp.UrlStatuscode = response.StatusCode
+	body, e = ioutil.ReadAll(response.Body)
+	sp.Raw = body
+
+	//设置新Cookie
+	//MergeCookie(Cookieb, response.Cookies())
+	sp.Fetchtimes++
+
+	sp.Preurl = sp.Url
+
+	sp.response = response
 	return
 }
 
 // Post附带信息 can take a client
-func (this *Spider) Post() (body []byte, e error) {
-
-	this.mux.Lock()
-	defer this.mux.Unlock()
-
-	Wait(this.Wait)
-
-	Logger.Debug("POST url:" + this.Url)
-
-	var request = &http.Request{}
-
-	//post data
-	if this.Data != nil {
-		pr := ioutil.NopCloser(strings.NewReader(this.Data.Encode()))
-		request, _ = http.NewRequest("POST", this.Url, pr)
-	} else {
-		request, _ = http.NewRequest("POST", this.Url, nil)
-	}
-	request.Header = CloneHeader(this.Header)
-
-	request.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-
-	OutputMaps("---------request header--------", request.Header)
-
-	if this.Client == nil {
-		this.Client = Client
-	}
-	response, err := this.Client.Do(request)
-	if err != nil {
-		this.Errortimes++
-		return nil, err
-	}
-
-	defer response.Body.Close()
-
-	OutputMaps("----------response header-----------", response.Header)
-	Logger.Debugf("Status：%v:%v", response.Status, response.Proto)
-	this.UrlStatuscode = response.StatusCode
-	body, e = ioutil.ReadAll(response.Body)
-	this.Raw = body
-
-	//设置新Cookie
-	//MergeCookie(Cookieb, response.Cookies())
-	this.Fetchtimes++
-
-	this.Preurl = this.Url
-	return
+func (sp *Spider) Post() (body []byte, e error) {
+	return sp.post(POST, "application/x-www-form-urlencoded")
 }
 
-func (this *Spider) PostJSON() (body []byte, e error) {
-
-	this.mux.Lock()
-	defer this.mux.Unlock()
-
-	Wait(this.Wait)
-
-	Logger.Debug("POST url:" + this.Url)
-
-	var request = &http.Request{}
-
-	//post data
-	if this.Data != nil {
-		pr := ioutil.NopCloser(bytes.NewReader(this.BData))
-		request, _ = http.NewRequest("POST", this.Url, pr)
-	} else {
-		request, _ = http.NewRequest("POST", this.Url, nil)
-	}
-	request.Header = CloneHeader(this.Header)
-
-	request.Header.Set("Content-Type", "application/json")
-
-	OutputMaps("---------request header--------", request.Header)
-
-	if this.Client == nil {
-		this.Client = Client
-	}
-	response, err := this.Client.Do(request)
-	if err != nil {
-		this.Errortimes++
-		return nil, err
-	}
-
-	defer response.Body.Close()
-
-	OutputMaps("----------response header-----------", response.Header)
-	Logger.Debugf("Status：%v:%v", response.Status, response.Proto)
-	this.UrlStatuscode = response.StatusCode
-	body, e = ioutil.ReadAll(response.Body)
-	this.Raw = body
-
-	//设置新Cookie
-	//MergeCookie(Cookieb, response.Cookies())
-	this.Fetchtimes++
-
-	this.Preurl = this.Url
-	return
+func (sp *Spider) PostJSON() (body []byte, e error) {
+	return sp.post(POST, "application/json")
 }
 
-func (this *Spider) PostXML() (body []byte, e error) {
-
-	this.mux.Lock()
-	defer this.mux.Unlock()
-
-	Wait(this.Wait)
-
-	Logger.Debug("POST url:" + this.Url)
-
-	var request = &http.Request{}
-
-	//post data
-	if this.Data != nil {
-		pr := ioutil.NopCloser(bytes.NewReader(this.BData))
-		request, _ = http.NewRequest("POST", this.Url, pr)
-	} else {
-		request, _ = http.NewRequest("POST", this.Url, nil)
-	}
-	request.Header = CloneHeader(this.Header)
-
-	request.Header.Set("Content-Type", "text/xml")
-
-	OutputMaps("---------request header--------", request.Header)
-
-	if this.Client == nil {
-		this.Client = Client
-	}
-	response, err := this.Client.Do(request)
-	if err != nil {
-		this.Errortimes++
-		return nil, err
-	}
-
-	defer response.Body.Close()
-
-	OutputMaps("----------response header-----------", response.Header)
-	Logger.Debugf("Status：%v:%v", response.Status, response.Proto)
-	this.UrlStatuscode = response.StatusCode
-	body, e = ioutil.ReadAll(response.Body)
-	this.Raw = body
-
-	//设置新Cookie
-	//MergeCookie(Cookieb, response.Cookies())
-	this.Fetchtimes++
-
-	this.Preurl = this.Url
-	return
+func (sp *Spider) PostXML() (body []byte, e error) {
+	return sp.post(POST, "text/xml")
 }
 
-func (this *Spider) PostFILE() (body []byte, e error) {
+func (sp *Spider) PostFILE() (body []byte, e error) {
+	return sp.post(POST, "multipart/form-data")
 
-	this.mux.Lock()
-	defer this.mux.Unlock()
-
-	Wait(this.Wait)
-
-	Logger.Debug("POST url:" + this.Url)
-
-	var request = &http.Request{}
-
-	//post data
-	if this.Data != nil {
-		pr := ioutil.NopCloser(bytes.NewReader(this.BData))
-		request, _ = http.NewRequest("POST", this.Url, pr)
-	} else {
-		request, _ = http.NewRequest("POST", this.Url, nil)
-	}
-	request.Header = CloneHeader(this.Header)
-
-	request.Header.Set("Content-Type", "multipart/form-data")
-
-	OutputMaps("---------request header--------", request.Header)
-
-	if this.Client == nil {
-		this.Client = Client
-	}
-	response, err := this.Client.Do(request)
-	if err != nil {
-		this.Errortimes++
-		return nil, err
-	}
-
-	defer response.Body.Close()
-
-	OutputMaps("----------response header-----------", response.Header)
-	Logger.Debugf("Status：%v:%v", response.Status, response.Proto)
-	this.UrlStatuscode = response.StatusCode
-	body, e = ioutil.ReadAll(response.Body)
-	this.Raw = body
-
-	//设置新Cookie
-	//MergeCookie(Cookieb, response.Cookies())
-	this.Fetchtimes++
-
-	this.Preurl = this.Url
-	return
 }
 
 // class method
 // 创建新头部快捷方法
-func (this *Spider) NewHeader(ua interface{}, host string, refer interface{}) {
-	this.mux.Lock()
-	defer this.mux.Unlock()
-	this.Header = NewHeader(ua, host, refer)
+func (sp *Spider) NewHeader(ua interface{}, host string, refer interface{}) {
+	sp.mux.Lock()
+	defer sp.mux.Unlock()
+	sp.Header = NewHeader(ua, host, refer)
 }
 
 // 将抓到的数据变成字符串
-func (this *Spider) ToString() string {
-	if this.Raw == nil {
+func (sp *Spider) ToString() string {
+	if sp.Raw == nil {
 		return ""
 	}
-	return string(this.Raw)
+	return string(sp.Raw)
 }
 
 // 将抓到的数据变成字符串，但数据是编码的JSON
-func (this *Spider) JsonToString() (string, error) {
-	if this.Raw == nil {
+func (sp *Spider) JsonToString() (string, error) {
+	if sp.Raw == nil {
 		return "", nil
 	}
-	temp, err := util.JsonBack(this.Raw)
+	temp, err := util.JsonBack(sp.Raw)
 	if err != nil {
 		return "", err
 	}

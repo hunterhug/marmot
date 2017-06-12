@@ -24,8 +24,11 @@ const (
 	POSTJSON = "POSTJSON"
 	POSTXML  = "POSTXML"
 	POSTFILE = "POSTFILE"
-	PUT      = "PUT"
 	GET      = "GET"
+
+	// 暂时没实现
+	PUT      = "PUT"
+	DELETE   = "DELETE"
 
 	CRITICAL = "CRITICAL"
 	ERROR    = "ERROR"
