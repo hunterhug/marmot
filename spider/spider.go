@@ -23,27 +23,27 @@ import (
 )
 
 // 全局爬虫
-var defaultspider *Spider
+var DefaultSpider *Spider
 
 func init() {
 	// 初始化全部浏览器, 可能不应该初始化，应该手动
 	UaInit()
 
 	// 默认爬虫
-	spiderxx := new(Spider)
-	spiderxx.SpiderConfig = new(SpiderConfig)
-	spiderxx.Header = http.Header{}
-	spiderxx.Data = url.Values{}
-	spiderxx.BData = []byte{}
-	spiderxx.Client = Client
+	sp := new(Spider)
+	sp.SpiderConfig = new(SpiderConfig)
+	sp.Header = http.Header{}
+	sp.Data = url.Values{}
+	sp.BData = []byte{}
+	sp.Client = Client
 	// 全局爬虫使用全局客户端
-	defaultspider = spiderxx
+	DefaultSpider = sp
 
 }
 
 // 获取默认Spider
 func GetSpider() *Spider {
-	return defaultspider
+	return DefaultSpider
 }
 
 type SpiderConfig struct {
@@ -165,21 +165,21 @@ func (config *SpiderConfig) ClearAll() *SpiderConfig {
 
 // 新建一个爬虫，如果ipstring是一个代理IP地址，那使用代理客户端
 func NewSpider(ipstring interface{}) (*Spider, error) {
-	spiderxx := new(Spider)
-	spiderxx.SpiderConfig = new(SpiderConfig)
-	spiderxx.Header = http.Header{}
-	spiderxx.Data = url.Values{}
-	spiderxx.BData = []byte{}
+	sp := new(Spider)
+	sp.SpiderConfig = new(SpiderConfig)
+	sp.Header = http.Header{}
+	sp.Data = url.Values{}
+	sp.BData = []byte{}
 	if ipstring != nil {
 		client, err := NewProxyClient(ipstring.(string))
-		spiderxx.Client = client
-		spiderxx.Ipstring = ipstring.(string)
-		return spiderxx, err
+		sp.Client = client
+		sp.Ipstring = ipstring.(string)
+		return sp, err
 	} else {
 		client, err := NewClient()
-		spiderxx.Client = client
-		spiderxx.Ipstring = "localhost"
-		return spiderxx, err
+		sp.Client = client
+		sp.Ipstring = "localhost"
+		return sp, err
 	}
 
 }
@@ -191,13 +191,13 @@ func New(ipstring interface{}) (*Spider, error) {
 
 // 通过官方Client来新建爬虫，方便您更灵活
 func NewSpiderByClient(client *http.Client) *Spider {
-	spiderxx := new(Spider)
-	spiderxx.SpiderConfig = new(SpiderConfig)
-	spiderxx.Header = http.Header{}
-	spiderxx.Data = url.Values{}
-	spiderxx.BData = []byte{}
-	spiderxx.Client = client
-	return spiderxx
+	sp := new(Spider)
+	sp.SpiderConfig = new(SpiderConfig)
+	sp.Header = http.Header{}
+	sp.Data = url.Values{}
+	sp.BData = []byte{}
+	sp.Client = client
+	return sp
 }
 
 // API爬虫，不用保存Cookie，可用于对接各种API，但仍然有默认UA

@@ -177,20 +177,6 @@ b.见[图片下载](example/taobao/README.md)
 
 高级示例项目见[http://www.github.com/hunterhug/GoSpiderExample](http://www.github.com/hunterhug/GoSpiderExample)
 
-## 四.备注
-
-此库采用[Glide](https://github.com/Masterminds/glide)方式管理第三方库（使用者可以忽略,中国防火长城让我爪机,最终完全弃用,长城太猛）
-
-```
-$ glide init                              # 创建工作区
-$ open glide.yaml                         # 编辑glide.yaml文件
-$ glide get github.com/Masterminds/cookoo # get下库然后会自动写入glide.yaml
-$ glide install                           # 安装,没有glide.lock,会先运行glide up
-
-# work, work, work
-$ go build                                # 试试可不可以跑
-$ glide up                                # 更新库,创建glide.lock
-```
 
 如果你觉得项目帮助到你,欢迎请我喝杯咖啡
 

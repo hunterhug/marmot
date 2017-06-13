@@ -1,6 +1,0 @@
-package: github.com/hunterhug/GoSpider
-import:
-- package: github.com/PuerkitoBio/goquery
-  version: ^1.1.0
-- package: github.com/op/go-logging
-  version: ^1.0.0
