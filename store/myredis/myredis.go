@@ -33,8 +33,8 @@ type MyRedis struct {
 }
 
 // return myredis
-func NewRedis(config RedisConfig) (MyRedis, error) {
-	myredis := MyRedis{Config: config}
+func NewRedis(config RedisConfig) (*MyRedis, error) {
+	myredis := &MyRedis{Config: config}
 	client := redis.NewClient(&redis.Options{
 		Addr:        config.Host,
 		Password:    config.Password, // no password set
@@ -52,8 +52,8 @@ func NewRedis(config RedisConfig) (MyRedis, error) {
 	return myredis, err
 }
 
-func NewRedisPool(config RedisConfig, size int) (MyRedis, error) {
-	myredis := MyRedis{Config: config}
+func NewRedisPool(config RedisConfig, size int) (*MyRedis, error) {
+	myredis := &MyRedis{Config: config}
 	client := redis.NewClient(&redis.Options{
 		Addr:        config.Host,
 		Password:    config.Password, // no password set

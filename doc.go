@@ -11,4 +11,19 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package GoSpider
+package main
+
+import (
+	"fmt"
+	_ "github.com/hunterhug/GoSpider/query"
+	_ "github.com/hunterhug/GoSpider/spider"
+	_ "github.com/hunterhug/GoSpider/store"
+	_ "github.com/hunterhug/GoSpider/store/myetcd"
+	_ "github.com/hunterhug/GoSpider/store/myredis"
+	_ "github.com/hunterhug/GoSpider/store/mysql"
+	_ "github.com/hunterhug/GoSpider/util"
+)
+
+func main() {
+	fmt.Println("Hello GoSpider")
+}

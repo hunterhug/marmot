@@ -36,6 +36,7 @@ git clone https://github.com/hunterhug/GoSpider
     ---store     存储库
         ---myredis
         ---mysql
+        ---myetcd
     ---util      杂项工具
     ---vendor    第三方依赖包
     ---GOPATH    不宜放在vendor的包
@@ -293,7 +294,27 @@ docker run --rm --net=host --name="myredis-client" -it redis:3.2 redis-cli
 
 什么？你还需要Mysql?这个太难配置，请装本地。
 
+## 七.备注
+		
+此库采用[Glide](https://github.com/Masterminds/glide)方式管理第三方库（使用者可以忽略,中国防火长城让我爪机,最终完全弃用,长城太猛）		
+	
+```		
+$ glide init                              # 创建工作区		
+$ open glide.yaml                         # 编辑glide.yaml文件		
+$ glide get github.com/hunterhug/GoSpider # get下库然后会自动写入glide.yaml	
+	
+	
+$ glide install                           # 安装,没有glide.lock,会先运行glide up
+$ go build                                # 试试可不可以跑		
+$ glide up                                # 更新库,创建glide.lock		
+```
 
+改用[Godep](https://github.com/tools/godep) 长城依旧太猛
+ 
+```
+godep save
+godep restore
+```
 # LICENSE
 
 欢迎加功能(PR/issues),请遵循Apache License协议(即可随意使用但每个文件下都需加此申明）

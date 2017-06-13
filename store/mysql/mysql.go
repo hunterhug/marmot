@@ -35,8 +35,8 @@ type Mysql struct {
 	Client *sql.DB
 }
 
-func New(config MysqlConfig) Mysql {
-	return Mysql{Config: config}
+func New(config MysqlConfig) *Mysql {
+	return &Mysql{Config: config}
 }
 
 //插入数据

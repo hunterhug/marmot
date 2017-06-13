@@ -20,7 +20,7 @@ func TestRedis(t *testing.T) {
 	config := RedisConfig{}
 	config.DB = 0
 	config.Host = "127.0.0.1:6379"
-	config.Password = "smart2016" // no password set ""
+	config.Password = "" // no password set ""
 
 	client, err := NewRedis(config) // new redis client
 	if err != nil {
