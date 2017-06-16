@@ -19,6 +19,7 @@ import (
 	_ "github.com/hunterhug/GoSpider/spider"
 	_ "github.com/hunterhug/GoSpider/store"
 	_ "github.com/hunterhug/GoSpider/store/myetcd"
+	_ "github.com/hunterhug/GoSpider/store/mydb"
 	_ "github.com/hunterhug/GoSpider/store/myredis"
 	_ "github.com/hunterhug/GoSpider/store/mysql"
 	_ "github.com/hunterhug/GoSpider/util"
