@@ -33,6 +33,26 @@
 			"Rev": "7ebe0a500653eeb1859664bed5e48dec1e164e73"
 		},
 		{
+			"ImportPath": "github.com/go-xorm/core",
+			"Comment": "v0.5.3-5-gedde1c5",
+			"Rev": "edde1c5ab80e3cda107f6b93af6df894caba41ea"
+		},
+		{
+			"ImportPath": "github.com/go-xorm/xorm",
+			"Comment": "v0.5.3-24-g8150beb",
+			"Rev": "8150bebe6a68d3e86a14e3aa0cbac4873c05131d"
+		},
+		{
+			"ImportPath": "github.com/lib/pq",
+			"Comment": "go1.0-cutoff-151-gba5d4f7",
+			"Rev": "ba5d4f7a35561e22fbdf7a39aa0070f4d460cfc0"
+		},
+		{
+			"ImportPath": "github.com/lib/pq/oid",
+			"Comment": "go1.0-cutoff-151-gba5d4f7",
+			"Rev": "ba5d4f7a35561e22fbdf7a39aa0070f4d460cfc0"
+		},
+		{
 			"ImportPath": "github.com/op/go-logging",
 			"Comment": "v1-7-g970db52",
 			"Rev": "970db520ece77730c7e4724c61121037378659d9"
