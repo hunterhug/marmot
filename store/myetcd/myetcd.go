@@ -165,3 +165,13 @@ func (myetcd *MyEtcd) List(key string) (client.Nodes, error) {
 	}
 	return nil, errors.New(fmt.Sprintf("Is is a key not dir(%s)", key))
 }
+
+func (myetcd *MyEtcd) StrictRm(key string) error {
+	key = fmt.Sprintf("%s/%s", myetcd.Config.Prefix, key)
+	_, err := myetcd.Client.Delete(context.Background(), key, nil)
+	return err
+}
+
+func (myetcd *MyEtcd) IsKeyNotFound(e error) bool {
+	return client.IsKeyNotFound(e)
+}
