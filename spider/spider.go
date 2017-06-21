@@ -218,6 +218,8 @@ func (sp *Spider) Go() (body []byte, e error) {
 		return sp.PostXML()
 	case POSTFILE:
 		return sp.PostFILE()
+	case DELETE:
+		return sp.Delete()
 	default:
 		return sp.Get()
 	}
@@ -320,6 +322,58 @@ func (sp *Spider) post(method, contenttype string) (body []byte, e error) {
 
 	//设置新Cookie
 	//MergeCookie(Cookieb, response.Cookies())
+	sp.Fetchtimes++
+
+	sp.Preurl = sp.Url
+
+	sp.response = response
+	return
+}
+
+func (sp *Spider) Delete() (body []byte, e error) {
+
+	sp.mux.Lock()
+	defer sp.mux.Unlock()
+
+	// wait but 0 second not
+	Wait(sp.Wait)
+
+	//debug,can use SetLogLevel to change
+	Logger.Debug("DELETE url:" + sp.Url)
+
+	//a new request
+	request, _ := http.NewRequest("DELETE", sp.Url, nil)
+
+	//clone a header
+	request.Header = CloneHeader(sp.Header)
+	sp.request = request
+
+	//debug the header
+	OutputMaps("---------request header--------", request.Header)
+
+	//start request
+	if sp.Client == nil {
+		// default client
+		sp.Client = Client
+	}
+	response, err := sp.Client.Do(request)
+	if err != nil {
+		sp.Errortimes++
+		return nil, err
+	}
+	defer response.Body.Close()
+
+	//debug
+	OutputMaps("----------response header-----------", response.Header)
+	Logger.Debugf("Status：%v:%v", response.Status, response.Proto)
+	sp.UrlStatuscode = response.StatusCode
+	//设置新Cookie
+	//Cookieb = MergeCookie(Cookieb, response.Cookies())
+
+	//返回内容 return bytes
+	body, e = ioutil.ReadAll(response.Body)
+	sp.Raw = body
+
 	sp.Fetchtimes++
 
 	sp.Preurl = sp.Url
