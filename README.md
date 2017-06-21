@@ -27,6 +27,13 @@ git clone https://github.com/hunterhug/GoSpider
 
 默认所有第三方库已经保存在vendor,如果使用包冲突了,请把vendor下的包移到GOPATH下,谨记！！！GOPATH文件夹下的包为不适宜放在vendor下,请手动移动
 
+
+以下可选,vendor中已经带全第三方库,使用Go1.8
+
+```
+godep restore
+```
+
 文件目录（组件化开发）
 
 ```
@@ -317,6 +324,7 @@ $ glide up                                # 更新库,创建glide.lock
  
 ```
 godep save
+godep update -goversion
 godep restore
 ```
 # LICENSE
