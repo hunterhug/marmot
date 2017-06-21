@@ -34,10 +34,14 @@ git clone https://github.com/hunterhug/GoSpider
     ---query     内容解析库,只封装了两个方法
     ---spider    爬虫核心库
     ---store     存储库
-        ---myredis
+        ---myredis 
         ---mysql
         ---myetcd
+        ---mydb  关系型数据库Orm(使用xorm)
+        ---myhbase
+        ---mycassandra
     ---util      杂项工具
+        --- image 图片切割库
     ---vendor    第三方依赖包
     ---GOPATH    不宜放在vendor的包
 ```

@@ -4,6 +4,15 @@
 2. 增加cassnadra
 3. 增加图片切割库等
 4. 增加新库后第三方依赖请自行添加
+5. 新增DELETE/PUT方法和其他HTTP方法:OtherGo(method, contenttype string)
+
+contenttype
+```
+	HTTPFORMContentType = "application/x-www-form-urlencoded"
+	HTTPJSONContentType = "application/json"
+	HTTPXMLContentType  = "text/xml"
+	HTTPFILEContentType = "multipart/form-data"
+```
 
 20170616
 1. 增加xorm存储

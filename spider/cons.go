@@ -24,11 +24,16 @@ const (
 	POSTJSON = "POSTJSON"
 	POSTXML  = "POSTXML"
 	POSTFILE = "POSTFILE"
-	GET      = "GET"
 
-	// 暂时没实现
-	PUT      = "PUT"
-	DELETE   = "DELETE"
+	// 实现了!
+	PUT     = "PUT"
+	PUTJSON = "PUTJSON"
+	PUTXML  = "PUTXML"
+	PUTFILE = "PUTFILE"
+
+	DELETE = "DELETE"
+	GET    = "GET"
+	OTHER  = "OTHER"
 
 	CRITICAL = "CRITICAL"
 	ERROR    = "ERROR"
@@ -36,6 +41,11 @@ const (
 	NOTICE   = "NOTICE"
 	INFO     = "INFO"
 	DEBUG    = "DEBUG"
+
+	HTTPFORMContentType = "application/x-www-form-urlencoded"
+	HTTPJSONContentType = "application/json"
+	HTTPXMLContentType  = "text/xml"
+	HTTPFILEContentType = "multipart/form-data"
 )
 
 var (

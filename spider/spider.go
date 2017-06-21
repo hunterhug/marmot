@@ -14,6 +14,7 @@ limitations under the License.
 package spider
 
 import (
+	"errors"
 	"github.com/hunterhug/GoSpider/util"
 	"io/ioutil"
 	"net/http"
@@ -26,7 +27,7 @@ import (
 var DefaultSpider *Spider
 
 func init() {
-	// 初始化全部浏览器, 可能不应该初始化，应该手动
+	// 初始化全部浏览器, 可能不应该初始化，应该手动,读取文件(故失效)
 	UaInit()
 
 	// 默认爬虫
@@ -116,11 +117,18 @@ func (config *SpiderConfig) SetMethod(method string) *SpiderConfig {
 		temp = POSTFILE
 	case POSTJSON:
 		temp = POSTJSON
-	case PUT:
-		temp = PUT
 	case POSTXML:
 		temp = POSTXML
+	case PUTFILE:
+		temp = PUTFILE
+	case PUTJSON:
+		temp = PUTJSON
+	case PUTXML:
+		temp = PUTXML
+	case DELETE:
+		temp = DELETE
 	default:
+		temp = OTHER
 	}
 	config.Method = temp
 	return config
@@ -218,8 +226,18 @@ func (sp *Spider) Go() (body []byte, e error) {
 		return sp.PostXML()
 	case POSTFILE:
 		return sp.PostFILE()
+	case PUT:
+		return sp.Put()
+	case PUTJSON:
+		return sp.PutJSON()
+	case PUTXML:
+		return sp.PutXML()
+	case PUTFILE:
+		return sp.PutFILE()
 	case DELETE:
 		return sp.Delete()
+	case OTHER:
+		return []byte(""), errors.New("Please use method OtherGo(method, content type)")
 	default:
 		return sp.Get()
 	}
@@ -330,6 +348,57 @@ func (sp *Spider) post(method, contenttype string) (body []byte, e error) {
 	return
 }
 
+// 辅助Put
+func (sp *Spider) put(method, contenttype string) (body []byte, e error) {
+	sp.mux.Lock()
+	defer sp.mux.Unlock()
+	Wait(sp.Wait)
+
+	Logger.Debug("Put url:" + sp.Url)
+
+	var request = &http.Request{}
+
+	//post data
+	if sp.Data != nil {
+		pr := ioutil.NopCloser(strings.NewReader(sp.Data.Encode()))
+		request, _ = http.NewRequest(method, sp.Url, pr)
+	} else {
+		request, _ = http.NewRequest(method, sp.Url, nil)
+	}
+	request.Header = CloneHeader(sp.Header)
+
+	request.Header.Set("Content-Type", contenttype)
+	sp.request = request
+
+	OutputMaps("---------request header--------", request.Header)
+
+	if sp.Client == nil {
+		sp.Client = Client
+	}
+	response, err := sp.Client.Do(request)
+	if err != nil {
+		sp.Errortimes++
+		return nil, err
+	}
+
+	defer response.Body.Close()
+
+	OutputMaps("----------response header-----------", response.Header)
+	Logger.Debugf("Status：%v:%v", response.Status, response.Proto)
+	sp.UrlStatuscode = response.StatusCode
+	body, e = ioutil.ReadAll(response.Body)
+	sp.Raw = body
+
+	//设置新Cookie
+	//MergeCookie(Cookieb, response.Cookies())
+	sp.Fetchtimes++
+
+	sp.Preurl = sp.Url
+
+	sp.response = response
+	return
+}
+
 func (sp *Spider) Delete() (body []byte, e error) {
 
 	sp.mux.Lock()
@@ -383,6 +452,12 @@ func (sp *Spider) Delete() (body []byte, e error) {
 }
 
 // Post附带信息 can take a client
+/*
+	"application/x-www-form-urlencoded"
+	"application/json"
+	"text/xml"
+	"multipart/form-data"
+*/
 func (sp *Spider) Post() (body []byte, e error) {
 	return sp.post(POST, "application/x-www-form-urlencoded")
 }
@@ -398,6 +473,95 @@ func (sp *Spider) PostXML() (body []byte, e error) {
 func (sp *Spider) PostFILE() (body []byte, e error) {
 	return sp.post(POST, "multipart/form-data")
 
+}
+
+// Put
+func (sp *Spider) Put() (body []byte, e error) {
+	return sp.put(PUT, "application/x-www-form-urlencoded")
+}
+
+func (sp *Spider) PutJSON() (body []byte, e error) {
+	return sp.put(PUT, "application/json")
+}
+
+func (sp *Spider) PutXML() (body []byte, e error) {
+	return sp.put(PUT, "text/xml")
+}
+
+func (sp *Spider) PutFILE() (body []byte, e error) {
+	return sp.put(PUT, "multipart/form-data")
+
+}
+
+// 其他Method
+/*
+     Method         = "OPTIONS"                ; Section 9.2
+                    | "GET"                    ; Section 9.3
+                    | "HEAD"                   ; Section 9.4
+                    | "POST"                   ; Section 9.5
+                    | "PUT"                    ; Section 9.6
+                    | "DELETE"                 ; Section 9.7
+                    | "TRACE"                  ; Section 9.8
+                    | "CONNECT"                ; Section 9.9
+                    | extension-method
+   extension-method = token
+     token          = 1*<any CHAR except CTLs or separators>
+
+
+// content type
+	"application/x-www-form-urlencoded"
+	"application/json"
+	"text/xml"
+	"multipart/form-data"
+*/
+func (sp *Spider) OtherGo(method, contenttype string) (body []byte, e error) {
+	sp.mux.Lock()
+	defer sp.mux.Unlock()
+	Wait(sp.Wait)
+
+	Logger.Debug("POST url:" + sp.Url)
+
+	var request = &http.Request{}
+
+	//post data
+	if sp.Data != nil {
+		pr := ioutil.NopCloser(strings.NewReader(sp.Data.Encode()))
+		request, _ = http.NewRequest(method, sp.Url, pr)
+	} else {
+		request, _ = http.NewRequest(method, sp.Url, nil)
+	}
+	request.Header = CloneHeader(sp.Header)
+
+	request.Header.Set("Content-Type", contenttype)
+	sp.request = request
+
+	OutputMaps("---------request header--------", request.Header)
+
+	if sp.Client == nil {
+		sp.Client = Client
+	}
+	response, err := sp.Client.Do(request)
+	if err != nil {
+		sp.Errortimes++
+		return nil, err
+	}
+
+	defer response.Body.Close()
+
+	OutputMaps("----------response header-----------", response.Header)
+	Logger.Debugf("Status：%v:%v", response.Status, response.Proto)
+	sp.UrlStatuscode = response.StatusCode
+	body, e = ioutil.ReadAll(response.Body)
+	sp.Raw = body
+
+	//设置新Cookie
+	//MergeCookie(Cookieb, response.Cookies())
+	sp.Fetchtimes++
+
+	sp.Preurl = sp.Url
+
+	sp.response = response
+	return
 }
 
 // class method
