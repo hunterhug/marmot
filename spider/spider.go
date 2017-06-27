@@ -276,7 +276,10 @@ func (sp *Spider) Get() (body []byte, e error) {
 		sp.Errortimes++
 		return nil, err
 	}
-	defer response.Body.Close()
+
+	if response != nil {
+		defer response.Body.Close()
+	}
 
 	//debug
 	OutputMaps("----------response header-----------", response.Header)
@@ -330,7 +333,9 @@ func (sp *Spider) post(method, contenttype string) (body []byte, e error) {
 		return nil, err
 	}
 
-	defer response.Body.Close()
+	if response != nil {
+		defer response.Body.Close()
+	}
 
 	OutputMaps("----------response header-----------", response.Header)
 	Logger.Debugf("Status：%v:%v", response.Status, response.Proto)
@@ -381,7 +386,9 @@ func (sp *Spider) put(method, contenttype string) (body []byte, e error) {
 		return nil, err
 	}
 
-	defer response.Body.Close()
+	if response != nil {
+		defer response.Body.Close()
+	}
 
 	OutputMaps("----------response header-----------", response.Header)
 	Logger.Debugf("Status：%v:%v", response.Status, response.Proto)
@@ -430,7 +437,10 @@ func (sp *Spider) Delete() (body []byte, e error) {
 		sp.Errortimes++
 		return nil, err
 	}
-	defer response.Body.Close()
+
+	if response != nil {
+		defer response.Body.Close()
+	}
 
 	//debug
 	OutputMaps("----------response header-----------", response.Header)
@@ -546,7 +556,9 @@ func (sp *Spider) OtherGo(method, contenttype string) (body []byte, e error) {
 		return nil, err
 	}
 
-	defer response.Body.Close()
+	if response != nil {
+		defer response.Body.Close()
+	}
 
 	OutputMaps("----------response header-----------", response.Header)
 	Logger.Debugf("Status：%v:%v", response.Status, response.Proto)
@@ -590,4 +602,13 @@ func (sp *Spider) JsonToString() (string, error) {
 		return "", err
 	}
 	return string(temp), nil
+}
+
+// 返回cookie
+func (sp *Spider) Cookies() []*http.Cookie {
+	if sp.response != nil {
+		return sp.response.Cookies()
+	} else {
+		return []*http.Cookie{}
+	}
 }
