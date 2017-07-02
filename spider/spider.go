@@ -92,7 +92,7 @@ func (config *SpiderConfig) SetRefer(refer string) *SpiderConfig {
 	return config
 }
 
-func (config *SpiderConfig) setHost(host string) *SpiderConfig {
+func (config *SpiderConfig) SetHost(host string) *SpiderConfig {
 	config.Header.Set("Host", host)
 	return config
 }
@@ -103,7 +103,7 @@ func (config *SpiderConfig) SetUrl(url string) *SpiderConfig {
 	//https://www.zhihu.com/people/
 	temp := strings.Split(url, "//")
 	if len(temp) >= 2 {
-		config.setHost(strings.Split(temp[1], "/")[0])
+		config.SetHost(strings.Split(temp[1], "/")[0])
 	}
 	return config
 }
@@ -111,6 +111,8 @@ func (config *SpiderConfig) SetUrl(url string) *SpiderConfig {
 func (config *SpiderConfig) SetMethod(method string) *SpiderConfig {
 	temp := GET
 	switch strings.ToUpper(method) {
+	case GET:
+		temp = GET	
 	case POST:
 		temp = POST
 	case POSTFILE:
