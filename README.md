@@ -83,9 +83,9 @@ func main() {
 
 爬虫有三种类型:
 
-1. `spiders, err := boss.NewSpider("http://smart:smart2016@104.128.121.46:808") ` // 代理IP爬虫 默认带Cookie 格式:`协议://代理帐号(可选):代理密码(可选)@ip:port` 别名函数`New()`
-2. `spiders, err := boss.NewSpider(nil)`  // 正常爬虫 默认带Cookie 别名函数`New()`
-3. `spiders, err := boss.NewAPI()` // API爬虫 默认不带Cookie
+1. `spiders, err := boss.NewSpider("http://smart:smart2016@104.128.121.46:808") ` // 代理IP爬虫 默认自动化Cookie接力 格式:`协议://代理帐号(可选):代理密码(可选)@ip:port` 别名函数`New()`
+2. `spiders, err := boss.NewSpider(nil)`  // 正常爬虫 默认自动化Cookie接力 别名函数`New()`
+3. `spiders, err := boss.NewAPI()` // API爬虫 默认Cookie不接力
 
 ### 第二步
 
@@ -99,7 +99,7 @@ func main() {
 6. `spiders.SetHeaderParm("diyheader", "lenggirl")` // 设置Http请求自定义头部
 7. `spiders.SetBData([]byte("file data"))` // Http请求需要上传数据
 8. `spiders.SetFormParm("username","jinhan")` // Http请求需要提交表单
-9. `spiders.SetCookie("xx=dddd")` // Http请求设置cookie
+9. `spiders.SetCookie("xx=dddd")` // Http请求设置cookie, 某些网站需要登录后F12复制cookie
 
 ### 第三步
 
