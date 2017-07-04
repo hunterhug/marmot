@@ -66,8 +66,8 @@ type Spider struct {
 	Fetchtimes    int           // url fetch number times 抓取次数
 	Errortimes    int           // error times 失败次数
 	Ipstring      string        // spider ip,just for user to record their proxyip 代理IP地址，没有代理默认localhost
-	request       *http.Request // 增加方便外部调试
-	response      *http.Response
+	Request       *http.Request // 增加方便外部调试
+	Response      *http.Response
 	mux           sync.RWMutex // 锁，一个爬虫不能并发抓取，并发请建多只爬虫
 }
 
@@ -79,6 +79,12 @@ func (config *SpiderConfig) SetHeader(header http.Header) *SpiderConfig {
 
 func (config *SpiderConfig) SetHeaderParm(k, v string) *SpiderConfig {
 	config.Header.Set(k, v)
+	return config
+}
+
+// Cookie 这样设置如果有jar != nil 那么同名cookie会和这个一起发送过去
+func (config *SpiderConfig) SetCookie(v string) *SpiderConfig {
+	config.SetHeaderParm("Cookie", v)
 	return config
 }
 
@@ -112,7 +118,7 @@ func (config *SpiderConfig) SetMethod(method string) *SpiderConfig {
 	temp := GET
 	switch strings.ToUpper(method) {
 	case GET:
-		temp = GET	
+		temp = GET
 	case POST:
 		temp = POST
 	case POSTFILE:
@@ -121,6 +127,8 @@ func (config *SpiderConfig) SetMethod(method string) *SpiderConfig {
 		temp = POSTJSON
 	case POSTXML:
 		temp = POSTXML
+	case PUT:
+		temp = PUT
 	case PUTFILE:
 		temp = PUTFILE
 	case PUTJSON:
@@ -170,6 +178,12 @@ func (config *SpiderConfig) ClearAll() *SpiderConfig {
 	config.Header = http.Header{}
 	config.Data = url.Values{}
 	config.BData = []byte{}
+	return config
+}
+
+// 可以删除设置的Cookie
+func (config *SpiderConfig) ClearCookie() *SpiderConfig {
+	config.Header.Del("Cookie")
 	return config
 }
 
@@ -263,7 +277,7 @@ func (sp *Spider) Get() (body []byte, e error) {
 
 	//clone a header
 	request.Header = CloneHeader(sp.Header)
-	sp.request = request
+	sp.Request = request
 
 	//debug the header
 	OutputMaps("---------request header--------", request.Header)
@@ -298,7 +312,7 @@ func (sp *Spider) Get() (body []byte, e error) {
 
 	sp.Preurl = sp.Url
 
-	sp.response = response
+	sp.Response = response
 	return
 }
 
@@ -322,7 +336,7 @@ func (sp *Spider) post(method, contenttype string) (body []byte, e error) {
 	request.Header = CloneHeader(sp.Header)
 
 	request.Header.Set("Content-Type", contenttype)
-	sp.request = request
+	sp.Request = request
 
 	OutputMaps("---------request header--------", request.Header)
 
@@ -351,7 +365,7 @@ func (sp *Spider) post(method, contenttype string) (body []byte, e error) {
 
 	sp.Preurl = sp.Url
 
-	sp.response = response
+	sp.Response = response
 	return
 }
 
@@ -375,7 +389,7 @@ func (sp *Spider) put(method, contenttype string) (body []byte, e error) {
 	request.Header = CloneHeader(sp.Header)
 
 	request.Header.Set("Content-Type", contenttype)
-	sp.request = request
+	sp.Request = request
 
 	OutputMaps("---------request header--------", request.Header)
 
@@ -404,7 +418,7 @@ func (sp *Spider) put(method, contenttype string) (body []byte, e error) {
 
 	sp.Preurl = sp.Url
 
-	sp.response = response
+	sp.Response = response
 	return
 }
 
@@ -424,7 +438,7 @@ func (sp *Spider) Delete() (body []byte, e error) {
 
 	//clone a header
 	request.Header = CloneHeader(sp.Header)
-	sp.request = request
+	sp.Request = request
 
 	//debug the header
 	OutputMaps("---------request header--------", request.Header)
@@ -459,7 +473,7 @@ func (sp *Spider) Delete() (body []byte, e error) {
 
 	sp.Preurl = sp.Url
 
-	sp.response = response
+	sp.Response = response
 	return
 }
 
@@ -545,7 +559,7 @@ func (sp *Spider) OtherGo(method, contenttype string) (body []byte, e error) {
 	request.Header = CloneHeader(sp.Header)
 
 	request.Header.Set("Content-Type", contenttype)
-	sp.request = request
+	sp.Request = request
 
 	OutputMaps("---------request header--------", request.Header)
 
@@ -574,7 +588,7 @@ func (sp *Spider) OtherGo(method, contenttype string) (body []byte, e error) {
 
 	sp.Preurl = sp.Url
 
-	sp.response = response
+	sp.Response = response
 	return
 }
 
@@ -608,8 +622,8 @@ func (sp *Spider) JsonToString() (string, error) {
 
 // 返回cookie
 func (sp *Spider) Cookies() []*http.Cookie {
-	if sp.response != nil {
-		return sp.response.Cookies()
+	if sp.Response != nil {
+		return sp.Response.Cookies()
 	} else {
 		return []*http.Cookie{}
 	}
