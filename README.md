@@ -6,8 +6,6 @@
 
 用途： 微信开发/API对接/自动化测试/抢票脚本/网站监控/点赞插件/数据爬取
 
-Smile Tip: Chinese is easy to learn, you are smart enough! Show me the code. Don't sat any thing, Ahaha~
-
 ## 一.下载
 
 自己封装的爬虫库,类似于Python的requests,你只需通过该方式获取库
@@ -16,14 +14,14 @@ Smile Tip: Chinese is easy to learn, you are smart enough! Show me the code. Don
 go get -v github.com/hunterhug/GoSpider
 ```
 
-或者新建 你的GOPATH路径/src/github.com/hunterhug
+或者新建 你的GOPATH路径`/src/github.com/hunterhug`
 
 ```
 cd src/github.com/hunterhug
 git clone https://github.com/hunterhug/GoSpider
 ```
 
-默认所有第三方库已经保存在vendor,如果使用包冲突了,请把vendor下的包移到GOPATH下,谨记！！！GOPATH文件夹下的包为不适宜放在vendor下,请手动移动
+默认所有第三方库已经保存在vendor,如果使用包冲突了,请把vendor下的包移到GOPATH下,谨记！！
 
 
 以下godep可选,vendor中已经带全第三方库
@@ -48,14 +46,14 @@ godep restore
     ---util      杂项工具
         --- image 图片切割库
     ---vendor    第三方依赖包
-    ---GOPATH    不宜放在vendor的包
+    ---GOPATH    不宜放在vendor的包,请手动移动到你的GOPATH路径下
 ```
 
 ## 二.使用
 
-最简单示例
+最简单示例,更多移动到[官方示例](https://github.com/hunterhug/GoSpiderExample)
 
-```
+```go
 package main
 
 // 示例
@@ -105,25 +103,6 @@ func main() {
 
 ### 第三步
 
-SetMethod()有以下HTTP方法:
-
-```
-	POST     = "POST"
-	POSTJSON = "POSTJSON"
-	POSTXML  = "POSTXML"
-	POSTFILE = "POSTFILE"
-	
-	PUT     = "PUT"
-	PUTJSON = "PUTJSON"
-	PUTXML  = "PUTXML"
-	PUTFILE = "PUTFILE"
-	
-	DELETE = "DELETE"
-	
-	GET    = "GET"
-	OTHER  = "OTHER"
-```
-
 爬虫启动方式有：
 1. `body, err := spiders.Go()` // 如果设置SetMethod(),采用下方对应的方法,否则Get()
 2. `body, err := spiders.Get()` // 默认
@@ -157,8 +136,7 @@ SetMethod()有以下HTTP方法:
 1. [煎蛋分布式文章爬虫](https://github.com/hunterhug/jiandan)
 2. [知乎全能API小工具](https://github.com/hunterhug/zhihuxx)
 3. [亚马逊分布式爬虫](https://github.com/hunterhug/AmazonBigSpider)
-4. [官方示例](https://github.com/hunterhug/GoSpiderExample)
-5. ...
+4. ...
 
 如果你觉得项目帮助到你,欢迎请我喝杯咖啡
 
@@ -171,6 +149,8 @@ SetMethod()有以下HTTP方法:
 版本日志信息见[日志](doc/log.md)
 
 爬虫环境安装请参考:[环境配置](http://www.lenggirl.com/tool/gospider-env.html)
+
+问题咨询请发邮件.
 
 # LICENSE
 
