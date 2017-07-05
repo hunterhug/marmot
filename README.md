@@ -54,6 +54,7 @@ godep restore
         ---mycassandra
     ---util      杂项工具
         --- image 图片切割库
+        --- open 打开验证码助手
         crypto.go 数据加密
         file.go 文件处理
         time.go 时间处理
@@ -216,7 +217,7 @@ func main() {
 该爬虫库已经在多个项目中使用
 
 1. [煎蛋分布式文章爬虫](https://github.com/hunterhug/jiandan)
-2. [知乎全能API小工具](https://github.com/hunterhug/zhihuxx)
+2. [知乎全能API小工具](https://github.com/hunterhug/zhihuxx) // 准备破解验证码
 3. [亚马逊分布式爬虫](https://github.com/hunterhug/AmazonBigSpider)
 4. ...
 
