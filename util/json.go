@@ -20,6 +20,22 @@ import (
 	"strings"
 )
 
+// 将字符串转成适合JSON格式的，比如中文转为\\u
+func StringsToJson(str string) string {
+	rs := []rune(str)
+	jsons := ""
+	for _, r := range rs {
+		rint := int(r)
+		if rint < 128 {
+			jsons += string(r)
+		} else {
+			jsons += "\\u" + strconv.FormatInt(int64(rint), 16) // json
+		}
+	}
+
+	return jsons
+}
+
 // 将JSON中的/u unicode乱码转回来，笨方法，弃用
 func JsonEncode(raw string) string {
 	raw = strings.Replace(raw, "\"", "\\u\"", -1)

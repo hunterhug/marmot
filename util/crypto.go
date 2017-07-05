@@ -32,7 +32,7 @@ func ComputeHmac256(message string, secret string) string {
 	return base64.StdEncoding.EncodeToString(h.Sum(nil))
 }
 
-//create md5 string
+// create md5 string
 func Strtomd5(s string) string {
 	h := md5.New()
 	h.Write([]byte(s))
@@ -44,14 +44,14 @@ func Md5(str string) string {
 	return Strtomd5(str)
 }
 
-//字符串base64加密
+// 字符串base64加密
 func Base64E(urlstring string) string {
 	str := []byte(urlstring)
 	data := base64.StdEncoding.EncodeToString(str)
 	return data
 }
 
-//字符串base64解密
+// 字符串base64解密
 func Base64D(urlxxstring string) string {
 	data, err := base64.StdEncoding.DecodeString(urlxxstring)
 	if err != nil {

@@ -54,6 +54,9 @@ godep restore
         ---mycassandra
     ---util      杂项工具
         --- image 图片切割库
+        crypto.go 数据加密
+        file.go 文件处理
+        time.go 时间处理
     ---vendor    第三方依赖包
     ---GOPATH    不宜放在vendor的包,请手动移动到你的GOPATH路径下
 ```

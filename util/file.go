@@ -19,16 +19,49 @@ import (
 	"io"
 	"io/ioutil"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"runtime"
 	"strings"
 )
 
-//获取调用者的当前文件DIR
+// 获取调用者的当前文件DIR
 //Get the caller now directory
 func CurDir() string {
 	_, filename, _, _ := runtime.Caller(1)
 	return filepath.Dir(filename)
+}
+
+// 获取当前执行二进制所在的位置
+func GetBinaryCurrentPath() (string, error) {
+	file, err := exec.LookPath(os.Args[0])
+	if err != nil {
+		return "", err
+	}
+	path, err := filepath.Abs(file)
+
+	// go run 时会生成在临时文件中
+	//fmt.Println(path)
+	if err != nil {
+		return "", err
+	}
+
+	if strings.Contains(path, "command-line-arguments") {
+		return GetCurrentPath()
+	}
+	i := strings.LastIndex(path, "/")
+	if i < 0 {
+		i = strings.LastIndex(path, "\\")
+	}
+	if i < 0 {
+		return "", errors.New(`error: Can't find "/" or "\".`)
+	}
+	return string(path[0 : i+1]), nil
+}
+
+// 获取当前执行命令所在的位置
+func GetCurrentPath() (string, error) {
+	return os.Getwd()
 }
 
 //将字节数组保存到文件中去
@@ -211,17 +244,34 @@ rstr = r"[\/\\\:\*\?\"\<\>\|]"  # '/\:*?"<>|'
 new_title = re.sub(rstr, "", title)
 return new_title
 */
-func ValidFileName(filename string)string{
+func ValidFileName(filename string) string {
 	patterns := []string{
-		" ", "#",
-		"\\", "#",
-		"/", "#",
-		":", "#",
-		"\"", "#",
-		"?", "#",
-		"<","#",
-		">","#",
-		"|","#",
+		" ", "#01#",
+		"\\", "#02#",
+		"/", "#03#",
+		":", "#04#",
+		"\"", "#05#",
+		"?", "#06#",
+		"<", "#07#",
+		">", "#08#",
+		"|", "#09#",
+	}
+	r := strings.NewReplacer(patterns...)
+	dudu := r.Replace(filename)
+	return dudu
+}
+
+func ValidBackFileName(filename string) string {
+	patterns := []string{
+		"#01#", " ",
+		"#02#", "\\",
+		"#03#", "/",
+		"#04#", ":",
+		"#05#", "\"",
+		"#06#", "?",
+		"#07#", "<",
+		"#08#", ">",
+		"#09#", "|",
 	}
 	r := strings.NewReplacer(patterns...)
 	dudu := r.Replace(filename)

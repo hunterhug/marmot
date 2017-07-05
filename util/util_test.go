@@ -1,6 +1,7 @@
 package util
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -53,9 +54,6 @@ func TestUtil(t *testing.T) {
 		t.Log("Test ReadfromFile:" + string(filebytes))
 	}
 
-	// times format
-	t.Log(TodayString(3))
-
 	// file exist?
 	t.Logf("%v", FileExist("../r.txt"))
 
@@ -73,17 +71,6 @@ func TestUtil(t *testing.T) {
 		t.Logf("%#v", result)
 	}
 
-	// now secord times from January 1, 1970 UTC.
-	secord := GetSecordTimes()
-	t.Log(secord)
-
-	// now date string by secord
-	timestring := GetSecord2DateTimes(secord)
-	t.Log(timestring)
-
-	// change back
-	t.Log(GetDateTimes2Secord(timestring))
-
 	finfo, err := GetFilenameInfo(`G:\smartdogo\src\github.com\hunterhug\go_tool\README.md`)
 	if err != nil {
 		t.Error(err.Error())
@@ -95,6 +82,47 @@ func TestUtil(t *testing.T) {
 }
 
 func TestValidFileName(t *testing.T) {
-	s := ValidFileName("*sdvdsv*|sdvsd>sdv<sdvds-\"")
-	t.Log(s)
+	s := "*sdvdsv*|sdvsd>sdv<sdvds-\""
+	fmt.Println(s)
+	s1 := ValidFileName(s)
+	fmt.Println(s1)
+	s2 := ValidBackFileName(s1)
+	fmt.Println(s2)
+}
+
+func TestTodayString(t *testing.T) {
+	// times format
+	t.Log(TodayString(3))
+
+	// now secord times from January 1, 1970 UTC.
+	secord := GetSecordTimes()
+	t.Log(secord)
+
+	// now date string by secord
+	timestring := GetSecord2DateTimes(secord)
+	t.Log(timestring)
+
+	// change back
+	t.Log(GetDateTimes2Secord(timestring))
+}
+
+func TestGetCurrentPath(t *testing.T) {
+	// 二进制文件所在位置
+	path, e := GetBinaryCurrentPath()
+	if e != nil {
+		fmt.Println(e.Error())
+	} else {
+		fmt.Println(path)
+	}
+
+	// 执行命令所在位置
+	path, e = GetCurrentPath()
+	if e != nil {
+		fmt.Println(e.Error())
+	} else {
+		fmt.Println(path)
+	}
+
+	// 永远都是该项目文件所在目录
+	fmt.Println(CurDir())
 }
