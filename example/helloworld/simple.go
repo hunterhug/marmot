@@ -46,7 +46,6 @@ func main() {
 	spiders.SetUa(boss.RandomUa())                 //设置随机浏览器标志
 	spiders.SetRefer("http://www.google.com")      // 设置Refer头
 	spiders.SetHeaderParm("diyheader", "lenggirl") // 自定义头部
-
 	//spiders.SetBData([]byte("file data")) // 如果你要提交JSON数据/上传文件
 	//spiders.SetFormParm("username","jinhan") // 提交表单
 	//spiders.SetFormParm("password","123")
@@ -61,16 +60,13 @@ func main() {
 	if err != nil {
 		log.Error(err.Error())
 	} else {
-		//log.Infof("%s", string(spiders.Raw)) // 打印获取的数据
 		log.Infof("%s", string(body)) // 打印获取的数据
-
-		//util.JsonBack(body) // 如果获取到的是JSON数据,转义回来,不然会乱码
 	}
 
 	log.Debugf("%#v", spiders) // 不设置全局log为debug是不会出现这个东西的
 
-	//spiders.ClearAll() // 爬取完毕后可以清除设置的Http头部和POST的表单数据/文件数据/JSON数据
 	spiders.Clear() // 爬取完毕后可以清除POST的表单数据/文件数据/JSON数据
+	//spiders.ClearAll() // 爬取完毕后可以清除设置的Http头部和POST的表单数据/文件数据/JSON数据
 
 	// 爬虫池子
 	boss.Pool.Set("myfirstspider", spiders)
