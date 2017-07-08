@@ -221,6 +221,15 @@ func main() {
 3. [亚马逊分布式爬虫](https://github.com/hunterhug/AmazonBigSpider)
 4. ...
 
+
+版本日志信息见[日志](doc/log.md)
+
+爬虫环境安装请参考:
+
+[环境配置](http://www.lenggirl.com/tool/gospider-env.html)
+
+[Docker快速版本](https://github.com/hunterhug/GoSpider-docker)
+
 如果你觉得项目帮助到你,欢迎请我喝杯咖啡
 
 微信
@@ -229,9 +238,6 @@ func main() {
 支付宝
 ![支付宝](https://raw.githubusercontent.com/hunterhug/hunterhug.github.io/master/static/jpg/ali.png)
 
-版本日志信息见[日志](doc/log.md)
-
-爬虫环境安装请参考:[环境配置](http://www.lenggirl.com/tool/gospider-env.html)
 
 问题咨询请发邮件.
 
