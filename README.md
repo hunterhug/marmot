@@ -230,6 +230,26 @@ func main() {
 
 [Docker快速版本](https://github.com/hunterhug/GoSpider-docker)
 
+如果想使用一体式快速环境配置：
+
+请直接获取：
+
+```
+docker pull hunterhug/gospider
+
+docker run -it --rm -p 6080:80 -p 5900:5900 -e VNC_PASSWORD=12345 -v $HOME/mydocker/go:/go --name mygolang hunterhug/gospider
+```
+
+`$HOME/mydocker/go`为挂载进去的本地文件夹，可以当作为本地Golang GOPATH！
+ 
+然后进入可视化界面开发，密码：12345，端口：6080
+
+```
+http://127.0.0.1:6080
+```
+
+或者通过VNC工具连接！密码：12345 端口：5900
+
 如果你觉得项目帮助到你,欢迎请我喝杯咖啡
 
 微信
