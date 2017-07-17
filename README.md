@@ -11,7 +11,7 @@
 
 >土拨鼠爬虫库是一个人类友好姿势的代码库,开发采用面向对象的方式,易于理解.通过对Golang原生HTTP库的封装,帮用户处理了一些琐碎逻辑(如收集信息,检测参数),并加入了一些容错机制(如加锁,及时关闭流),保证了爬虫高并发的安全.
 此库提供了大量优美的API接口,复用率高,十分方便地支持Cookie接力,爬虫代理设置,以及一般的HTTP请求设置如头部设置,超时,暂停设置,数据设置等,支持全部的HTTP方法如POST/PUT/GET/DELETE等,内置爬虫池和浏览器UA池,易于开发多UA多Cookie分布式爬虫.
-此外,还提供第三方存储库,支持mysql/postgresql/redis/cassandra/hbase等.该库简单实用,短短几行代码即可取代以往杂乱无章的面包条代码片段,已经应用在某些大项目中:如大型亚马逊分布式爬虫(美国/日本/德国/英国),经受住两千代理IP超长时间高并发的考验,单台机器每天获取上百万数据.
+此外,还提供第三方存储库,支持mysql/postgresql/redis/cassandra/hbase等.该库简单实用,短短几行代码即可取代以往杂乱无章的面包条代码片段,已经应用在某些大项目中:如`大型亚马逊分布式爬虫(美国/日本/德国/英国)`,经受住两千代理IP超长时间高并发的考验,单台机器每天获取上百万数据.
 
 >该库主要用途： 微信开发/API对接/自动化测试/抢票脚本/网站监控/点赞插件/数据爬取
 
@@ -216,11 +216,12 @@ func main() {
 
 该爬虫库已经在多个项目中使用
 
-1. [煎蛋分布式文章爬虫](https://github.com/hunterhug/jiandan)
-2. [知乎全能API小工具](https://github.com/hunterhug/zhihuxx) // 准备破解验证码
-3. [亚马逊分布式爬虫](https://github.com/hunterhug/AmazonBigSpider)
-4. ...
-
+1. 亚马逊大型分布式爬虫 // 涉及商业已经闭源，查看[图文](doc/amazon.md)
+2. [煎蛋分布式文章爬虫](https://github.com/hunterhug/jiandan)
+3. [知乎全能API小工具](https://github.com/hunterhug/zhihuxx) // 准备破解验证码
+4. [图片助手](/example/taobao/README.md)
+5. [煎蛋无聊图](/example/jiandanmeizi/README.md)
+6. ....
 
 版本日志信息见[日志](doc/log.md)
 
@@ -239,7 +240,7 @@ func main() {
 ![支付宝](https://raw.githubusercontent.com/hunterhug/hunterhug.github.io/master/static/jpg/ali.png)
 
 
-问题咨询请发邮件.
+问题咨询请发邮件:gdccmcm14@live.com.
 
 # LICENSE
 
