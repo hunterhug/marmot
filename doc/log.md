@@ -10,7 +10,7 @@
 4. 增加新库后第三方依赖请自行添加
 5. 新增DELETE/PUT方法和其他HTTP方法:OtherGo(method, contenttype string)
 
-contenttype
+`contenttype`：
 ```
 	HTTPFORMContentType = "application/x-www-form-urlencoded"
 	HTTPJSONContentType = "application/json"

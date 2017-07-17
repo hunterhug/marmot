@@ -1,4 +1,4 @@
-# 大型亚马逊分布式爬虫
+# Large Amazon Distributed Crawler
 
 Support UAS/Japan/Germany/UK, Amazing!
 

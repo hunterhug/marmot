@@ -30,7 +30,7 @@ cd src/github.com/hunterhug
 git clone https://github.com/hunterhug/GoSpider
 ```
 
-默认所有第三方库已经保存在vendor,如果使用包冲突了,请把vendor下的包移到GOPATH下,谨记！！
+默认所有第三方库已经保存在vendor,如果使用包冲突了,请把vendor下的包移到`GOPATH`下,谨记！！
 
 
 以下godep可选,vendor中已经带全第三方库
@@ -64,7 +64,7 @@ godep restore
 
 ## 二.使用
 
-最简单示例,更多移动到[官方示例](https://github.com/hunterhug/GoSpiderExample)
+最简单示例,更多移动到[官方示例](https://github.com/hunterhug/GoSpiderExample) ,官方部分示例已经合进本库，参见`example`文件夹
 
 ```go
 package main
