@@ -221,7 +221,8 @@ func main() {
 3. [知乎全能API小工具](https://github.com/hunterhug/zhihuxx) // 准备破解验证码
 4. [图片助手](/example/taobao/README.md)
 5. [煎蛋无聊图](/example/jiandanmeizi/README.md)
-6. ....
+6. 网易无损音乐下载 // 见示例
+7. ...
 
 版本日志信息见[日志](doc/log.md)
 
