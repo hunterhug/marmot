@@ -28,6 +28,8 @@ For reason that the detail page is such large that waste a lot of disk space, we
 
 开发者ID：`hunterhug`.  仓库：`AmazonBigSpider`
 
+好了，现在你又可以看到了，鉴于搭建爬虫的复杂性，所以还是开源了，代码容易获得，但架设环境还是需要人工的，这也是成本！
+
 Golang全自动亚马逊全网分布式爬虫（美国，日本，德国和英国）
 
 架设八台代理服务器和三台爬虫服务器（美国机房），构建代理IP服务池模块和多爬虫切换模块，配合redis和mysql进行分布式高并发抓取日本/英国/美国/德国亚马逊商品数据，实现IP重蹈，爬虫监控，数据库主从到阿里云（读写分离）等功能，还配套Dashboard后台，方便筛选商品、下载excel和查看商品历史排名/价格等轨迹。爬虫crontab定时夜间开爬，代理IP自动循环导入。爬虫高度自动化，运维成本较低，每天有几百万数据产生。核心爬虫库抽离并开源！
