@@ -7,4 +7,4 @@ example/helloworld/data/*.html
 test/
 data/
 example/huaban/data/
-music/songs_dir/*
+example/music/songs_dir/*
