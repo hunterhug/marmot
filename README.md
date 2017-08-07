@@ -152,7 +152,7 @@ func main() {
 	sp.Clear() // after get the return data by post data, you can clear the data you fill
 	//sp.ClearAll() // you can also want to clear all, include  http header you set
 
-	// spider pool for concurrent, every Spider Object is serial such as the browser. if you want collateral execution, use this.
+	// spider pool for concurrent, every Spider Object is serial as the browser. if you want collateral execution, use this.
 	boss.Pool.Set("myfirstspider", sp)
 	if poolspider, ok := boss.Pool.Get("myfirstspider"); ok {
 		go func() {
@@ -165,14 +165,14 @@ func main() {
 }
 ```
 
-Easy to use, you just need to `New` one `Spider`, and `SetUrl`, then add some http header and `sp.Go()`.
+Easy to use, you just need to `New` one `Spider`, and `SetUrl`, then make some settings and `sp.Go()`.
 
 ### 4.1 The First Step
 
-There are three kind of spider:
+There are three kinds of spider:
 
-1. `sp, err := boss.NewSpider("http://smart:smart2016@104.128.121.46:808") ` // proxy spider, format: `protocol://user(optional):password(optional)@ip:port` alias to`New()`
-2. `sp, err := boss.NewSpider(nil)`  // normal spider, default keep Cookie alias to `New()`
+1. `sp, err := boss.NewSpider("http://smart:smart2016@104.128.121.46:808") ` // proxy spider, format: `protocol://user(optional):password(optional)@ip:port`, alias to`New()`
+2. `sp, err := boss.NewSpider(nil)`  // normal spider, default keep Cookie, alias to `New()`
 3. `sp, err := boss.NewAPI()` // API spider, not keep Cookie
 
 ### 4.2 The Second Step
@@ -182,7 +182,7 @@ Camouflage our spider:
 1. `sp.SetUrl("http://www.lenggirl.com")`  // required: set url you want to
 2. `sp.SetMethod(boss.GET)`  // optional: set http method `POST/GET/PUT/POSTJSON` and so on
 3. `sp.SetWaitTime(2)`                         // optional: set timeout of http request
-4. `sp.SetUa(boss.RandomUa())`                 // optional: set http browser user agent, supply 445/see spider/config/ua.txt
+4. `sp.SetUa(boss.RandomUa())`                 // optional: set http browser user agent, you can see spider/config/ua.txt
 5. `sp.SetRefer("http://www.baidu.com")`       // optional: set http request Refer
 6. `sp.SetHeaderParm("diyheader", "lenggirl")` // optional: set http diy header
 7. `sp.SetBData([]byte("file data"))` // optional: set binary data for post or put
@@ -200,7 +200,7 @@ Run our spider:
 5. `body, err := sp.PostXML()` // post XML request, data fill by SetBData()
 6. `body, err := sp.PostFILE()` // upload file, data fill by SetBData()
 7. `body, err := sp.Delete()` // you know!
-8. `body, err := sp.Put()` // a http method maybe
+8. `body, err := sp.Put()` // ones http method...
 9. `body, err := sp.PutJSON()` // put JSON request
 10. `body, err := sp.PutXML()`
 11. `body, err := sp.PutFILE()`
@@ -214,7 +214,7 @@ Deal the return data, all data will be return as binary:
 2. `fmt.Println(sp.ToString())` // use spider method, after http response, data will keep in the field Raw, just use ToString
 3. `fmt.Println(sp.JsonToString())` // some json data will include chinese and other multibyte character, such as `我爱你,我的小绵羊`,`사랑해`
 
-Attention: After every request for a url, the next request you can cover your http request header, otherwise header you set still exist,
+Attention: after every request for a url, the next request you can cover your http request header, otherwise header you set still exist,
 if just want clear post data, use `Clear()`, and want clear header too please use `ClearAll()` .
 
 More see the code source.
@@ -228,7 +228,7 @@ It has already used in many project(although some is very simple) :
 3. [Zhihu API tool](https://github.com/hunterhug/zhihuxx)
 4. [Picture helper](/example/taobao/README.md)
 5. [Jiandan Picure helper](/example/jiandanmeizi/README.md)
-6. Music Download // see example file dir
+6. Music Download // see example dir
 7. A lot closed source... 
 
 Project change you can see [log](doc/log.md)
@@ -240,8 +240,6 @@ Install development environment you can refer(still chinese):
 [GoSpider-docker](https://github.com/hunterhug/GoSpider-docker)
 
 # LICENSE
-
-Welcome Add PR/issues, Use Apache License (you can use if you want but you should add this in every code file)
 
 ```
 Copyright 2017 by GoSpider author.
@@ -255,5 +253,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License
 ```
+
+Welcome Add PR/issues. 
 
 For questions, please email: gdccmcm14@live.com.
