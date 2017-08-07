@@ -1,251 +1,254 @@
-# 项目代号：土拨鼠（tubo）
+# Project Code：Marmot（tubo）
 
-[前言](doc/pre.md)
+[中文介绍](Chinese.md)
 
-![土拨](tubo.png)
+![Marmot](tubo.png)
 
+## 1. Introduction
 
->万维网网络机器人,又称蜘蛛,爬虫,原理主要是通过构造符合HTTP协议的网络数据包,向指定主机请求资源,获取返回的数据.万维网有大量的公开信息,人力采集数据费时费力,故激发了爬虫的产业化.
-批量获取公开网络数据并不违反,但由于无差别性,无节制,十分暴力的手段会导致对方服务的不稳定,因此,大部分资源提供商对数据包进行了某些过滤,在此背景下,小批量数据获取成为了难题.
-综合各种需求，如各种API对接,自动化测试等原理均一样，故开发了此爬虫库.
+World-Wide-Web robot, also known as spiders and crawlers, the principle is falsifying network data by constructing appointed HTTP protocol data packet, request resource to the specified host, access to the data returned. 
+There are a large number of Web information, human hand movement `copy-paste` data from web page is `time-consuming` and `laborious`, it inspired the crawler industry.
 
->土拨鼠爬虫库是一个人类友好姿势的代码库,开发采用面向对象的方式,易于理解.通过对Golang原生HTTP库的封装,帮用户处理了一些琐碎逻辑(如收集信息,检测参数),并加入了一些容错机制(如加锁,及时关闭流),保证了爬虫高并发的安全.
-此库提供了大量优美的API接口,复用率高,十分方便地支持Cookie接力,爬虫代理设置,以及一般的HTTP请求设置如头部设置,超时,暂停设置,数据设置等,支持全部的HTTP方法如POST/PUT/GET/DELETE等,内置爬虫池和浏览器UA池,易于开发多UA多Cookie分布式爬虫.
-此外,还提供第三方存储库,支持mysql/postgresql/redis/cassandra/hbase等.该库简单实用,短短几行代码即可取代以往杂乱无章的面包条代码片段,已经应用在某些大项目中:如`大型亚马逊分布式爬虫(美国/日本/德国/英国)`,经受住两千代理IP超长时间高并发的考验,单台机器每天获取上百万数据.
+Batch access to public network data does not break the law, but because there is no difference, no control, very violent means will lead to other services is not stable, therefore, most of the resources provider will filtering some data packets(falsify), 
+in this context,  batch small data acquisition has become a problem.Integrated with various requirements, such as various API development, automated software testing, they have similar technical principle so I write this project.
 
->该库主要用途： 微信开发/API对接/自动化测试/抢票脚本/网站监控/点赞插件/数据爬取
+The `Marmot` is a human friendly gesture `Golang Library` which was developed using object-oriented method, easy to understand. By enhancing native Golang HTTP library package, help users deal with some trivial logic (such as collecting information, detection parameters), and add some fault-tolerant mechanisms (such as add lock, close time flow, ensure the high concurrent run without accident).
 
-## 一.下载
+This library provides a excellent API interface, you can reuse it, very convenient to support `Cookie Persistence`, `Crawler Proxy Settings`, as well as general settings such as the `HTTP request header settings, timeout/pause settings, data upload/web form post settings`, 
+support all of the HTTP methods such as `POST/PUT/GET/DELETE`, and also has built-in crawler pool and browser UA pool, easy development UA+Cookie persistence distributed crawler.
 
-自己封装的爬虫库,类似于Python的requests,你只需通过该方式获取库
+In addition, also provides third party tool package, such as support for `mysql/postgresql/redis/cassandra/hbase` and so on. The library is simple and practical, just a few lines of code to replace the previous `Spaghetti code`. 
+has been applied in some large projects such as large-distributed crawler: `Projet: Amazon(USA/Japan/Germany/UK) `, has withstood the test of two thousand long acting proxy IP and high concurrency, single machine every day to get millions of data.
+
+The main uses: WeChat development/ API docking / automated test / rush ticket scripting / site monitoring / vote plug-in / data crawling
+
+## 2. How To Use
+
+Just like Python's library `requests`, you can get it by:
 
 ```
 go get -v github.com/hunterhug/GoSpider
 ```
 
-或者新建 你的GOPATH路径`/src/github.com/hunterhug`
+Or make your GOPATH sub dir: `/src/github.com/hunterhug`, and
 
 ```
 cd src/github.com/hunterhug
 git clone https://github.com/hunterhug/GoSpider
 ```
 
-默认所有第三方库已经保存在vendor,如果使用包冲突了,请把vendor下的包移到`GOPATH`下,谨记！！
+all import package save in `vendor` default, if some panic when run, please move `the file in vendor` to your `GOPATH`. 
 
-
-以下godep可选,vendor中已经带全第三方库
+you can choose use `godep` (Optional)
 
 ```
 godep restore
 ```
 
-文件目录（组件化开发）
+## 3. Project Structure（modularization）
 
 ```
-    ---example   爬虫示例,新爬虫已经转移到新仓库
-    ---query     内容解析库,只封装了两个方法
-    ---spider    爬虫核心库
-    ---store     存储库
+    ---example   some example
+    ---query     html content parse, only two function
+    ---spider    core download module
+    ---store     store tool
         ---myredis 
         ---mysql
         ---myetcd
-        ---mydb  关系型数据库Orm(使用xorm)
+        ---mydb  one database Orm(use xorm)
         ---myhbase
         ---mycassandra
-    ---util      杂项工具
-        --- image 图片切割库
-        --- open 打开验证码助手
-        crypto.go 数据加密
-        file.go 文件处理
-        time.go 时间处理
-    ---vendor    第三方依赖包
-    ---GOPATH    不宜放在vendor的包,请手动移动到你的GOPATH路径下
+    ---util      other tool
+        --- image  picture cut
+        --- open   open CAPTCHA picture
+        crypto.go encryption..
+        file.go  file operation
+        time.go  time...
+    ---vendor    some dependency package
+    ---GOPATH    some must move to your GOPATH
 ```
 
-## 二.使用
+## 4. Example
 
-最简单示例,更多移动到[官方示例](https://github.com/hunterhug/GoSpiderExample) ,官方部分示例已经合进本库，参见`example`文件夹
+The most simple example such follow, more see `example` dir:
 
 ```go
 package main
 
-// 示例
+// Example
 import (
 	"fmt"
 	"github.com/hunterhug/GoSpider/spider"
 )
 
 func main() {
-	// 1.新建爬虫
+	// 1. New a spider
 	sp, _ := spider.New(nil)
-	// 2.设置网址
-	sp.SetUrl("http://www.lenggirl.com").SetUa(spider.RandomUa()).SetMethod(spider.PUT) // 我的网站不允许PUT请改为GET
-	// 3.抓取网址
+	// 2. Set a URL 
+	sp.SetUrl("http://www.lenggirl.com").SetUa(spider.RandomUa()).SetMethod(spider.GET)
+	// 3. Fetch
 	html, err := sp.Go()
 	if err != nil {
 		fmt.Println(err.Error())
 	}
-	// 4.打印内容,等同于fmt.Println(sp.ToString())
+	// 4.Print content equal to fmt.Println(sp.ToString())
 	fmt.Println(string(html))
 }
 ```
 
-详细具体步骤如下：
+Detail Example is:
 
 ```go
 package main
 
 import (
-	// 第一步：引入库 别名boss
+	// 1：import package alias boss
 	boss "github.com/hunterhug/GoSpider/spider"
-	//"github.com/hunterhug/GoSpider/util"
+	"github.com/hunterhug/GoSpider/util"
 )
 
 func init() {
-	// 第二步：可选设置全局
-	boss.SetLogLevel(boss.DEBUG) // 设置全局爬虫日志,可不设置,设置debug可打印出http请求轨迹
-	boss.SetGlobalTimeout(3)     // 爬虫超时时间,可不设置
+	// 2：Optional global setting
+	boss.SetLogLevel(boss.DEBUG) // optional, set log to debug
+	boss.SetGlobalTimeout(3)     // optional, http request timeout time
 
 }
 func main() {
 
-	log := boss.Log() // 爬虫为你提供的日志工具,可不用
+	log := boss.Log() // optional, spider log you can choose to use
 
-	// 第三步： 必须新建一个爬虫对象
-	//spiders, err := boss.NewSpider("http://smart:smart2016@104.128.121.46:808") // 代理IP爬虫 格式:协议://代理帐号(可选):代理密码(可选)@ip:port
-	//spiders, err := boss.NewSpider(nil)  // 正常爬虫 默认带Cookie
-	//spiders, err := boss.NewAPI() // API爬虫 默认不带Cookie
-	spiders, err := boss.New(nil) // NewSpider同名函数
+	// 3： Must new a spider object, three ways
+	//spiders, err := boss.NewSpider("http://smart:smart2016@104.128.121.46:808") // proxy spider, format: protocol://user(optional):password(optional)@ip:port
+	//spiders, err := boss.NewSpider(nil)  // normal spider, default keep Cookie
+	//spiders, err := boss.NewAPI() // API spider, not keep Cookie
+	spiders, err := boss.New(nil) // NewSpider alias
 	if err != nil {
 		panic(err)
 	}
 
-	// 第四步：设置抓取方式和网站,可链式结构设置,只有SetUrl是必须的
-	// SetUrl:Url必须设置
-	// SetMethod:HTTP方法可以是POST或GET,可不设置,默认GET,传错值默认为GET
-	// SetWaitTime:暂停时间,可不设置,默认不暂停
+	// 4： Set the request Method/URL and some others, can chain set, only SetUrl is required.
+	// SetUrl: required, the Url
+	// SetMethod: optional, HTTP method: POST/GET/..., default GET
+	// SetWaitTime: optional, HTTP request wait/pause time
 	spiders.SetUrl("http://www.google.com").SetMethod(boss.GET).SetWaitTime(2)
-	spiders.SetUa(boss.RandomUa())                 //设置随机浏览器标志
-	spiders.SetRefer("http://www.google.com")      // 设置Refer头
-	spiders.SetHeaderParm("diyheader", "lenggirl") // 自定义头部
-	//spiders.SetBData([]byte("file data")) // 如果你要提交JSON数据/上传文件
-	//spiders.SetFormParm("username","jinhan") // 提交表单
+	spiders.SetUa(boss.RandomUa())                 // optional, browser user agent: IE/Firefox...
+	spiders.SetRefer("http://www.google.com")      // optional, url refer
+	spiders.SetHeaderParm("diyheader", "lenggirl") // optional, some other diy http header
+	//spiders.SetBData([]byte("file data"))  // optional, if you want post JSON data or upload file
+	//spiders.SetFormParm("username","jinhan") // optional: if you want post form
 	//spiders.SetFormParm("password","123")
 
-	// 第五步：开始爬
-	//spiders.Get()             // 默认GET
-	//spiders.Post()            // POST表单请求,数据在SetFormParm()
-	//spiders.PostJSON()        // 提交JSON请求,数据在SetBData()
-	//spiders.PostXML()         // 提交XML请求,数据在SetBData()
-	//spiders.PostFILE()        // 提交文件上传请求,数据在SetBData()
-	body, err := spiders.Go() // 如果设置SetMethod(),采用,否则Get()
+	// 5： Start Run
+	//spiders.Get()             // default GET
+	//spiders.Post()            // POST form request data, data can fill by SetFormParm()
+	//spiders.PostJSON()        // POST JSON dara, use SetBData()
+	//spiders.PostXML()         // POST XML, use SetBData()
+	//spiders.PostFILE()        // POST to Upload File, data in SetBData() too
+	body, err := spiders.Go() // if you use SetMethod(), otherwise equal to Get()
 	if err != nil {
 		log.Error(err.Error())
 	} else {
-		log.Infof("%s", string(body)) // 打印获取的数据
+		log.Infof("%s", string(body)) // Print return data
 	}
 
-	log.Debugf("%#v", spiders) // 不设置全局log为debug是不会出现这个东西的
+	log.Debugf("%#v", spiders) // if you not set log as debug, it will not appear
 
-	spiders.Clear() // 爬取完毕后可以清除POST的表单数据/文件数据/JSON数据
-	//spiders.ClearAll() // 爬取完毕后可以清除设置的Http头部和POST的表单数据/文件数据/JSON数据
+	spiders.Clear() // after get the return data by post data, you can clear the data you fill
+	//spiders.ClearAll() // you can also want to clear all, include  http header you set
 
-	// 爬虫池子
+	// spider pool for concurrent, every Spider Object is serial such as the browser. if you want collateral execution, use this.
 	boss.Pool.Set("myfirstspider", spiders)
 	if poolspider, ok := boss.Pool.Get("myfirstspider"); ok {
-		poolspider.SetUrl("http://www.baidu.com")
-		data, _ := poolspider.Get()
-		log.Info(string(data))
+		go func() {
+			poolspider.SetUrl("http://www.baidu.com")
+			data, _ := poolspider.Get()
+			log.Info(string(data))
+		}()
+		util.Sleep(10)
 	}
 }
 ```
 
-使用特别简单,先`New`一只`Spider`,然后`SetUrl`,适当加头部,最后`spiders.Go()`即可。
+Easy to use, you just need to `New` one `Spider`, and `SetUrl`, then add some http header and `spiders.Go()`.
 
-### 第一步
+### 4.1 The First Step
 
-爬虫有三种类型:
+there are three kind of spider:
 
-1. `spiders, err := boss.NewSpider("http://smart:smart2016@104.128.121.46:808") ` // 代理IP爬虫 默认自动化Cookie接力 格式:`协议://代理帐号(可选):代理密码(可选)@ip:port` 别名函数`New()`
-2. `spiders, err := boss.NewSpider(nil)`  // 正常爬虫 默认自动化Cookie接力 别名函数`New()`
-3. `spiders, err := boss.NewAPI()` // API爬虫 默认Cookie不接力
+1. `spiders, err := boss.NewSpider("http://smart:smart2016@104.128.121.46:808") ` // proxy spider, format: `protocol://user(optional):password(optional)@ip:port` alias to`New()`
+2. `spiders, err := boss.NewSpider(nil)`  // normal spider, default keep Cookie alias to `New()`
+3. `spiders, err := boss.NewAPI()` // API spider, not keep Cookie
 
-### 第二步
+### 4.2 The Second Step
 
-模拟爬虫设置头部:
+camouflage our spider:
 
-1. `spiders.SetUrl("http://www.lenggirl.com")`  // 设置Http请求要抓取的网址,必须
-2. `spiders.SetMethod(boss.GET)`  // 设置Http请求的方法:`POST/GET/PUT/POSTJSON`等
-3. `spiders.SetWaitTime(2)` // 设置Http请求超时时间
-4. `spiders.SetUa(boss.RandomUa())`                // 设置Http请求浏览器标志,本项目提供445个浏览器标志，可选设置
-5. `spiders.SetRefer("http://www.baidu.com")`       // 设置Http请求Refer头
-6. `spiders.SetHeaderParm("diyheader", "lenggirl")` // 设置Http请求自定义头部
-7. `spiders.SetBData([]byte("file data"))` // Http请求需要上传数据
-8. `spiders.SetFormParm("username","jinhan")` // Http请求需要提交表单
-9. `spiders.SetCookie("xx=dddd")` // Http请求设置cookie, 某些网站需要登录后F12复制cookie
+1. `spiders.SetUrl("http://www.lenggirl.com")`  // required: set url you want to
+2. `spiders.SetMethod(boss.GET)`  // optional: set http method `POST/GET/PUT/POSTJSON` and so on
+3. `spiders.SetWaitTime(2)`                         // optional: set timeout of http request
+4. `spiders.SetUa(boss.RandomUa())`                 // optional: set http browser user agent, supply 445/see spider/config/ua.txt
+5. `spiders.SetRefer("http://www.baidu.com")`       // optional: set http request Refer
+6. `spiders.SetHeaderParm("diyheader", "lenggirl")` // optional: set http diy header
+7. `spiders.SetBData([]byte("file data"))` // optional: set binary data for post or put
+8. `spiders.SetFormParm("username","jinhan")` // optional: set form data for post or put 
+9. `spiders.SetCookie("xx=dddd")` // optional: you can set a init cookie, some website you can login and F12 copy the cookie
 
-### 第三步
+### 4.3 The Third Step
 
-爬虫启动方式有：
-1. `body, err := spiders.Go()` // 如果设置SetMethod(),采用下方对应的方法,否则Get()
-2. `body, err := spiders.Get()` // 默认
-3. `body, err := spiders.Post()` // POST表单请求,数据在SetFormParm()
-4. `body, err := spiders.PostJSON()` // 提交JSON请求,数据在SetBData()
-5. `body, err := spiders.PostXML()` // 提交XML请求,数据在SetBData()
-6. `body, err := spiders.PostFILE()` // 提交文件上传请求,数据在SetBData()
-7. `body, err := spiders.Delete()` 
-8. `body, err := spiders.Put()`
-9. `body, err := spiders.PutJSON()` 
+Lauch our spider：
+
+1. `body, err := spiders.Go()` // if you use SetMethod(), auto use following ways, otherwise use Get()
+2. `body, err := spiders.Get()` // default
+3. `body, err := spiders.Post()` // post form request, data fill by SetFormParm()
+4. `body, err := spiders.PostJSON()` // post JSON request, data fill by SetBData()
+5. `body, err := spiders.PostXML()` // post XML request, data fill by SetBData()
+6. `body, err := spiders.PostFILE()` // upload file, data fill by SetBData()
+7. `body, err := spiders.Delete()` // you know!
+8. `body, err := spiders.Put()` // a http method maybe
+9. `body, err := spiders.PutJSON()` // put JSON request
 10. `body, err := spiders.PutXML()`
 11. `body, err := spiders.PutFILE()`
-12. `body, err := spiders.OtherGo("OPTIONS", "application/x-www-form-urlencoded")` // 其他自定义的HTTP方法
+12. `body, err := spiders.OtherGo("OPTIONS", "application/x-www-form-urlencoded")` // Other http method, Such as OPTIONS etcd.
 
-### 第四步
+### 4.4 The Fourth Step
 
-爬取到的数据：
+Deal the return data, all data will be return as binary:
 
-1. `fmt.Println(string(html))` // 每次抓取后会返回二进制数据
-2. `fmt.Println(sp.ToString())` // http响应后二进制数据也会保存在爬虫对象的Raw字段中,使用ToString可取出来
-3. `fmt.Println(sp.JsonToString())` // 如果获取到的是JSON数据,请采用此方法转义回来,不然会乱码
+1. `fmt.Println(string(html))` // type change directly
+2. `fmt.Println(sp.ToString())` // use spider method, after http response, data will keep in the field Raw, just use ToString
+3. `fmt.Println(sp.JsonToString())` // some json data will include chinese and other multibyte character, such as `我爱你，我的小绵羊`，`사랑해`
 
-注意：每次抓取网站后,下次请求你可以覆盖原先的头部,但是没覆盖的头部还是上次的,所以清除头部或请求数据,请使用`Clear()`(只清除Post数据)或者`ClearAll()`(还清除http头部)
+Attention: After every request for a url, the next request you can cover your http request header, otherwise header you set still exist,
+if just want clear post data, use `Clear()`, and want clear header too please use `ClearAll()` .
 
-[API参考](doc/api.md),更多自行查看源代码
+More see the code source.
 
-## 三.项目应用
+## 5. Project Application
 
-该爬虫库已经在多个项目中使用
+It has already used in many project(although some is very simple) :
 
-1. 亚马逊大型分布式爬虫 // 涉及商业已经闭源，查看[图文](doc/amazon.md)
-2. [煎蛋分布式文章爬虫](https://github.com/hunterhug/jiandan)
-3. [知乎全能API小工具](https://github.com/hunterhug/zhihuxx) // 准备破解验证码
-4. [图片助手](/example/taobao/README.md)
-5. [煎蛋无聊图](/example/jiandanmeizi/README.md)
-6. 网易无损音乐下载 // 见示例
-7. ...
+1. [Full Golang Automatic Amazon Distributed crawler|spider](https://github.com/hunterhug/AmazonBigSpider) // Just see [Picture](doc/amazon.md)
+2. [Jiandan Distributed articles spider](https://github.com/hunterhug/jiandan)
+3. [Zhihu API tool](https://github.com/hunterhug/zhihuxx)
+4. [Picture helper](/example/taobao/README.md)
+5. [Jiandan Picure helper](/example/jiandanmeizi/README.md)
+6. Music Download // see example file dir
+7. a lot closed source... 
 
-版本日志信息见[日志](doc/log.md)
+project change you can see [log](doc/log.md)
 
-爬虫环境安装请参考:
+development environment you can refer(still chinese):
 
-[环境配置](http://www.lenggirl.com/tool/gospider-env.html)
+[gospider-env](http://www.lenggirl.com/tool/gospider-env.html)
 
-[Docker快速版本](https://github.com/hunterhug/GoSpider-docker)
-
-如果你觉得项目帮助到你,欢迎请我喝杯咖啡
-
-微信
-![微信](https://raw.githubusercontent.com/hunterhug/hunterhug.github.io/master/static/jpg/wei.png)
-
-支付宝
-![支付宝](https://raw.githubusercontent.com/hunterhug/hunterhug.github.io/master/static/jpg/ali.png)
+[GoSpider-docker](https://github.com/hunterhug/GoSpider-docker)
 
 
-问题咨询请发邮件:gdccmcm14@live.com.
+For questions, please email: gdccmcm14@live.com.
 
 # LICENSE
 
-欢迎加功能(PR/issues),请遵循Apache License协议(即可随意使用但每个文件下都需加此申明）
+Welcome Add PR/issues, Use Apache License (you can use if you want but you should add this in every code file)
 
 ```
 Copyright 2017 by GoSpider author.
@@ -259,5 +262,3 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License
 ```
-
-![](doc/xx.png)

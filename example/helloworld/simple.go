@@ -10,13 +10,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-
 package main
 
 import (
 	// 第一步：引入库 别名boss
 	boss "github.com/hunterhug/GoSpider/spider"
-	//"github.com/hunterhug/GoSpider/util"
+	"github.com/hunterhug/GoSpider/util"
 )
 
 func init() {
@@ -71,8 +70,12 @@ func main() {
 	// 爬虫池子
 	boss.Pool.Set("myfirstspider", spiders)
 	if poolspider, ok := boss.Pool.Get("myfirstspider"); ok {
-		poolspider.SetUrl("http://www.baidu.com")
-		data, _ := poolspider.Get()
-		log.Info(string(data))
+		go func() {
+			poolspider.SetUrl("http://www.baidu.com")
+			data, _ := poolspider.Get()
+			log.Info(string(data))
+		}()
+		util.Sleep(10)
 	}
+
 }
