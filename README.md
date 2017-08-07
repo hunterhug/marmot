@@ -116,10 +116,10 @@ func main() {
 	log := boss.Log() // optional, spider log you can choose to use
 
 	// 3: Must new a spider object, three ways
-	//spiders, err := boss.NewSpider("http://smart:smart2016@104.128.121.46:808") // proxy spider, format: protocol://user(optional):password(optional)@ip:port
-	//spiders, err := boss.NewSpider(nil)  // normal spider, default keep Cookie
-	//spiders, err := boss.NewAPI() // API spider, not keep Cookie
-	spiders, err := boss.New(nil) // NewSpider alias
+	//sp, err := boss.NewSpider("http://smart:smart2016@104.128.121.46:808") // proxy spider, format: protocol://user(optional):password(optional)@ip:port
+	//sp, err := boss.NewSpider(nil)  // normal spider, default keep Cookie
+	//sp, err := boss.NewAPI() // API spider, not keep Cookie
+	sp, err := boss.New(nil) // NewSpider alias
 	if err != nil {
 		panic(err)
 	}
@@ -128,34 +128,34 @@ func main() {
 	// SetUrl: required, the Url
 	// SetMethod: optional, HTTP method: POST/GET/..., default GET
 	// SetWaitTime: optional, HTTP request wait/pause time
-	spiders.SetUrl("http://www.google.com").SetMethod(boss.GET).SetWaitTime(2)
-	spiders.SetUa(boss.RandomUa())                 // optional, browser user agent: IE/Firefox...
-	spiders.SetRefer("http://www.google.com")      // optional, url refer
-	spiders.SetHeaderParm("diyheader", "lenggirl") // optional, some other diy http header
-	//spiders.SetBData([]byte("file data"))  // optional, if you want post JSON data or upload file
-	//spiders.SetFormParm("username","jinhan") // optional: if you want post form
-	//spiders.SetFormParm("password","123")
+	sp.SetUrl("http://www.google.com").SetMethod(boss.GET).SetWaitTime(2)
+	sp.SetUa(boss.RandomUa())                 // optional, browser user agent: IE/Firefox...
+	sp.SetRefer("http://www.google.com")      // optional, url refer
+	sp.SetHeaderParm("diyheader", "lenggirl") // optional, some other diy http header
+	//sp.SetBData([]byte("file data"))  // optional, if you want post JSON data or upload file
+	//sp.SetFormParm("username","jinhan") // optional: if you want post form
+	//sp.SetFormParm("password","123")
 
 	// 5: Start Run
-	//spiders.Get()             // default GET
-	//spiders.Post()            // POST form request data, data can fill by SetFormParm()
-	//spiders.PostJSON()        // POST JSON dara, use SetBData()
-	//spiders.PostXML()         // POST XML, use SetBData()
-	//spiders.PostFILE()        // POST to Upload File, data in SetBData() too
-	body, err := spiders.Go() // if you use SetMethod(), otherwise equal to Get()
+	//sp.Get()             // default GET
+	//sp.Post()            // POST form request data, data can fill by SetFormParm()
+	//sp.PostJSON()        // POST JSON dara, use SetBData()
+	//sp.PostXML()         // POST XML, use SetBData()
+	//sp.PostFILE()        // POST to Upload File, data in SetBData() too
+	body, err := sp.Go() // if you use SetMethod(), otherwise equal to Get()
 	if err != nil {
 		log.Error(err.Error())
 	} else {
 		log.Infof("%s", string(body)) // Print return data
 	}
 
-	log.Debugf("%#v", spiders) // if you not set log as debug, it will not appear
+	log.Debugf("%#v", sp) // if you not set log as debug, it will not appear
 
-	spiders.Clear() // after get the return data by post data, you can clear the data you fill
-	//spiders.ClearAll() // you can also want to clear all, include  http header you set
+	sp.Clear() // after get the return data by post data, you can clear the data you fill
+	//sp.ClearAll() // you can also want to clear all, include  http header you set
 
 	// spider pool for concurrent, every Spider Object is serial such as the browser. if you want collateral execution, use this.
-	boss.Pool.Set("myfirstspider", spiders)
+	boss.Pool.Set("myfirstspider", sp)
 	if poolspider, ok := boss.Pool.Get("myfirstspider"); ok {
 		go func() {
 			poolspider.SetUrl("http://www.baidu.com")
@@ -167,46 +167,46 @@ func main() {
 }
 ```
 
-Easy to use, you just need to `New` one `Spider`, and `SetUrl`, then add some http header and `spiders.Go()`.
+Easy to use, you just need to `New` one `Spider`, and `SetUrl`, then add some http header and `sp.Go()`.
 
 ### 4.1 The First Step
 
 There are three kind of spider:
 
-1. `spiders, err := boss.NewSpider("http://smart:smart2016@104.128.121.46:808") ` // proxy spider, format: `protocol://user(optional):password(optional)@ip:port` alias to`New()`
-2. `spiders, err := boss.NewSpider(nil)`  // normal spider, default keep Cookie alias to `New()`
-3. `spiders, err := boss.NewAPI()` // API spider, not keep Cookie
+1. `sp, err := boss.NewSpider("http://smart:smart2016@104.128.121.46:808") ` // proxy spider, format: `protocol://user(optional):password(optional)@ip:port` alias to`New()`
+2. `sp, err := boss.NewSpider(nil)`  // normal spider, default keep Cookie alias to `New()`
+3. `sp, err := boss.NewAPI()` // API spider, not keep Cookie
 
 ### 4.2 The Second Step
 
 Camouflage our spider:
 
-1. `spiders.SetUrl("http://www.lenggirl.com")`  // required: set url you want to
-2. `spiders.SetMethod(boss.GET)`  // optional: set http method `POST/GET/PUT/POSTJSON` and so on
-3. `spiders.SetWaitTime(2)`                         // optional: set timeout of http request
-4. `spiders.SetUa(boss.RandomUa())`                 // optional: set http browser user agent, supply 445/see spider/config/ua.txt
-5. `spiders.SetRefer("http://www.baidu.com")`       // optional: set http request Refer
-6. `spiders.SetHeaderParm("diyheader", "lenggirl")` // optional: set http diy header
-7. `spiders.SetBData([]byte("file data"))` // optional: set binary data for post or put
-8. `spiders.SetFormParm("username","jinhan")` // optional: set form data for post or put 
-9. `spiders.SetCookie("xx=dddd")` // optional: you can set a init cookie, some website you can login and F12 copy the cookie
+1. `sp.SetUrl("http://www.lenggirl.com")`  // required: set url you want to
+2. `sp.SetMethod(boss.GET)`  // optional: set http method `POST/GET/PUT/POSTJSON` and so on
+3. `sp.SetWaitTime(2)`                         // optional: set timeout of http request
+4. `sp.SetUa(boss.RandomUa())`                 // optional: set http browser user agent, supply 445/see spider/config/ua.txt
+5. `sp.SetRefer("http://www.baidu.com")`       // optional: set http request Refer
+6. `sp.SetHeaderParm("diyheader", "lenggirl")` // optional: set http diy header
+7. `sp.SetBData([]byte("file data"))` // optional: set binary data for post or put
+8. `sp.SetFormParm("username","jinhan")` // optional: set form data for post or put 
+9. `sp.SetCookie("xx=dddd")` // optional: you can set a init cookie, some website you can login and F12 copy the cookie
 
 ### 4.3 The Third Step
 
 Run our spider:
 
-1. `body, err := spiders.Go()` // if you use SetMethod(), auto use following ways, otherwise use Get()
-2. `body, err := spiders.Get()` // default
-3. `body, err := spiders.Post()` // post form request, data fill by SetFormParm()
-4. `body, err := spiders.PostJSON()` // post JSON request, data fill by SetBData()
-5. `body, err := spiders.PostXML()` // post XML request, data fill by SetBData()
-6. `body, err := spiders.PostFILE()` // upload file, data fill by SetBData()
-7. `body, err := spiders.Delete()` // you know!
-8. `body, err := spiders.Put()` // a http method maybe
-9. `body, err := spiders.PutJSON()` // put JSON request
-10. `body, err := spiders.PutXML()`
-11. `body, err := spiders.PutFILE()`
-12. `body, err := spiders.OtherGo("OPTIONS", "application/x-www-form-urlencoded")` // Other http method, Such as OPTIONS etcd.
+1. `body, err := sp.Go()` // if you use SetMethod(), auto use following ways, otherwise use Get()
+2. `body, err := sp.Get()` // default
+3. `body, err := sp.Post()` // post form request, data fill by SetFormParm()
+4. `body, err := sp.PostJSON()` // post JSON request, data fill by SetBData()
+5. `body, err := sp.PostXML()` // post XML request, data fill by SetBData()
+6. `body, err := sp.PostFILE()` // upload file, data fill by SetBData()
+7. `body, err := sp.Delete()` // you know!
+8. `body, err := sp.Put()` // a http method maybe
+9. `body, err := sp.PutJSON()` // put JSON request
+10. `body, err := sp.PutXML()`
+11. `body, err := sp.PutFILE()`
+12. `body, err := sp.OtherGo("OPTIONS", "application/x-www-form-urlencoded")` // Other http method, Such as OPTIONS etcd.
 
 ### 4.4 The Fourth Step
 

@@ -112,10 +112,10 @@ func main() {
 	log := boss.Log() // 爬虫为你提供的日志工具,可不用
 
 	// 第三步： 必须新建一个爬虫对象
-	//spiders, err := boss.NewSpider("http://smart:smart2016@104.128.121.46:808") // 代理IP爬虫 格式:协议://代理帐号(可选):代理密码(可选)@ip:port
-	//spiders, err := boss.NewSpider(nil)  // 正常爬虫 默认带Cookie
-	//spiders, err := boss.NewAPI() // API爬虫 默认不带Cookie
-	spiders, err := boss.New(nil) // NewSpider同名函数
+	//sp, err := boss.NewSpider("http://smart:smart2016@104.128.121.46:808") // 代理IP爬虫 格式:协议://代理帐号(可选):代理密码(可选)@ip:port
+	//sp, err := boss.NewSpider(nil)  // 正常爬虫 默认带Cookie
+	//sp, err := boss.NewAPI() // API爬虫 默认不带Cookie
+	sp, err := boss.New(nil) // NewSpider同名函数
 	if err != nil {
 		panic(err)
 	}
@@ -124,34 +124,34 @@ func main() {
 	// SetUrl:Url必须设置
 	// SetMethod:HTTP方法可以是POST或GET,可不设置,默认GET,传错值默认为GET
 	// SetWaitTime:暂停时间,可不设置,默认不暂停
-	spiders.SetUrl("http://www.google.com").SetMethod(boss.GET).SetWaitTime(2)
-	spiders.SetUa(boss.RandomUa())                 //设置随机浏览器标志
-	spiders.SetRefer("http://www.google.com")      // 设置Refer头
-	spiders.SetHeaderParm("diyheader", "lenggirl") // 自定义头部
-	//spiders.SetBData([]byte("file data")) // 如果你要提交JSON数据/上传文件
-	//spiders.SetFormParm("username","jinhan") // 提交表单
-	//spiders.SetFormParm("password","123")
+	sp.SetUrl("http://www.google.com").SetMethod(boss.GET).SetWaitTime(2)
+	sp.SetUa(boss.RandomUa())                 //设置随机浏览器标志
+	sp.SetRefer("http://www.google.com")      // 设置Refer头
+	sp.SetHeaderParm("diyheader", "lenggirl") // 自定义头部
+	//sp.SetBData([]byte("file data")) // 如果你要提交JSON数据/上传文件
+	//sp.SetFormParm("username","jinhan") // 提交表单
+	//sp.SetFormParm("password","123")
 
 	// 第五步：开始爬
-	//spiders.Get()             // 默认GET
-	//spiders.Post()            // POST表单请求,数据在SetFormParm()
-	//spiders.PostJSON()        // 提交JSON请求,数据在SetBData()
-	//spiders.PostXML()         // 提交XML请求,数据在SetBData()
-	//spiders.PostFILE()        // 提交文件上传请求,数据在SetBData()
-	body, err := spiders.Go() // 如果设置SetMethod(),采用,否则Get()
+	//sp.Get()             // 默认GET
+	//sp.Post()            // POST表单请求,数据在SetFormParm()
+	//sp.PostJSON()        // 提交JSON请求,数据在SetBData()
+	//sp.PostXML()         // 提交XML请求,数据在SetBData()
+	//sp.PostFILE()        // 提交文件上传请求,数据在SetBData()
+	body, err := sp.Go() // 如果设置SetMethod(),采用,否则Get()
 	if err != nil {
 		log.Error(err.Error())
 	} else {
 		log.Infof("%s", string(body)) // 打印获取的数据
 	}
 
-	log.Debugf("%#v", spiders) // 不设置全局log为debug是不会出现这个东西的
+	log.Debugf("%#v", sp) // 不设置全局log为debug是不会出现这个东西的
 
-	spiders.Clear() // 爬取完毕后可以清除POST的表单数据/文件数据/JSON数据
-	//spiders.ClearAll() // 爬取完毕后可以清除设置的Http头部和POST的表单数据/文件数据/JSON数据
+	sp.Clear() // 爬取完毕后可以清除POST的表单数据/文件数据/JSON数据
+	//sp.ClearAll() // 爬取完毕后可以清除设置的Http头部和POST的表单数据/文件数据/JSON数据
 
 	// 爬虫池子
-	boss.Pool.Set("myfirstspider", spiders)
+	boss.Pool.Set("myfirstspider", sp)
 	if poolspider, ok := boss.Pool.Get("myfirstspider"); ok {
 		poolspider.SetUrl("http://www.baidu.com")
 		data, _ := poolspider.Get()
@@ -160,45 +160,45 @@ func main() {
 }
 ```
 
-使用特别简单,先`New`一只`Spider`,然后`SetUrl`,适当加头部,最后`spiders.Go()`即可。
+使用特别简单,先`New`一只`Spider`,然后`SetUrl`,适当加头部,最后`sp.Go()`即可。
 
 ### 第一步
 
 爬虫有三种类型:
 
-1. `spiders, err := boss.NewSpider("http://smart:smart2016@104.128.121.46:808") ` // 代理IP爬虫 默认自动化Cookie接力 格式:`协议://代理帐号(可选):代理密码(可选)@ip:port` 别名函数`New()`
-2. `spiders, err := boss.NewSpider(nil)`  // 正常爬虫 默认自动化Cookie接力 别名函数`New()`
-3. `spiders, err := boss.NewAPI()` // API爬虫 默认Cookie不接力
+1. `sp, err := boss.NewSpider("http://smart:smart2016@104.128.121.46:808") ` // 代理IP爬虫 默认自动化Cookie接力 格式:`协议://代理帐号(可选):代理密码(可选)@ip:port` 别名函数`New()`
+2. `sp, err := boss.NewSpider(nil)`  // 正常爬虫 默认自动化Cookie接力 别名函数`New()`
+3. `sp, err := boss.NewAPI()` // API爬虫 默认Cookie不接力
 
 ### 第二步
 
 模拟爬虫设置头部:
 
-1. `spiders.SetUrl("http://www.lenggirl.com")`  // 设置Http请求要抓取的网址,必须
-2. `spiders.SetMethod(boss.GET)`  // 设置Http请求的方法:`POST/GET/PUT/POSTJSON`等
-3. `spiders.SetWaitTime(2)` // 设置Http请求超时时间
-4. `spiders.SetUa(boss.RandomUa())`                // 设置Http请求浏览器标志,本项目提供445个浏览器标志，可选设置
-5. `spiders.SetRefer("http://www.baidu.com")`       // 设置Http请求Refer头
-6. `spiders.SetHeaderParm("diyheader", "lenggirl")` // 设置Http请求自定义头部
-7. `spiders.SetBData([]byte("file data"))` // Http请求需要上传数据
-8. `spiders.SetFormParm("username","jinhan")` // Http请求需要提交表单
-9. `spiders.SetCookie("xx=dddd")` // Http请求设置cookie, 某些网站需要登录后F12复制cookie
+1. `sp.SetUrl("http://www.lenggirl.com")`  // 设置Http请求要抓取的网址,必须
+2. `sp.SetMethod(boss.GET)`  // 设置Http请求的方法:`POST/GET/PUT/POSTJSON`等
+3. `sp.SetWaitTime(2)` // 设置Http请求超时时间
+4. `sp.SetUa(boss.RandomUa())`                // 设置Http请求浏览器标志,本项目提供445个浏览器标志，可选设置
+5. `sp.SetRefer("http://www.baidu.com")`       // 设置Http请求Refer头
+6. `sp.SetHeaderParm("diyheader", "lenggirl")` // 设置Http请求自定义头部
+7. `sp.SetBData([]byte("file data"))` // Http请求需要上传数据
+8. `sp.SetFormParm("username","jinhan")` // Http请求需要提交表单
+9. `sp.SetCookie("xx=dddd")` // Http请求设置cookie, 某些网站需要登录后F12复制cookie
 
 ### 第三步
 
 爬虫启动方式有：
-1. `body, err := spiders.Go()` // 如果设置SetMethod(),采用下方对应的方法,否则Get()
-2. `body, err := spiders.Get()` // 默认
-3. `body, err := spiders.Post()` // POST表单请求,数据在SetFormParm()
-4. `body, err := spiders.PostJSON()` // 提交JSON请求,数据在SetBData()
-5. `body, err := spiders.PostXML()` // 提交XML请求,数据在SetBData()
-6. `body, err := spiders.PostFILE()` // 提交文件上传请求,数据在SetBData()
-7. `body, err := spiders.Delete()` 
-8. `body, err := spiders.Put()`
-9. `body, err := spiders.PutJSON()` 
-10. `body, err := spiders.PutXML()`
-11. `body, err := spiders.PutFILE()`
-12. `body, err := spiders.OtherGo("OPTIONS", "application/x-www-form-urlencoded")` // 其他自定义的HTTP方法
+1. `body, err := sp.Go()` // 如果设置SetMethod(),采用下方对应的方法,否则Get()
+2. `body, err := sp.Get()` // 默认
+3. `body, err := sp.Post()` // POST表单请求,数据在SetFormParm()
+4. `body, err := sp.PostJSON()` // 提交JSON请求,数据在SetBData()
+5. `body, err := sp.PostXML()` // 提交XML请求,数据在SetBData()
+6. `body, err := sp.PostFILE()` // 提交文件上传请求,数据在SetBData()
+7. `body, err := sp.Delete()` 
+8. `body, err := sp.Put()`
+9. `body, err := sp.PutJSON()` 
+10. `body, err := sp.PutXML()`
+11. `body, err := sp.PutFILE()`
+12. `body, err := sp.OtherGo("OPTIONS", "application/x-www-form-urlencoded")` // 其他自定义的HTTP方法
 
 ### 第四步
 
