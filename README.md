@@ -37,9 +37,7 @@ cd src/github.com/hunterhug
 git clone https://github.com/hunterhug/GoSpider
 ```
 
-all import package save in `vendor` default, if some panic when run, please move `the file in vendor` to your `GOPATH`. 
-
-you can choose use `godep` (Optional)
+all import package save in `vendor` default, if some panic when run, please move `the file in vendor` to your `GOPATH`. you can choose use `godep` (Optional)
 
 ```
 godep restore
@@ -173,7 +171,7 @@ Easy to use, you just need to `New` one `Spider`, and `SetUrl`, then add some ht
 
 ### 4.1 The First Step
 
-there are three kind of spider:
+There are three kind of spider:
 
 1. `spiders, err := boss.NewSpider("http://smart:smart2016@104.128.121.46:808") ` // proxy spider, format: `protocol://user(optional):password(optional)@ip:port` alias to`New()`
 2. `spiders, err := boss.NewSpider(nil)`  // normal spider, default keep Cookie alias to `New()`
@@ -181,7 +179,7 @@ there are three kind of spider:
 
 ### 4.2 The Second Step
 
-camouflage our spider:
+Camouflage our spider:
 
 1. `spiders.SetUrl("http://www.lenggirl.com")`  // required: set url you want to
 2. `spiders.SetMethod(boss.GET)`  // optional: set http method `POST/GET/PUT/POSTJSON` and so on
@@ -195,7 +193,7 @@ camouflage our spider:
 
 ### 4.3 The Third Step
 
-Lauch our spider：
+Run our spider：
 
 1. `body, err := spiders.Go()` // if you use SetMethod(), auto use following ways, otherwise use Get()
 2. `body, err := spiders.Get()` // default
@@ -216,7 +214,7 @@ Deal the return data, all data will be return as binary:
 
 1. `fmt.Println(string(html))` // type change directly
 2. `fmt.Println(sp.ToString())` // use spider method, after http response, data will keep in the field Raw, just use ToString
-3. `fmt.Println(sp.JsonToString())` // some json data will include chinese and other multibyte character, such as `我爱你，我的小绵羊`，`사랑해`
+3. `fmt.Println(sp.JsonToString())` // some json data will include chinese and other multibyte character, such as `我爱你,我的小绵羊`,`사랑해`
 
 Attention: After every request for a url, the next request you can cover your http request header, otherwise header you set still exist,
 if just want clear post data, use `Clear()`, and want clear header too please use `ClearAll()` .
@@ -233,18 +231,15 @@ It has already used in many project(although some is very simple) :
 4. [Picture helper](/example/taobao/README.md)
 5. [Jiandan Picure helper](/example/jiandanmeizi/README.md)
 6. Music Download // see example file dir
-7. a lot closed source... 
+7. A lot closed source... 
 
-project change you can see [log](doc/log.md)
+Project change you can see [log](doc/log.md)
 
-development environment you can refer(still chinese):
+Install development environment you can refer(still chinese):
 
 [gospider-env](http://www.lenggirl.com/tool/gospider-env.html)
 
 [GoSpider-docker](https://github.com/hunterhug/GoSpider-docker)
-
-
-For questions, please email: gdccmcm14@live.com.
 
 # LICENSE
 
@@ -262,3 +257,5 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License
 ```
+
+For questions, please email: gdccmcm14@live.com.
