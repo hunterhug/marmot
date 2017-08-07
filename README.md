@@ -49,11 +49,11 @@ godep restore
     ---example   some example
     ---query     html content parse, only two function
     ---spider    core download module
-    ---store     store tool
+    ---store     store module
         ---myredis 
         ---mysql
         ---myetcd
-        ---mydb  one database Orm(use xorm)
+        ---mydb   database Orm(use xorm)
         ---myhbase
         ---mycassandra
     ---util      other tool
