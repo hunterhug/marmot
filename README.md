@@ -68,7 +68,7 @@ godep restore
 
 ## 4. Example
 
-The most simple example such follow, more see `example` dir:
+The most simple example such following, more see `example` dir:
 
 ```go
 package main
@@ -94,7 +94,7 @@ func main() {
 }
 ```
 
-Detail Example is:
+More detail Example is:
 
 ```go
 package main
