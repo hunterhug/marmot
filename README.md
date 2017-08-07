@@ -1,4 +1,4 @@
-# Project Code：Marmot（tubo）
+# Project: Marmot(Tubo)
 
 [中文介绍](Chinese.md)
 
@@ -43,7 +43,7 @@ all import package save in `vendor` default, if some panic when run, please move
 godep restore
 ```
 
-## 3. Project Structure（modularization）
+## 3. Project Structure(modularization)
 
 ```
     ---example   some example
@@ -100,13 +100,13 @@ Detail Example is:
 package main
 
 import (
-	// 1：import package alias boss
+	// 1:import package alias boss
 	boss "github.com/hunterhug/GoSpider/spider"
 	"github.com/hunterhug/GoSpider/util"
 )
 
 func init() {
-	// 2：Optional global setting
+	// 2:Optional global setting
 	boss.SetLogLevel(boss.DEBUG) // optional, set log to debug
 	boss.SetGlobalTimeout(3)     // optional, http request timeout time
 
@@ -115,7 +115,7 @@ func main() {
 
 	log := boss.Log() // optional, spider log you can choose to use
 
-	// 3： Must new a spider object, three ways
+	// 3: Must new a spider object, three ways
 	//spiders, err := boss.NewSpider("http://smart:smart2016@104.128.121.46:808") // proxy spider, format: protocol://user(optional):password(optional)@ip:port
 	//spiders, err := boss.NewSpider(nil)  // normal spider, default keep Cookie
 	//spiders, err := boss.NewAPI() // API spider, not keep Cookie
@@ -124,7 +124,7 @@ func main() {
 		panic(err)
 	}
 
-	// 4： Set the request Method/URL and some others, can chain set, only SetUrl is required.
+	// 4: Set the request Method/URL and some others, can chain set, only SetUrl is required.
 	// SetUrl: required, the Url
 	// SetMethod: optional, HTTP method: POST/GET/..., default GET
 	// SetWaitTime: optional, HTTP request wait/pause time
@@ -136,7 +136,7 @@ func main() {
 	//spiders.SetFormParm("username","jinhan") // optional: if you want post form
 	//spiders.SetFormParm("password","123")
 
-	// 5： Start Run
+	// 5: Start Run
 	//spiders.Get()             // default GET
 	//spiders.Post()            // POST form request data, data can fill by SetFormParm()
 	//spiders.PostJSON()        // POST JSON dara, use SetBData()
@@ -193,7 +193,7 @@ Camouflage our spider:
 
 ### 4.3 The Third Step
 
-Run our spider：
+Run our spider:
 
 1. `body, err := spiders.Go()` // if you use SetMethod(), auto use following ways, otherwise use Get()
 2. `body, err := spiders.Get()` // default
