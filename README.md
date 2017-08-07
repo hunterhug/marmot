@@ -6,19 +6,17 @@
 
 ## 1. Introduction
 
-World-Wide-Web robot, also known as spiders and crawlers, the principle is falsifying network data by constructing appointed HTTP protocol data packet, request resource to the specified host, access to the data returned. 
-There are a large number of Web information, human hand movement `copy-paste` data from web page is `time-consuming` and `laborious`, it inspired the crawler industry.
+World-Wide-Web robot, also known as spiders and crawlers. The principle is to falsify network data by constructing appointed HTTP protocol data packet, then request resource to the specified host, goal is to access the data returned. 
+There are a large number of web information, human's hand movement such as `copy-paste data` from web page is `time-consuming` and `laborious`, it inspired the crawler industry.
 
 Batch access to public network data does not break the law, but because there is no difference, no control, very violent means will lead to other services is not stable, therefore, most of the resources provider will filtering some data packets(falsify), 
-in this context,  batch small data acquisition has become a problem.Integrated with various requirements, such as various API development, automated software testing, they have similar technical principle so I write this project.
+in this context,  batch small data acquisition has become a problem. Integrated with various requirements, such as various API development, automated software testing(all this have similar technical principle). So this project come into the world(very simple).
 
-The `Marmot` is a human friendly gesture `Golang Library` which was developed using object-oriented method, easy to understand. By enhancing native Golang HTTP library package, help users deal with some trivial logic (such as collecting information, detection parameters), and add some fault-tolerant mechanisms (such as add lock, close time flow, ensure the high concurrent run without accident).
+The `Marmot` is very easy to understand. By enhancing native Golang HTTP library, help you deal with some trivial logic (such as collecting information, checking parameters), and add some fault-tolerant mechanisms (such as add lock, close time flow, ensure the high concurrent run without accident).
+It provides a human friendly API interface, you can reuse it often. Very convenient to support `Cookie Persistence`, `Crawler Proxy Settings`, as well as others general settings, such as  `HTTP request header settings, timeout/pause settings, data upload/post settings`.
+It support all of the HTTP methods `POST/PUT/GET/DELETE/...` and has built-in spider pool and browser UA pool, easy to develop UA+Cookie persistence distributed spider.
 
-This library provides a excellent API interface, you can reuse it, very convenient to support `Cookie Persistence`, `Crawler Proxy Settings`, as well as general settings such as the `HTTP request header settings, timeout/pause settings, data upload/web form post settings`, 
-support all of the HTTP methods such as `POST/PUT/GET/DELETE`, and also has built-in crawler pool and browser UA pool, easy development UA+Cookie persistence distributed crawler.
-
-In addition, also provides third party tool package, such as support for `mysql/postgresql/redis/cassandra/hbase` and so on. The library is simple and practical, just a few lines of code to replace the previous `Spaghetti code`. 
-has been applied in some large projects such as large-distributed crawler: `Projet: Amazon(USA/Japan/Germany/UK) `, has withstood the test of two thousand long acting proxy IP and high concurrency, single machine every day to get millions of data.
+In addition, It also provides third party tool package. The library is simple and practical, just a few lines of code to replace the previous `Spaghetti code`, has been applied in some large projects such as `Full Golang Automatic Amazon Distributed crawler|spider`, has withstood the test of two thousand long acting proxy IP and high concurrency, single machine every day to get millions of data.
 
 The main uses: WeChat development/ API docking / automated test / rush ticket scripting / site monitoring / vote plug-in / data crawling
 
