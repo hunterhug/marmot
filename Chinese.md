@@ -224,6 +224,8 @@ func main() {
 6. [网易无损音乐下载](/example/music/README.md) // 见示例
 7. ...
 
+小工具已经编译好，可以在这里下载[http://pan.baidu.com/s/1gfgi9YN](http://pan.baidu.com/s/1gfgi9YN)
+
 版本日志信息见[日志](doc/log.md)
 
 爬虫环境安装请参考:
