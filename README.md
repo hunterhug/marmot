@@ -228,7 +228,7 @@ It has already used in many project(although some is very simple) :
 3. [Zhihu API tool](https://github.com/hunterhug/zhihuxx)
 4. [Picture helper](/example/taobao/README.md)
 5. [Jiandan Picure helper](/example/jiandanmeizi/README.md)
-6. Music Download // see example dir
+6. [Music Download](/example/music/README.md) // see example dir
 7. A lot closed source... 
 
 Project change you can see [log](doc/log.md)

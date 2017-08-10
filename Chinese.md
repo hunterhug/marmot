@@ -221,7 +221,7 @@ func main() {
 3. [知乎全能API小工具](https://github.com/hunterhug/zhihuxx) // 准备破解验证码
 4. [图片助手](/example/taobao/README.md)
 5. [煎蛋无聊图](/example/jiandanmeizi/README.md)
-6. 网易无损音乐下载 // 见示例
+6. [网易无损音乐下载](/example/music/README.md) // 见示例
 7. ...
 
 版本日志信息见[日志](doc/log.md)
@@ -231,6 +231,29 @@ func main() {
 [环境配置](http://www.lenggirl.com/tool/gospider-env.html)
 
 [Docker快速版本](https://github.com/hunterhug/GoSpider-docker)
+
+示例编译二进制方法：
+
+Linux二进制
+
+```bash
+cd main
+
+# 64位
+GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -x -o zhihu_linux_amd64 main.go
+
+# 32位
+GOOS=linux GOARCH=386 go build -ldflags "-s -w" -x -o zhihu_linux_386 main.go
+```
+
+Windows二进制
+
+```bash
+# 64位
+GOOS=windows GOARCH=amd64 go build -ldflags "-s -w" -x -o zhihu_windows_amd64.exe main.go
+
+# 32位
+GOOS=windows GOARCH=386 go build -ldflags "-s -w" -x -o zhihu_windows_386.exe main.go
 
 如果你觉得项目帮助到你,欢迎请我喝杯咖啡
 
