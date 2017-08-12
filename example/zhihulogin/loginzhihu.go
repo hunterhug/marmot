@@ -11,6 +11,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+// loginsimple.go 知乎表单POST登陆，运行`go run loginzhihu.go -email=122233 -password=44646`,或者data/password.txt填入密码，
+// 并`go run loginzhihu.go`
+
 package main
 
 import (

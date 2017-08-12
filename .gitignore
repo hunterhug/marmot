@@ -1,10 +1,10 @@
 .idea/
 bin/*
 log/*.log
-*.exe
+#*.exe
 example/taobao/image
 example/helloworld/data/*.html
 test/
 data/
 example/huaban/data/
-music/songs_dir/*
+example/music/songs_dir/*
