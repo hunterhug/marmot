@@ -229,7 +229,8 @@ It has already used in many project(although some is very simple) :
 4. [Picture helper](/example/taobao/README.md)
 5. [Jiandan Picure helper](/example/jiandanmeizi/README.md)
 6. [Music Download](/example/music/README.md) // see example dir
-7. A lot closed source... 
+7. [GoTaobao](https://github.com/hunterhug/GoTaoBao)
+8. A lot closed source... 
 
 Project change you can see [log](doc/log.md)
 

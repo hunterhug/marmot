@@ -222,7 +222,8 @@ func main() {
 4. [图片助手](/example/taobao/README.md)
 5. [煎蛋无聊图](/example/jiandanmeizi/README.md)
 6. [网易无损音乐下载](/example/music/README.md) // 见示例
-7. ...
+7. [天猫淘宝有关的采集小程序](https://github.com/hunterhug/GoTaoBao)
+8. ...
 
 小工具已经编译好，可以在这里下载[http://pan.baidu.com/s/1gfgi9YN](http://pan.baidu.com/s/1gfgi9YN)
 
