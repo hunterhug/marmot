@@ -239,10 +239,6 @@ func GetFileSuffix(f string) string {
 
 /*
 # 去除标题中的非法字符 (Windows)
-def validateTitle(title):
-rstr = r"[\/\\\:\*\?\"\<\>\|]"  # '/\:*?"<>|'
-new_title = re.sub(rstr, "", title)
-return new_title
 */
 func ValidFileName(filename string) string {
 	patterns := []string{

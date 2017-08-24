@@ -258,7 +258,7 @@ GOOS=windows GOARCH=amd64 go build -ldflags "-s -w" -x -o zhihu_windows_amd64.ex
 GOOS=windows GOARCH=386 go build -ldflags "-s -w" -x -o zhihu_windows_386.exe main.go
 ```
 
-如果你觉得项目帮助到你,欢迎请我喝杯咖啡
+如果你觉得项目帮助到你,欢迎请我喝杯咖啡， 或加QQ：459527502
 
 微信
 ![微信](https://raw.githubusercontent.com/hunterhug/hunterhug.github.io/master/static/jpg/wei.png)
