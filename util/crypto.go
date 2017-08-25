@@ -20,6 +20,7 @@ import (
 	"encoding/base64"
 	"encoding/hex"
 	"fmt"
+	"io"
 	"net/url"
 	"strings"
 )
@@ -75,4 +76,14 @@ func UrlD(s string) string {
 	} else {
 		return s
 	}
+}
+
+// 对一个文件流进行hash计算
+func Md5FS(src io.Reader) string {
+	h := md5.New()
+	if err := CopyFF(src, h); err != nil {
+		fmt.Println(err.Error())
+		return ""
+	}
+	return fmt.Sprintf("%x", h.Sum([]byte("hunterhug")))
 }
