@@ -118,6 +118,7 @@ func FileExist(filename string) bool {
 	}
 }
 
+// 递归列出文件夹下文件（全路径）
 func WalkDir(dirPth, suffix string) (files []string, err error) {
 	files = make([]string, 0, 30)
 	suffix = strings.ToUpper(suffix)
@@ -134,6 +135,7 @@ func WalkDir(dirPth, suffix string) (files []string, err error) {
 	return files, err
 }
 
+// 列出文件夹下非递归文件全称
 func ListDir(dirPth string, suffix string) (files []string, err error) {
 	files = make([]string, 0, 10)
 	dir, err := ioutil.ReadDir(dirPth)
@@ -147,6 +149,25 @@ func ListDir(dirPth string, suffix string) (files []string, err error) {
 		}
 		if strings.HasSuffix(strings.ToUpper(fi.Name()), suffix) { //匹配文件
 			files = append(files, dirPth+"/"+fi.Name())
+		}
+	}
+	return files, nil
+}
+
+// 列出文件夹下文件名字
+func ListDirOnlyName(dirPth string, suffix string) (files []string, err error) {
+	files = make([]string, 0, 10)
+	dir, err := ioutil.ReadDir(dirPth)
+	if err != nil {
+		return nil, err
+	}
+	suffix = strings.ToUpper(suffix)
+	for _, fi := range dir {
+		if fi.IsDir() {
+			continue
+		}
+		if strings.HasSuffix(strings.ToUpper(fi.Name()), suffix) { //匹配文件
+			files = append(files, fi.Name())
 		}
 	}
 	return files, nil
@@ -239,10 +260,6 @@ func GetFileSuffix(f string) string {
 
 /*
 # 去除标题中的非法字符 (Windows)
-def validateTitle(title):
-rstr = r"[\/\\\:\*\?\"\<\>\|]"  # '/\:*?"<>|'
-new_title = re.sub(rstr, "", title)
-return new_title
 */
 func ValidFileName(filename string) string {
 	patterns := []string{

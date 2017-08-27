@@ -88,6 +88,19 @@ func (config *SpiderConfig) SetCookie(v string) *SpiderConfig {
 	return config
 }
 
+func (config *SpiderConfig) SetCookieByFile(file string) (*SpiderConfig, error) {
+	haha, err := util.ReadfromFile(file)
+	if err != nil {
+		return nil, err
+	}
+	cookie := string(haha)
+	cookie = strings.Replace(cookie, " ", "", -1)
+	cookie = strings.Replace(cookie, "\n", "", -1)
+	cookie = strings.Replace(cookie, "\r", "", -1)
+	sconfig := config.SetCookie(cookie)
+	return sconfig, nil
+}
+
 func (config *SpiderConfig) SetUa(ua string) *SpiderConfig {
 	config.Header.Set("User-Agent", ua)
 	return config

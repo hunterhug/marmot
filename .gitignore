@@ -8,3 +8,4 @@ test/
 data/
 example/huaban/data/
 example/music/songs_dir/*
+vendor/github.com/go-xorm/*
