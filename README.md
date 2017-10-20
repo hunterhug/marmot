@@ -1,5 +1,7 @@
 # Project: Marmot(Tubo)
 
+[![GitHub forks](https://img.shields.io/github/forks/badges/shields.svg?style=social&label=Fork)](https://github.com/hunterhug/GoSpider)[![GitHub stars](https://img.shields.io/github/stars/badges/shields.svg?style=social&label=Stars)](https://github.com/hunterhug/GoSpider)[![Github All Releases](https://img.shields.io/github/downloads/atom/atom/total.svg)](https://github.com/hunterhug/GoSpider)[![Package Control](https://img.shields.io/packagecontrol/dm/GitGutter.svg)](https://github.com/hunterhug/GoSpider)[![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)](https://github.com/hunterhug/GoSpider)[![GitHub last commit](https://img.shields.io/github/last-commit/google/skia.svg)](https://github.com/hunterhug/GoSpider)
+
 [中文介绍](Chinese.md)
 
 ![Marmot](tubo.png)
