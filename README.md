@@ -1,6 +1,9 @@
 # Project: Marmot(Tubo)
 
-[![GitHub issues](https://img.shields.io/github/issues/hunterhug/GoSpider.svg)](https://github.com/hunterhug/GoSpider/issues)[![GitHub forks](https://img.shields.io/github/forks/hunterhug/GoSpider.svg)](https://github.com/hunterhug/GoSpider/network)[![GitHub stars](https://img.shields.io/github/stars/hunterhug/GoSpider.svg)](https://github.com/hunterhug/GoSpider/stargazers)[![GitHub license](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/hunterhug/GoSpider/master/LICENSE)
+[![GitHub issues](https://img.shields.io/github/issues/hunterhug/GoSpider.svg)](https://github.com/hunterhug/GoSpider/issues)
+[![GitHub forks](https://img.shields.io/github/forks/hunterhug/GoSpider.svg)](https://github.com/hunterhug/GoSpider/network)
+[![GitHub stars](https://img.shields.io/github/stars/hunterhug/GoSpider.svg)](https://github.com/hunterhug/GoSpider/stargazers)
+[![GitHub license](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/hunterhug/GoSpider/master/LICENSE)
 
 [中文介绍](Chinese.md)
 
