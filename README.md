@@ -1,6 +1,6 @@
 # Project: Marmot(Tubo)
 
-[![GitHub forks](https://img.shields.io/github/forks/badges/shields.svg?style=social&label=Fork)](https://github.com/hunterhug/GoSpider)[![GitHub stars](https://img.shields.io/github/stars/badges/shields.svg?style=social&label=Stars)](https://github.com/hunterhug/GoSpider)[![Github All Releases](https://img.shields.io/github/downloads/atom/atom/total.svg)](https://github.com/hunterhug/GoSpider)[![Package Control](https://img.shields.io/packagecontrol/dm/GitGutter.svg)](https://github.com/hunterhug/GoSpider)[![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)](https://github.com/hunterhug/GoSpider)[![GitHub last commit](https://img.shields.io/github/last-commit/google/skia.svg)](https://github.com/hunterhug/GoSpider)
+[![GitHub issues](https://img.shields.io/github/issues/hunterhug/GoSpider.svg)](https://github.com/hunterhug/GoSpider/issues)[![GitHub forks](https://img.shields.io/github/forks/hunterhug/GoSpider.svg)](https://github.com/hunterhug/GoSpider/network)[![GitHub stars](https://img.shields.io/github/stars/hunterhug/GoSpider.svg)](https://github.com/hunterhug/GoSpider/stargazers)[![GitHub license](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/hunterhug/GoSpider/master/LICENSE)
 
 [中文介绍](Chinese.md)
 
