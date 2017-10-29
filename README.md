@@ -1,5 +1,12 @@
 # Project: Marmot(Tubo)
 
+[![GitHub forks](https://img.shields.io/github/forks/hunterhug/GoSpider.svg?style=social&label=Forks)](https://github.com/hunterhug/GoSpider/network)
+[![GitHub stars](https://img.shields.io/github/stars/hunterhug/GoSpider.svg?style=social&label=Stars)](https://github.com/hunterhug/GoSpider/stargazers)
+[![GitHub last commit](https://img.shields.io/github/last-commit/hunterhug/GoSpider.svg)](https://github.com/hunterhug/GoSpider)
+[![Go Report Card](https://goreportcard.com/badge/github.com/hunterhug/GoSpider)](https://goreportcard.com/report/github.com/hunterhug/GoSpider)
+[![GitHub issues](https://img.shields.io/github/issues/hunterhug/GoSpider.svg)](https://github.com/hunterhug/GoSpider/issues)
+[![GitHub license](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/hunterhug/GoSpider/master/LICENSE)
+
 [中文介绍](Chinese.md)
 
 ![Marmot](tubo.png)

@@ -126,3 +126,21 @@ func TestGetCurrentPath(t *testing.T) {
 	// 永远都是该项目文件所在目录
 	fmt.Println(CurDir())
 }
+
+func TestDevideStringList(t *testing.T) {
+	// devide a string list into severy string list
+	stringlist := []string{"2", "3", "4", "5"}
+	//num := 10
+
+	num := 6
+
+	for i := 1; i < num; i++ {
+		result, err := DevideStringList(stringlist, i)
+		if err != nil {
+			t.Error(err)
+		} else {
+			t.Logf("%#v", result)
+		}
+	}
+
+}

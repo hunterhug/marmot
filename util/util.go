@@ -34,8 +34,6 @@ func ToLower(s string) string {
 	return strings.ToLower(s)
 }
 
-
-
 // change by python
 func DevideStringList(files []string, num int) (map[int][]string, error) {
 	length := len(files)
@@ -43,8 +41,9 @@ func DevideStringList(files []string, num int) (map[int][]string, error) {
 	if num <= 0 {
 		return split, errors.New("num must not negtive")
 	}
-	if num >= length {
-		return split, errors.New("num must not bigger than the list length")
+	if num > length {
+		num = length
+		//return split, errors.New("num must not bigger than the list length")
 	}
 	process := length / num
 	for i := 0; i < num; i++ {
