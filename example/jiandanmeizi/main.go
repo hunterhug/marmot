@@ -22,8 +22,11 @@ import (
 	"github.com/hunterhug/GoSpider/spider"
 	"github.com/hunterhug/GoSpider/util"
 	"strings"
+	"flag"
 )
 
+var which = flag.Int("t",1,"type 1:ooxx 2:wuliao")
+var saverootdir = flag.String("root",".", "the root dir you want to save picture")
 var (
 	types = map[int]string{
 		1: "ooxx", // 妹子图
@@ -42,13 +45,30 @@ var (
 	savehash = true
 
 	// 保存的地方
-	rootdir = "D:\\jiandan\\jiandansum\\" + types[Which]
+	rootdir = "/home/hunterhug/jiandansum/" + types[Which]
 	// 根据页数分图片保存，不然图片太大了,我简称它hash（之前版本不是用page分而是hash）！
 	// 图片太大硬盘会爆！
-	hashdir = "D:\\jiandan\\jiandanpage\\" + types[Which]
+	hashdir = "/home/hunterhug/jiandanpage/" + types[Which]
 )
 
 func init() {
+	flag.Parse()
+        Which = *which
+
+        url     = "http://jandan.net/" + types[Which]
+        urlpage = "http://jandan.net/" + types[Which] + "/page-%d"
+
+        // 保存在统一文件
+        saveroot = false
+        // 根据页数保存在很多文件夹下
+        savehash = true
+
+        // 保存的地方
+        rootdir = *saverootdir+ "/" + types[Which]
+        // 根据页数分图片保存，不然图片太大了,我简称它hash（之前版本不是用page分而是hash）！
+        // 图片太大硬盘会爆！
+        hashdir = *saverootdir + "/" + types[Which]
+
 	if savehash == false && saveroot == false {
 		fmt.Println("这种是不行的：savehash==false && saveroot==false！必须有一个为true")
 	}
