@@ -14,6 +14,7 @@ limitations under the License.
 package spider
 
 import (
+	"bytes"
 	"errors"
 	"github.com/hunterhug/GoSpider/util"
 	"io/ioutil"
@@ -340,12 +341,16 @@ func (sp *Spider) post(method, contenttype string) (body []byte, e error) {
 	var request = &http.Request{}
 
 	//post data
-	if sp.Data != nil {
+	if sp.BData != nil {
+		pr := ioutil.NopCloser(bytes.NewReader(sp.BData))
+		request, _ = http.NewRequest(method, sp.Url, pr)
+	} else if sp.Data != nil {
 		pr := ioutil.NopCloser(strings.NewReader(sp.Data.Encode()))
 		request, _ = http.NewRequest(method, sp.Url, pr)
 	} else {
 		request, _ = http.NewRequest(method, sp.Url, nil)
 	}
+
 	request.Header = CloneHeader(sp.Header)
 
 	request.Header.Set("Content-Type", contenttype)
@@ -393,12 +398,16 @@ func (sp *Spider) put(method, contenttype string) (body []byte, e error) {
 	var request = &http.Request{}
 
 	//post data
-	if sp.Data != nil {
+	if sp.BData != nil {
+		pr := ioutil.NopCloser(bytes.NewReader(sp.BData))
+		request, _ = http.NewRequest(method, sp.Url, pr)
+	} else if sp.Data != nil {
 		pr := ioutil.NopCloser(strings.NewReader(sp.Data.Encode()))
 		request, _ = http.NewRequest(method, sp.Url, pr)
 	} else {
 		request, _ = http.NewRequest(method, sp.Url, nil)
 	}
+
 	request.Header = CloneHeader(sp.Header)
 
 	request.Header.Set("Content-Type", contenttype)
@@ -563,12 +572,16 @@ func (sp *Spider) OtherGo(method, contenttype string) (body []byte, e error) {
 	var request = &http.Request{}
 
 	//post data
-	if sp.Data != nil {
+	if sp.BData != nil {
+		pr := ioutil.NopCloser(bytes.NewReader(sp.BData))
+		request, _ = http.NewRequest(method, sp.Url, pr)
+	} else if sp.Data != nil {
 		pr := ioutil.NopCloser(strings.NewReader(sp.Data.Encode()))
 		request, _ = http.NewRequest(method, sp.Url, pr)
 	} else {
 		request, _ = http.NewRequest(method, sp.Url, nil)
 	}
+
 	request.Header = CloneHeader(sp.Header)
 
 	request.Header.Set("Content-Type", contenttype)
