@@ -341,7 +341,7 @@ func (sp *Spider) post(method, contenttype string) (body []byte, e error) {
 	var request = &http.Request{}
 
 	//post data
-	if sp.BData != nil {
+	if len(sp.BData) != 0 {
 		pr := ioutil.NopCloser(bytes.NewReader(sp.BData))
 		request, _ = http.NewRequest(method, sp.Url, pr)
 	} else if sp.Data != nil {
@@ -398,7 +398,7 @@ func (sp *Spider) put(method, contenttype string) (body []byte, e error) {
 	var request = &http.Request{}
 
 	//post data
-	if sp.BData != nil {
+	if len(sp.BData) != 0 {
 		pr := ioutil.NopCloser(bytes.NewReader(sp.BData))
 		request, _ = http.NewRequest(method, sp.Url, pr)
 	} else if sp.Data != nil {
@@ -572,7 +572,7 @@ func (sp *Spider) OtherGo(method, contenttype string) (body []byte, e error) {
 	var request = &http.Request{}
 
 	//post data
-	if sp.BData != nil {
+	if len(sp.BData) != 0 {
 		pr := ioutil.NopCloser(bytes.NewReader(sp.BData))
 		request, _ = http.NewRequest(method, sp.Url, pr)
 	} else if sp.Data != nil {
