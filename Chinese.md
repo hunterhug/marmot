@@ -1,9 +1,6 @@
 # 项目代号：土拨鼠（tubo）
 
-[前言](doc/pre.md)
-
 ![土拨](tubo.png)
-
 
 >万维网网络机器人,又称蜘蛛,爬虫,原理主要是通过构造符合HTTP协议的网络数据包,向指定主机请求资源,获取返回的数据.万维网有大量的公开信息,人力采集数据费时费力,故激发了爬虫的产业化.
 批量获取公开网络数据并不违反,但由于无差别性,无节制,十分暴力的手段会导致对方服务的不稳定,因此,大部分资源提供商对数据包进行了某些过滤,在此背景下,小批量数据获取成为了难题.
@@ -21,22 +18,6 @@
 
 ```
 go get -v github.com/hunterhug/GoSpider
-```
-
-或者新建 你的GOPATH路径`/src/github.com/hunterhug`
-
-```
-cd src/github.com/hunterhug
-git clone https://github.com/hunterhug/GoSpider
-```
-
-默认所有第三方库已经保存在vendor,如果使用包冲突了,请把vendor下的包移到`GOPATH`下,谨记！！
-
-
-以下godep可选,vendor中已经带全第三方库
-
-```
-godep restore
 ```
 
 文件目录（组件化开发）
@@ -64,7 +45,7 @@ godep restore
 
 ## 二.使用
 
-最简单示例,更多移动到[官方示例](https://github.com/hunterhug/GoSpiderExample) ,官方部分示例已经合进本库，参见`example`文件夹
+官方部分示例已经合进本库，参见`example`文件夹
 
 ```go
 package main
@@ -216,24 +197,16 @@ func main() {
 
 该爬虫库已经在多个项目中使用
 
-1. 亚马逊大型分布式爬虫 // 涉及商业已经闭源，查看[图文](doc/amazon.md)
+1. [亚马逊大型分布式爬虫](https://github.com/hunterhug/AmazonBigSpider) // 查看[图文](doc/amazon.md)
 2. [煎蛋分布式文章爬虫](https://github.com/hunterhug/jiandan)
-3. [知乎全能API小工具](https://github.com/hunterhug/zhihuxx) // 准备破解验证码
+3. [知乎全能API小工具](https://github.com/hunterhug/GoZhihu)
 4. [图片助手](/example/taobao/README.md)
 5. [煎蛋无聊图](/example/jiandanmeizi/README.md)
-6. [网易无损音乐下载](/example/music/README.md) // 见示例
+6. [网易无损音乐下载](/example/music/README.md)
 7. [天猫淘宝有关的采集小程序](https://github.com/hunterhug/GoTaoBao)
 8. ...
 
-小工具已经编译好，可以在这里下载[http://pan.baidu.com/s/1gfgi9YN](http://pan.baidu.com/s/1gfgi9YN)
-
-版本日志信息见[日志](doc/log.md)
-
-爬虫环境安装请参考:
-
-[环境配置](http://www.lenggirl.com/tool/gospider-env.html)
-
-[Docker快速版本](https://github.com/hunterhug/GoSpider-docker)
+版本日志信息见[日志](doc/log.md), 爬虫环境安装请参考:[Docker快速版本](https://github.com/hunterhug/GoSpider-docker)
 
 示例编译二进制方法：
 
@@ -259,7 +232,7 @@ GOOS=windows GOARCH=amd64 go build -ldflags "-s -w" -x -o zhihu_windows_amd64.ex
 GOOS=windows GOARCH=386 go build -ldflags "-s -w" -x -o zhihu_windows_386.exe main.go
 ```
 
-如果你觉得项目帮助到你,欢迎请我喝杯咖啡， 或加QQ：459527502
+如果你觉得项目帮助到你,欢迎请我喝杯咖啡
 
 微信
 ![微信](https://raw.githubusercontent.com/hunterhug/hunterhug.github.io/master/static/jpg/wei.png)
@@ -286,5 +259,3 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License
 ```
-
-![](doc/xx.png)
