@@ -7,7 +7,7 @@
 [![GitHub issues](https://img.shields.io/github/issues/hunterhug/GoSpider.svg)](https://github.com/hunterhug/GoSpider/issues)
 [![GitHub license](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/hunterhug/GoSpider/master/LICENSE)
 
-[中文介绍](Chinese.md)
+A simple download lib for http get/post/... attach other good good util lib. [中文介绍](Chinese.md)
 
 ![Marmot](tubo.png)
 
@@ -64,6 +64,8 @@ godep restore
     ---util      other tool
         --- image  picture cut
         --- open   open CAPTCHA picture
+        --- hash   aWS IAM/v4...
+        --- slack  sent message to slack
         crypto.go encryption..
         file.go  file operation
         time.go  time...
@@ -147,6 +149,7 @@ func main() {
 	//sp.PostJSON()        // POST JSON dara, use SetBData()
 	//sp.PostXML()         // POST XML, use SetBData()
 	//sp.PostFILE()        // POST to Upload File, data in SetBData() too
+	//sp.OtherGo("OPTIONS", "application/x-www-form-urlencoded") // Other http method, Such as OPTIONS etcd
 	body, err := sp.Go() // if you use SetMethod(), otherwise equal to Get()
 	if err != nil {
 		log.Error(err.Error())
@@ -156,10 +159,13 @@ func main() {
 
 	log.Debugf("%#v", sp) // if you not set log as debug, it will not appear
 
-	sp.Clear() // after get the return data by post data, you can clear the data you fill
-	//sp.ClearAll() // you can also want to clear all, include  http header you set
+    // You must Clear it! If you want to POST Data by SetFormParm()/SetBData() again
+	// After get the return data by post data, you can clear the data you fill
+	sp.Clear()
 
-	// spider pool for concurrent, every Spider Object is serial as the browser. if you want collateral execution, use this.
+	//sp.ClearAll() // you can also want to clear all, include http header you set
+
+	// Spider pool for concurrent, every Spider Object is serial as the browser. if you want collateral execution, use this.
 	boss.Pool.Set("myfirstspider", sp)
 	if poolspider, ok := boss.Pool.Get("myfirstspider"); ok {
 		go func() {
@@ -241,11 +247,7 @@ It has already used in many project(although some is very simple) :
 
 Project change you can see [log](doc/log.md)
 
-Install development environment you can refer(still chinese):
-
-[gospider-env](http://www.lenggirl.com/tool/gospider-env.html)
-
-[GoSpider-docker](https://github.com/hunterhug/GoSpider-docker)
+Install development environment you can refer:[GoSpider-docker](https://github.com/hunterhug/GoSpider-docker)
 
 # LICENSE
 
