@@ -37,7 +37,7 @@ func main() {
 	// 1.新建爬虫
 	sp, _ := spider.New(nil)
 	// 2.设置网址
-	sp.SetUrl("http://www.lenggirl.com").SetUa(spider.RandomUa()).SetMethod(spider.PUT) // 我的网站不允许PUT请改为GET
+	sp.SetUrl("http://www.cjhug.me").SetUa(spider.RandomUa()).SetMethod(spider.PUT) // 我的网站不允许PUT请改为GET
 	// 3.抓取网址
 	html, err := sp.Go()
 	if err != nil {
@@ -131,7 +131,7 @@ func main() {
 
 模拟爬虫设置头部:
 
-1. `sp.SetUrl("http://www.lenggirl.com")`  // 设置Http请求要抓取的网址,必须
+1. `sp.SetUrl("http://www.cjhug.me")`  // 设置Http请求要抓取的网址,必须
 2. `sp.SetMethod(boss.GET)`  // 设置Http请求的方法:`POST/GET/PUT/POSTJSON`等
 3. `sp.SetWaitTime(2)` // 设置Http请求超时时间
 4. `sp.SetUa(boss.RandomUa())`                // 设置Http请求浏览器标志,本项目提供445个浏览器标志，可选设置
@@ -173,7 +173,7 @@ func main() {
 
 该爬虫库已经在多个项目中使用
 
-1. [亚马逊大型分布式爬虫](https://github.com/hunterhug/AmazonBigSpider) // 查看[图文](doc/amazon.md)
+1. [亚马逊大型分布式爬虫](https://github.com/hunterhug/AmazonBigSpider) // 查看[图文](/doc/amazon.md)
 2. [煎蛋分布式文章爬虫](https://github.com/hunterhug/jiandan)
 3. [知乎全能API小工具](https://github.com/hunterhug/GoZhihu)
 4. [图片助手](/example/taobao/README.md)
@@ -182,7 +182,7 @@ func main() {
 7. [天猫淘宝有关的采集小程序](https://github.com/hunterhug/GoTaoBao)
 8. ...
 
-版本日志信息见[日志](doc/log.md), 爬虫环境安装请参考:[Docker快速版本](https://github.com/hunterhug/GoSpider-docker)
+版本日志信息见[日志](/doc/log.md), 爬虫环境安装请参考:[Docker快速版本](https://github.com/hunterhug/GoSpider-docker)
 
 示例编译二进制方法：
 

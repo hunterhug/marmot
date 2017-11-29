@@ -9,7 +9,7 @@
 
 [中文介绍](/doc/Chinese.md)
 
-![Marmot](tubo.png)
+![Marmot](/doc/tubo.png)
 
 ## 1. Introduction
 
@@ -59,7 +59,7 @@ func main() {
 	// 1. New a spider
 	sp, _ := spider.New(nil)
 	// 2. Set a URL 
-	sp.SetUrl("http://www.lenggirl.com").SetUa(spider.RandomUa()).SetMethod(spider.GET)
+	sp.SetUrl("http://www.cjhug.me").SetUa(spider.RandomUa()).SetMethod(spider.GET)
 	// 3. Fetch
 	html, err := sp.Go()
 	if err != nil {
@@ -161,7 +161,7 @@ There are three kinds of spider:
 
 Camouflage our spider:
 
-1. `sp.SetUrl("http://www.lenggirl.com")`  // required: set url you want to
+1. `sp.SetUrl("http://www.cjhug.me")`  // required: set url you want to
 2. `sp.SetMethod(boss.GET)`  // optional: set http method `POST/GET/PUT/POSTJSON` and so on
 3. `sp.SetWaitTime(2)`                         // optional: set timeout of http request
 4. `sp.SetUa(boss.RandomUa())`                 // optional: set http browser user agent, you can see spider/config/ua.txt
