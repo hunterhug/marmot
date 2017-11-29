@@ -27,6 +27,30 @@ In addition, It also provides third party tool package. The library is simple an
 
 The main uses: WeChat development/ API docking / automated test / rush ticket scripting / site monitoring / vote plug-in / data crawling
 
+Now We support Default Spider, You can easy use:
+
+```
+package main
+
+import (
+	"fmt"
+	"github.com/hunterhug/GoSpider/spider"
+)
+
+func main() {
+	// Use Default Spider, You can Also New One:
+	// sp:=spider.New(nil)
+	spider.SetLogLevel(spider.DEBUG)
+	spider.SetUrl("http://www.google.com")
+	_, err := spider.Go()
+	if err != nil {
+		fmt.Println(err.Error())
+	} else {
+		fmt.Println(spider.ToString())
+	}
+}
+```
+
 ## 2. How To Use
 
 You can get it by:

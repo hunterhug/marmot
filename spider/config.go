@@ -49,9 +49,18 @@ func (config *SpiderConfig) SetHeader(header http.Header) *SpiderConfig {
 	return config
 }
 
+// Default Set!
+func SetHeader(header http.Header) *SpiderConfig {
+	return DefaultSpider.SetHeader(header)
+}
+
 func (config *SpiderConfig) SetHeaderParm(k, v string) *SpiderConfig {
 	config.Header.Set(k, v)
 	return config
+}
+
+func SetHeaderParm(k, v string) *SpiderConfig {
+	return DefaultSpider.SetHeaderParm(k, v)
 }
 
 // Set Cookie!
@@ -59,6 +68,10 @@ func (config *SpiderConfig) SetHeaderParm(k, v string) *SpiderConfig {
 func (config *SpiderConfig) SetCookie(v string) *SpiderConfig {
 	config.SetHeaderParm("Cookie", v)
 	return config
+}
+
+func SetCookie(v string) *SpiderConfig {
+	return DefaultSpider.SetCookie(v)
 }
 
 // Set Cookie by file.
@@ -75,14 +88,26 @@ func (config *SpiderConfig) SetCookieByFile(file string) (*SpiderConfig, error) 
 	return sconfig, nil
 }
 
+func SetCookieByFile(file string) (*SpiderConfig, error) {
+	return DefaultSpider.SetCookieByFile(file)
+}
+
 func (config *SpiderConfig) SetUa(ua string) *SpiderConfig {
 	config.Header.Set("User-Agent", ua)
 	return config
 }
 
+func SetUa(ua string) *SpiderConfig {
+	return DefaultSpider.SetUa(ua)
+}
+
 func (config *SpiderConfig) SetRefer(refer string) *SpiderConfig {
 	config.Header.Set("Referer", refer)
 	return config
+}
+
+func SetRefer(refer string) *SpiderConfig {
+	return DefaultSpider.SetRefer(refer)
 }
 
 func (config *SpiderConfig) SetHost(host string) *SpiderConfig {
@@ -99,6 +124,10 @@ func (config *SpiderConfig) SetUrl(url string) *SpiderConfig {
 		config.SetHost(strings.Split(temp[1], "/")[0])
 	}
 	return config
+}
+
+func SetUrl(url string) *SpiderConfig {
+	return DefaultSpider.SetUrl(url)
 }
 
 func (config *SpiderConfig) SetMethod(method string) *SpiderConfig {
@@ -131,6 +160,10 @@ func (config *SpiderConfig) SetMethod(method string) *SpiderConfig {
 	return config
 }
 
+func SetMethod(method string) *SpiderConfig {
+	return DefaultSpider.SetMethod(method)
+}
+
 func (config *SpiderConfig) SetWaitTime(num int) *SpiderConfig {
 	if num <= 0 {
 		num = 1
@@ -139,9 +172,17 @@ func (config *SpiderConfig) SetWaitTime(num int) *SpiderConfig {
 	return config
 }
 
+func SetWaitTime(num int) *SpiderConfig {
+	return DefaultSpider.SetWaitTime(num)
+}
+
 func (config *SpiderConfig) SetBData(data []byte) *SpiderConfig {
 	config.BData = data
 	return config
+}
+
+func SetBData(data []byte) *SpiderConfig {
+	return DefaultSpider.SetBData(data)
 }
 
 func (config *SpiderConfig) SetForm(form url.Values) *SpiderConfig {
@@ -149,9 +190,17 @@ func (config *SpiderConfig) SetForm(form url.Values) *SpiderConfig {
 	return config
 }
 
+func SetForm(form url.Values) *SpiderConfig {
+	return DefaultSpider.SetForm(form)
+}
+
 func (config *SpiderConfig) SetFormParm(k, v string) *SpiderConfig {
 	config.Data.Set(k, v)
 	return config
+}
+
+func SetFormParm(k, v string) *SpiderConfig {
+	return DefaultSpider.SetFormParm(k, v)
 }
 
 // Clear data we sent
@@ -159,6 +208,10 @@ func (config *SpiderConfig) Clear() *SpiderConfig {
 	config.Data = url.Values{}
 	config.BData = []byte{}
 	return config
+}
+
+func Clear() *SpiderConfig {
+	return DefaultSpider.Clear()
 }
 
 // All clear include header
@@ -169,10 +222,18 @@ func (config *SpiderConfig) ClearAll() *SpiderConfig {
 	return config
 }
 
+func ClearAll() *SpiderConfig {
+	return DefaultSpider.ClearAll()
+}
+
 // Clear Cookie
 func (config *SpiderConfig) ClearCookie() *SpiderConfig {
 	config.Header.Del("Cookie")
 	return config
+}
+
+func ClearCookie() *SpiderConfig {
+	return DefaultSpider.ClearCookie()
 }
 
 // Get Cookies
@@ -182,6 +243,10 @@ func (sp *Spider) GetCookies() []*http.Cookie {
 	} else {
 		return []*http.Cookie{}
 	}
+}
+
+func GetCookies() []*http.Cookie {
+	return DefaultSpider.GetCookies()
 }
 
 // Deprecated
