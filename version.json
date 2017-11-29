@@ -1,6 +1,6 @@
 {
-  "Version": "1.1",
-  "Update": "2017.9.30 Beijing",
+  "Version": "2.0",
+  "Update": "2017.11.29 Beijing",
   "Description": "Spider lib write by golang",
   "Repo": "https://github.com/hunterhug/GoSpider",
   "Author": "hunterhug",

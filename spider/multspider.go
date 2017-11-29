@@ -1,5 +1,5 @@
 /*
-Copyright 2017 by GoSpider author.
+Copyright 2017 by GoSpider author. Email: gdccmcm14@live.com
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -18,33 +18,32 @@ import (
 )
 
 var (
-	// 爬虫池子
-	Pool = &_Spider{brower: make(map[string]*Spider)}
-	Ua   = map[int]string{}
+	// Pool for many spider, every spider can only serial execution
+	Pool = &_Spider{sps: make(map[string]*Spider)}
 )
 
 type _Spider struct {
-	mux    sync.RWMutex
-	brower map[string]*Spider
+	mux sync.RWMutex // simple lock
+	sps map[string]*Spider
 }
 
 func (sb *_Spider) Get(name string) (b *Spider, ok bool) {
 	sb.mux.RLock()
-	b, ok = sb.brower[name]
+	b, ok = sb.sps[name]
 	sb.mux.RUnlock()
 	return
 }
 
 func (sb *_Spider) Set(name string, b *Spider) {
 	sb.mux.Lock()
-	sb.brower[name] = b
+	sb.sps[name] = b
 	sb.mux.Unlock()
 	return
 }
 
 func (sb *_Spider) Delete(name string) {
 	sb.mux.Lock()
-	delete(sb.brower, name)
+	delete(sb.sps, name)
 	sb.mux.Unlock()
 	return
 }

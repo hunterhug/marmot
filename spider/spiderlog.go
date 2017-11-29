@@ -1,5 +1,5 @@
 /*
-Copyright 2017 by GoSpider author.
+Copyright 2017 by GoSpider author. Email: gdccmcm14@live.com
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -18,15 +18,13 @@ import (
 	"os"
 )
 
-// 全局日志
 var Logger = logging.MustGetLogger("GoSpider")
 
-// 格式
 var format = logging.MustStringFormatter(
 	"%{color}%{time:2006-01-02 15:04:05.000} %{longpkg}:%{longfunc} [%{level:.5s}]:%{color:reset} %{message}",
 )
 
-// level name you can refer
+// Level name you can refer
 var LevelNames = []string{
 	"CRITICAL",
 	"ERROR",
@@ -36,8 +34,7 @@ var LevelNames = []string{
 	"DEBUG",
 }
 
-// init log record
-// 初始化日志
+// Init log record
 func init() {
 	backend := logging.NewLogBackend(os.Stderr, "", 0)
 	backendFormatter := logging.NewBackendFormatter(backend, format)
@@ -45,15 +42,13 @@ func init() {
 	logging.SetLevel(logging.INFO, "GoSpider")
 }
 
-// 设置日志级别
-// set log level
+// SET log level
 func SetLogLevel(level string) {
 	lvl, _ := logging.LogLevel(level)
 	logging.SetLevel(lvl, "GoSpider")
 }
 
-// 返回全局对象
-// return global log
+// Return global log
 func Log() *logging.Logger {
 	return Logger
 }

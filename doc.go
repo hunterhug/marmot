@@ -1,5 +1,5 @@
 /*
-Copyright 2017 by GoSpider author.
+Copyright 2017 by GoSpider author. Email: gdccmcm14@live.com
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -15,14 +15,6 @@ package main
 
 import (
 	"fmt"
-	_ "github.com/hunterhug/GoSpider/query"
-	_ "github.com/hunterhug/GoSpider/spider"
-	_ "github.com/hunterhug/GoSpider/store"
-	_ "github.com/hunterhug/GoSpider/store/myetcd"
-	_ "github.com/hunterhug/GoSpider/store/mydb"
-	_ "github.com/hunterhug/GoSpider/store/myredis"
-	_ "github.com/hunterhug/GoSpider/store/mysql"
-	_ "github.com/hunterhug/GoSpider/util"
 )
 
 func main() {

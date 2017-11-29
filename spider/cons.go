@@ -1,5 +1,5 @@
 /*
-Copyright 2017 by GoSpider author.
+Copyright 2017 by GoSpider author. Email: gdccmcm14@live.com
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -16,90 +16,57 @@ package spider
 import "net/http"
 
 const (
-	// 暂停时间 default wait time
+	// Default wait time
 	WaitTime = 5
 
-	// HTTP方法
+	// HTTP method
+	GET      = "GET"
 	POST     = "POST"
 	POSTJSON = "POSTJSON"
 	POSTXML  = "POSTXML"
 	POSTFILE = "POSTFILE"
+	PUT      = "PUT"
+	PUTJSON  = "PUTJSON"
+	PUTXML   = "PUTXML"
+	PUTFILE  = "PUTFILE"
+	DELETE   = "DELETE"
+	OTHER    = "OTHER" // this stand for you can use other method this lib not own.
 
-	// 实现了!
-	PUT     = "PUT"
-	PUTJSON = "PUTJSON"
-	PUTXML  = "PUTXML"
-	PUTFILE = "PUTFILE"
+	// HTTP content type
+	HTTPFORMContentType = "application/x-www-form-urlencoded"
+	HTTPJSONContentType = "application/json"
+	HTTPXMLContentType  = "text/xml"
+	HTTPFILEContentType = "multipart/form-data"
 
-	DELETE = "DELETE"
-	GET    = "GET"
-	OTHER  = "OTHER"
-
+	// Log mark
 	CRITICAL = "CRITICAL"
 	ERROR    = "ERROR"
 	WARNING  = "WARNING"
 	NOTICE   = "NOTICE"
 	INFO     = "INFO"
 	DEBUG    = "DEBUG"
-
-	HTTPFORMContentType = "application/x-www-form-urlencoded"
-	HTTPJSONContentType = "application/json"
-	HTTPXMLContentType  = "text/xml"
-	HTTPFILEContentType = "multipart/form-data"
 )
 
 var (
-	// 浏览器头部 default header ua
-	// 默认的,取消使用！！
-	FoxfireLinux = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:46.0) Gecko/20100101 Firefox/46.0"
-	SpiderHeader = map[string][]string{
+	// Browser User-Agent, Our default Http ua header!
+	ourloveUa = "GolangSpider+(+http://cjhug.me+LoveYou/v2)"
+
+	DefaultHeader = map[string][]string{
 		"User-Agent": {
-			FoxfireLinux,
+			ourloveUa,
 		},
 	}
-	// http get and post No timeout
-	// 不设置时没有超时时间
+
+	// DefaultTimeOut,http get and post No timeout
 	DefaultTimeOut = 0
 )
 
-// 超时目前只能这样设置全局
+// Set global timeout, it can only by this way!
 func SetGlobalTimeout(num int) {
 	DefaultTimeOut = num
 }
 
-// usually a header has ua,host and refer
-// 浏览器标志，主机名，来源
-func NewHeader(ua interface{}, host string, refer interface{}) map[string][]string {
-	if ua == nil {
-		ua = FoxfireLinux
-	}
-	if refer == nil {
-		h := map[string][]string{
-			"User-Agent": {
-				ua.(string),
-			},
-			"Host": {
-				host,
-			},
-		}
-		return h
-	}
-	h := map[string][]string{
-		"User-Agent": {
-			ua.(string),
-		},
-		"Host": {
-			host,
-		},
-		"Referer": {
-			refer.(string),
-		},
-	}
-	return h
-}
-
-// merge Cookie，后来的覆盖前来的
-// 暂时没有用的
+// Merge Cookie, not use
 func MergeCookie(before []*http.Cookie, after []*http.Cookie) []*http.Cookie {
 	cs := make(map[string]*http.Cookie)
 
@@ -124,12 +91,16 @@ func MergeCookie(before []*http.Cookie, after []*http.Cookie) []*http.Cookie {
 
 }
 
-// clone a header
-// 克隆头部，因为是引用
+// Clone a header, If Not Ua, Set our Ua!
 func CloneHeader(h map[string][]string) map[string][]string {
 	if h == nil || len(h) == 0 {
-		//h = SpiderHeader
-		return map[string][]string{}
+		h = DefaultHeader
+		return h
+		//return map[string][]string{}
+	}
+
+	if len(h["User-Agent"]) == 0 {
+		h["User-Agent"] = []string{ourloveUa}
 	}
 	return CopyM(h)
 }

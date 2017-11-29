@@ -1,5 +1,5 @@
 /*
-Copyright 2017 by GoSpider author.
+Copyright 2017 by GoSpider author. Email: gdccmcm14@live.com
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -16,7 +16,7 @@ package spider
 import (
 	"errors"
 	"fmt"
-	"github.com/hunterhug/GoSpider/util"
+	"github.com/hunterhug/GoTool/util"
 	"net/http"
 )
 
@@ -26,12 +26,12 @@ func Wait(waittime int) {
 		return
 	} else {
 		// debug
-		Logger.Debugf("Stop %d Second～～", waittime)
+		Logger.Debugf("[GoSpider] Wait %d Second.", waittime)
 		util.Sleep(waittime)
 	}
 }
 
-//Header map[string][]string ,can use to copy a http header, so that they are not effect each other
+// Header map[string][]string ,can use to copy a http header, so that they are not effect each other
 func CopyM(h http.Header) http.Header {
 	if h == nil || len(h) == 0 {
 		return h
@@ -53,7 +53,7 @@ func TooSortSizes(data []byte, sizes float64) error {
 	return nil
 }
 
-//just debug a map
+// Just debug a map
 func OutputMaps(info string, args map[string][]string) {
-	Logger.Debugf("%s:%v", info, args)
+	Logger.Debugf("[GoSpider] %s:%v", info, args)
 }

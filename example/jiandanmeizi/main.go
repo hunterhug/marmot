@@ -1,5 +1,5 @@
 /*
-Copyright 2017 by GoSpider author.
+Copyright 2017 by GoSpider author. Email: gdccmcm14@live.com
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -16,17 +16,17 @@ limitations under the License
 package main
 
 import (
+	"flag"
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/hunterhug/GoSpider/query"
 	"github.com/hunterhug/GoSpider/spider"
-	"github.com/hunterhug/GoSpider/util"
+	"github.com/hunterhug/GoTool/util"
 	"strings"
-	"flag"
 )
 
-var which = flag.Int("t",1,"type 1:ooxx 2:wuliao")
-var saverootdir = flag.String("root",".", "the root dir you want to save picture")
+var which = flag.Int("t", 1, "type 1:ooxx 2:wuliao")
+var saverootdir = flag.String("root", ".", "the root dir you want to save picture")
 var (
 	types = map[int]string{
 		1: "ooxx", // 妹子图
@@ -53,21 +53,21 @@ var (
 
 func init() {
 	flag.Parse()
-        Which = *which
+	Which = *which
 
-        url     = "http://jandan.net/" + types[Which]
-        urlpage = "http://jandan.net/" + types[Which] + "/page-%d"
+	url = "http://jandan.net/" + types[Which]
+	urlpage = "http://jandan.net/" + types[Which] + "/page-%d"
 
-        // 保存在统一文件
-        saveroot = false
-        // 根据页数保存在很多文件夹下
-        savehash = true
+	// 保存在统一文件
+	saveroot = false
+	// 根据页数保存在很多文件夹下
+	savehash = true
 
-        // 保存的地方
-        rootdir = *saverootdir+ "/" + types[Which]
-        // 根据页数分图片保存，不然图片太大了,我简称它hash（之前版本不是用page分而是hash）！
-        // 图片太大硬盘会爆！
-        hashdir = *saverootdir + "/" + types[Which]
+	// 保存的地方
+	rootdir = *saverootdir + "/" + types[Which]
+	// 根据页数分图片保存，不然图片太大了,我简称它hash（之前版本不是用page分而是hash）！
+	// 图片太大硬盘会爆！
+	hashdir = *saverootdir + "/" + types[Which]
 
 	if savehash == false && saveroot == false {
 		fmt.Println("这种是不行的：savehash==false && saveroot==false！必须有一个为true")
@@ -77,7 +77,11 @@ func init() {
 	// 有些图片好大！
 	spider.SetGlobalTimeout(100)
 	// 图片集中地大本营
-	util.MakeDir(rootdir)
+	err := util.MakeDir(rootdir)
+
+	if err != nil {
+		fmt.Println(err.Error())
+	}
 }
 
 // 单只爬虫，请耐心爬取好吗
