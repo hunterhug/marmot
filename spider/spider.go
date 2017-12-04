@@ -27,7 +27,6 @@ import (
 // Proxy address such as: http://[user]:[password@]ip:port, [] stand it can choose or not
 func NewSpider(ipstring interface{}) (*Spider, error) {
 	sp := new(Spider)
-	sp.SpiderConfig = new(SpiderConfig)
 	sp.Header = http.Header{}
 	sp.Data = url.Values{}
 	sp.BData = []byte{}
@@ -53,7 +52,6 @@ func New(ipstring interface{}) (*Spider, error) {
 // New Spider by Your Client
 func NewSpiderByClient(client *http.Client) *Spider {
 	sp := new(Spider)
-	sp.SpiderConfig = new(SpiderConfig)
 	sp.Header = http.Header{}
 	sp.Data = url.Values{}
 	sp.BData = []byte{}

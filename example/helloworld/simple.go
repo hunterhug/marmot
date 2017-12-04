@@ -41,9 +41,9 @@ func main() {
 	// SetUrl:Url必须设置
 	// SetMethod:HTTP方法可以是POST或GET,可不设置,默认GET,传错值默认为GET
 	// SetWaitTime:暂停时间,可不设置,默认不暂停
-	sp.SetUrl("http://www.google.com").SetMethod(boss.GET).SetWaitTime(2)
+	sp.SetUrl("https://www.whitehouse.gov").SetMethod(boss.GET).SetWaitTime(2)
 	sp.SetUa(boss.RandomUa())                 //设置随机浏览器标志
-	sp.SetRefer("http://www.google.com")      // 设置Refer头
+	sp.SetRefer("https://www.whitehouse.gov") // 设置Refer头
 	sp.SetHeaderParm("diyheader", "lenggirl") // 自定义头部
 	//sp.SetBData([]byte("file data")) // 如果你要提交JSON数据/上传文件
 	//sp.SetFormParm("username","jinhan") // 提交表单

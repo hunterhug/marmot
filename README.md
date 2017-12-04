@@ -41,14 +41,14 @@ func main() {
 	// Use Default Spider, You can Also New One:
 	// sp:=spider.New(nil)
 	spider.SetLogLevel(spider.DEBUG)
-	spider.SetUrl("http://www.google.com")
-	_, err := spider.Go()
+	_, err := spider.SetUrl("https://www.whitehouse.gov").Go()
 	if err != nil {
 		fmt.Println(err.Error())
 	} else {
 		fmt.Println(spider.ToString())
 	}
 }
+
 ```
 
 ## 2. How To Use
@@ -68,7 +68,7 @@ git clone https://github.com/hunterhug/GoSpider
 
 ## 3. Example
 
-The most simple example such following, more see `example` dir:
+The most simple example such following, more see `example/lesson` dir:
 
 ```go
 package main
@@ -82,16 +82,15 @@ import (
 func main() {
 	// 1. New a spider
 	sp, _ := spider.New(nil)
-	// 2. Set a URL 
-	sp.SetUrl("http://www.cjhug.me").SetUa(spider.RandomUa()).SetMethod(spider.GET)
-	// 3. Fetch
-	html, err := sp.Go()
+	// 2. Set a URL And Fetch
+	html, err := sp.SetUrl("https://www.whitehouse.gov").SetUa(spider.RandomUa()).SetMethod(spider.GET).Go()
 	if err != nil {
 		fmt.Println(err.Error())
 	}
 	// 4.Print content equal to fmt.Println(sp.ToString())
 	fmt.Println(string(html))
 }
+
 ```
 
 More detail Example is:
@@ -111,6 +110,7 @@ func init() {
 	boss.SetGlobalTimeout(3)     // optional, http request timeout time
 
 }
+
 func main() {
 
 	log := boss.Log() // optional, spider log you can choose to use
@@ -128,9 +128,9 @@ func main() {
 	// SetUrl: required, the Url
 	// SetMethod: optional, HTTP method: POST/GET/..., default GET
 	// SetWaitTime: optional, HTTP request wait/pause time
-	sp.SetUrl("http://www.google.com").SetMethod(boss.GET).SetWaitTime(2)
+	sp.SetUrl("https://www.whitehouse.gov").SetMethod(boss.GET).SetWaitTime(2)
 	sp.SetUa(boss.RandomUa())                 // optional, browser user agent: IE/Firefox...
-	sp.SetRefer("http://www.google.com")      // optional, url refer
+	sp.SetRefer("https://www.whitehouse.gov")      // optional, url refer
 	sp.SetHeaderParm("diyheader", "lenggirl") // optional, some other diy http header
 	//sp.SetBData([]byte("file data"))  // optional, if you want post JSON data or upload file
 	//sp.SetFormParm("username","jinhan") // optional: if you want post form
@@ -152,7 +152,7 @@ func main() {
 
 	log.Debugf("%#v", sp) // if you not set log as debug, it will not appear
 
-    // You must Clear it! If you want to POST Data by SetFormParm()/SetBData() again
+	// You must Clear it! If you want to POST Data by SetFormParm()/SetBData() again
 	// After get the return data by post data, you can clear the data you fill
 	sp.Clear()
 
@@ -162,7 +162,7 @@ func main() {
 	boss.Pool.Set("myfirstspider", sp)
 	if poolspider, ok := boss.Pool.Get("myfirstspider"); ok {
 		go func() {
-			poolspider.SetUrl("http://www.baidu.com")
+			poolspider.SetUrl("https://www.whitehouse.gov")
 			data, _ := poolspider.Get()
 			log.Info(string(data))
 		}()
@@ -185,11 +185,11 @@ There are three kinds of spider:
 
 Camouflage our spider:
 
-1. `sp.SetUrl("http://www.cjhug.me")`  // required: set url you want to
+1. `sp.SetUrl("https://www.whitehouse.gov")`  // required: set url you want to
 2. `sp.SetMethod(boss.GET)`  // optional: set http method `POST/GET/PUT/POSTJSON` and so on
 3. `sp.SetWaitTime(2)`                         // optional: set timeout of http request
 4. `sp.SetUa(boss.RandomUa())`                 // optional: set http browser user agent, you can see spider/config/ua.txt
-5. `sp.SetRefer("http://www.baidu.com")`       // optional: set http request Refer
+5. `sp.SetRefer("https://www.whitehouse.gov")`       // optional: set http request Refer
 6. `sp.SetHeaderParm("diyheader", "lenggirl")` // optional: set http diy header
 7. `sp.SetBData([]byte("file data"))` // optional: set binary data for post or put
 8. `sp.SetFormParm("username","jinhan")` // optional: set form data for post or put 
@@ -232,15 +232,10 @@ It has already used in many project(although some is very simple) :
 1. [Full Golang Automatic Amazon Distributed crawler|spider](https://github.com/hunterhug/AmazonBigSpider) // Just see [Picture](doc/amazon.md)
 2. [Jiandan Distributed articles spider](https://github.com/hunterhug/jiandan)
 3. [Zhihu API tool](https://github.com/hunterhug/GoZhihu)
-4. [Picture helper](/example/taobao/README.md)
-5. [Jiandan Picure helper](/example/jiandanmeizi/README.md)
-6. [Music Download](/example/music/README.md) // see example dir
-7. [GoTaobao](https://github.com/hunterhug/GoTaoBao)
-8. A lot closed source... 
+4. [GoTaobao](https://github.com/hunterhug/GoTaoBao)
+5. A lot closed source...
 
-Project change you can see [log](/doc/log.md)
-
-Install development environment you can refer:[GoSpider-docker](https://github.com/hunterhug/GoSpider-docker)
+Project change you can see [log](/doc/log.md), Install development environment you can refer:[GoSpider-docker](https://github.com/hunterhug/GoSpider-docker)
 
 # LICENSE
 

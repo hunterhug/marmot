@@ -25,7 +25,6 @@ func init() {
 
 	// New a spider
 	sp := new(Spider)
-	sp.SpiderConfig = new(SpiderConfig)
 	sp.Header = http.Header{}
 	sp.Data = url.Values{}
 	sp.BData = []byte{}
