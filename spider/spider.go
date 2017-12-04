@@ -92,6 +92,10 @@ func (sp *Spider) Go() (body []byte, e error) {
 	}
 }
 
+func (sp *Spider) GoByMethod(method string) (body []byte, e error) {
+	return sp.SetMethod(method).Go()
+}
+
 // This make effect only your spider exec serial! Attention!
 // Change Your Raw data To string
 func (sp *Spider) ToString() string {

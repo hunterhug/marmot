@@ -59,6 +59,10 @@ func Go() (body []byte, e error) {
 	return DefaultSpider.Go()
 }
 
+func GoByMethod(method string) (body []byte, e error) {
+	return DefaultSpider.SetMethod(method).Go()
+}
+
 func OtherGo(method, contenttype string) (body []byte, e error) {
 	return DefaultSpider.OtherGo(method, contenttype)
 }
