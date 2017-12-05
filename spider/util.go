@@ -16,8 +16,10 @@ package spider
 import (
 	"errors"
 	"fmt"
-	"github.com/hunterhug/GoTool/util"
 	"net/http"
+	"strings"
+
+	"github.com/hunterhug/GoTool/util"
 )
 
 // Wait some secord
@@ -55,5 +57,9 @@ func TooSortSizes(data []byte, sizes float64) error {
 
 // Just debug a map
 func OutputMaps(info string, args map[string][]string) {
-	Logger.Debugf("[GoSpider] %s:%v", info, args)
+	s := "\n"
+	for k, v := range args {
+		s = s + fmt.Sprintf("%-25s| %-6s\n", k, strings.Join(v, "||"))
+	}
+	Logger.Debugf("[GoSpider] %s", s)
 }

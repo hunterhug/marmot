@@ -1,3 +1,6 @@
+/*
+	More detail Example
+*/
 package main
 
 import (
@@ -32,9 +35,9 @@ func main() {
 	// SetWaitTime: optional, HTTP request wait/pause time
 	sp.SetUrl("https://www.whitehouse.gov").SetMethod(boss.GET).SetWaitTime(2)
 	sp.SetUa(boss.RandomUa())                 // optional, browser user agent: IE/Firefox...
-	sp.SetRefer("https://www.whitehouse.gov")      // optional, url refer
+	sp.SetRefer("https://www.whitehouse.gov") // optional, url refer
 	sp.SetHeaderParm("diyheader", "lenggirl") // optional, some other diy http header
-	//sp.SetBData([]byte("file data"))  // optional, if you want post JSON data or upload file
+	//sp.SetBData([]byte("file data"))    // optional, if you want post JSON data or upload file
 	//sp.SetFormParm("username","jinhan") // optional: if you want post form
 	//sp.SetFormParm("password","123")
 
@@ -52,12 +55,11 @@ func main() {
 		log.Infof("%s", string(body)) // Print return data
 	}
 
-	log.Debugf("%#v", sp) // if you not set log as debug, it will not appear
+	log.Debugf("%#v", sp.GetCookies) // if you not set log as debug, it will not appear
 
 	// You must Clear it! If you want to POST Data by SetFormParm()/SetBData() again
 	// After get the return data by post data, you can clear the data you fill
 	sp.Clear()
-
 	//sp.ClearAll() // you can also want to clear all, include http header you set
 
 	// Spider pool for concurrent, every Spider Object is serial as the browser. if you want collateral execution, use this.

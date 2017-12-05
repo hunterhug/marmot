@@ -1,7 +1,12 @@
+/*
+	Most Simple: Use Default Spider!
+
+*/
 package main
 
 import (
 	"fmt"
+
 	"github.com/hunterhug/GoSpider/spider"
 )
 

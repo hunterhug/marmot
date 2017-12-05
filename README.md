@@ -11,6 +11,8 @@
 
 ![Marmot](/doc/tubo.png)
 
+[TOC]
+
 ## 1. Introduction
 
 World-Wide-Web robot, also known as spiders and crawlers. The principle is to falsify network data by constructing appointed HTTP protocol data packet, then request resource to the specified host, goal is to access the data returned. 
@@ -29,7 +31,9 @@ The main uses: WeChat development/ API docking / automated test / rush ticket sc
 
 Now We support Default Spider, You can easy use:
 
-```
+`lesson1.go`
+
+```go
 package main
 
 import (
@@ -68,7 +72,9 @@ git clone https://github.com/hunterhug/GoSpider
 
 ## 3. Example
 
-The most simple example such following, more see `example/lesson` dir:
+The most simple example such below, more see `example/lesson` dir:
+
+`lesson2.go`
 
 ```go
 package main
@@ -94,6 +100,8 @@ func main() {
 ```
 
 More detail Example is:
+
+`lesson3.go`
 
 ```go
 package main
@@ -130,9 +138,9 @@ func main() {
 	// SetWaitTime: optional, HTTP request wait/pause time
 	sp.SetUrl("https://www.whitehouse.gov").SetMethod(boss.GET).SetWaitTime(2)
 	sp.SetUa(boss.RandomUa())                 // optional, browser user agent: IE/Firefox...
-	sp.SetRefer("https://www.whitehouse.gov")      // optional, url refer
+	sp.SetRefer("https://www.whitehouse.gov") // optional, url refer
 	sp.SetHeaderParm("diyheader", "lenggirl") // optional, some other diy http header
-	//sp.SetBData([]byte("file data"))  // optional, if you want post JSON data or upload file
+	//sp.SetBData([]byte("file data"))    // optional, if you want post JSON data or upload file
 	//sp.SetFormParm("username","jinhan") // optional: if you want post form
 	//sp.SetFormParm("password","123")
 
@@ -150,12 +158,11 @@ func main() {
 		log.Infof("%s", string(body)) // Print return data
 	}
 
-	log.Debugf("%#v", sp) // if you not set log as debug, it will not appear
+	log.Debugf("%#v", sp.GetCookies) // if you not set log as debug, it will not appear
 
 	// You must Clear it! If you want to POST Data by SetFormParm()/SetBData() again
 	// After get the return data by post data, you can clear the data you fill
 	sp.Clear()
-
 	//sp.ClearAll() // you can also want to clear all, include http header you set
 
 	// Spider pool for concurrent, every Spider Object is serial as the browser. if you want collateral execution, use this.
@@ -171,15 +178,73 @@ func main() {
 }
 ```
 
+Last example
+
+`lesson4.go`
+
+```go
+package main
+
+import (
+	"fmt"
+	"strings"
+
+	"github.com/hunterhug/GoSpider/query"
+	"github.com/hunterhug/GoSpider/spider"
+)
+
+func main() {
+	// We can debug, to see whether SetBeforeAction make sense
+	spider.SetLogLevel(spider.DEBUG)
+
+	// The url we want
+	url := "https://www.whitehouse.gov"
+
+	// IAM we can NewAPI
+	sp := spider.NewAPI()
+
+	// Before we make some change, And every GET Or POST it will action
+	sp.SetBeforeAction(func(this *spider.Spider) {
+		fmt.Println("Before Action, I will add a HTTP header")
+		this.SetHeaderParm("GoSpider", "v2")
+		this.SetHeaderParm("DUDUDUU", "DUDU")
+	})
+
+	sp.SetAfterAction(func(this *spider.Spider) {
+		fmt.Println("After Action, I just print this sentence")
+	})
+
+	// Let's Go
+	body, err := sp.SetUrl(url).GoByMethod(spider.GET)
+	if err != nil {
+		fmt.Println(err.Error())
+	} else {
+		// Parse We want
+		fmt.Printf("Output:\n %s\n", parse(body))
+	}
+}
+
+// Parse HTML page
+func parse(data []byte) string {
+	doc, err := query.QueryBytes(data)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	return strings.TrimSpace(doc.Find("#hero-caption").Text())
+	// return doc.Find("title").Text()
+}
+```
+
 Easy to use, you just need to `New` one `Spider`, and `SetUrl`, then make some settings and `sp.Go()`.
 
 ### 3.1 The First Step
 
-There are three kinds of spider:
+There are four kinds of spider:
 
 1. `sp, err := boss.NewSpider("http://smart:smart2016@104.128.121.46:808") ` // proxy spider, format: `protocol://user(optional):password(optional)@ip:port`, alias to`New()`
 2. `sp, err := boss.NewSpider(nil)`  // normal spider, default keep Cookie, alias to `New()`
-3. `sp, err := boss.NewAPI()` // API spider, not keep Cookie
+3. `sp, err := boss.NewAPI()` // API spider, will not keep Cookie
+4. `sp, err := boss.NewSpiderByClient(&http.Client{})` // You can also pass a `http.Client` if you want
 
 ### 3.2 The Second Step
 
@@ -194,6 +259,7 @@ Camouflage our spider:
 7. `sp.SetBData([]byte("file data"))` // optional: set binary data for post or put
 8. `sp.SetFormParm("username","jinhan")` // optional: set form data for post or put 
 9. `sp.SetCookie("xx=dddd")` // optional: you can set a init cookie, some website you can login and F12 copy the cookie
+10. `sp.SetCookieByFile("/root/cookie.txt")` // optional: set cookie which store in a file
 
 ### 3.3 The Third Step
 
@@ -211,17 +277,18 @@ Run our spider:
 10. `body, err := sp.PutXML()`
 11. `body, err := sp.PutFILE()`
 12. `body, err := sp.OtherGo("OPTIONS", "application/x-www-form-urlencoded")` // Other http method, Such as OPTIONS etcd.
+13. `body, err := sp.GoByMethod("POST")` // you can override SetMethod() By this, equal SetMethod() then Go()
 
 ### 3.4 The Fourth Step
 
-Deal the return data, all data will be return as binary:
+Deal the return data, all data will be return as binary, You can immediately store it into a new variable:
 
 1. `fmt.Println(string(html))` // type change directly
-2. `fmt.Println(sp.ToString())` // use spider method, after http response, data will keep in the field Raw, just use ToString
+2. `fmt.Println(sp.ToString())` // use spider method, after http response, data will keep in the field `Raw`, just use ToString
 3. `fmt.Println(sp.JsonToString())` // some json data will include chinese and other multibyte character, such as `我爱你,我的小绵羊`,`사랑해`
 
 Attention: after every request for a url, the next request you can cover your http request header, otherwise header you set still exist,
-if just want clear post data, use `Clear()`, and want clear header too please use `ClearAll()` .
+if just want clear post data, use `Clear()`, and want clear HTTP header too please use `ClearAll()` .
 
 More see the code source.
 

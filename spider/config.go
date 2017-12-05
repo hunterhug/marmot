@@ -13,11 +13,12 @@ limitations under the License.
 package spider
 
 import (
-	"github.com/hunterhug/GoTool/util"
 	"net/http"
 	"net/url"
 	"strings"
 	"sync"
+
+	"github.com/hunterhug/GoTool/util"
 )
 
 type Spider struct {
@@ -41,6 +42,10 @@ type Spider struct {
 	Fetchtimes    int    // Url fetch number times
 	Errortimes    int    // Url fetch error times
 	Ipstring      string // spider ip, just for user to record their proxy ip, default: localhost
+
+	// AOP like Java
+	BeforeAction func(*Spider)
+	AfterAction  func(*Spider)
 }
 
 // Java Bean Chain pattern
@@ -201,6 +206,24 @@ func (sp *Spider) SetFormParm(k, v string) *Spider {
 
 func SetFormParm(k, v string) *Spider {
 	return DefaultSpider.SetFormParm(k, v)
+}
+
+func (sp *Spider) SetBeforeAction(fc func(*Spider)) *Spider {
+	sp.BeforeAction = fc
+	return sp
+}
+
+func SetBeforeAction(fc func(*Spider)) *Spider {
+	return DefaultSpider.SetBeforeAction(fc)
+}
+
+func (sp *Spider) SetAfterAction(fc func(*Spider)) *Spider {
+	sp.AfterAction = fc
+	return sp
+}
+
+func SetAfterAction(fc func(*Spider)) *Spider {
+	return DefaultSpider.SetAfterAction(fc)
 }
 
 // Clear data we sent

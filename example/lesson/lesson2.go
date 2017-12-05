@@ -1,8 +1,12 @@
+/*
+	New A Spider
+*/
 package main
 
 // Example
 import (
 	"fmt"
+
 	"github.com/hunterhug/GoSpider/spider"
 )
 
