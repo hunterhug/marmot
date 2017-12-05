@@ -25,14 +25,16 @@ import (
 )
 
 // New a spider, if ipstring is a proxy address, New a proxy client.
-// Proxy address such as: http://[user]:[password@]ip:port, [] stand it can choose or not
+// Proxy address such as:
+// 		http://[user]:[password@]ip:port, [] stand it can choose or not
+// 		socks5://127.0.0.1:1080
 func NewSpider(ipstring interface{}) (*Spider, error) {
 	sp := new(Spider)
 	sp.Header = http.Header{}
 	sp.Data = url.Values{}
 	sp.BData = []byte{}
 	if ipstring != nil {
-		client, err := NewProxyClient(ipstring.(string))
+		client, err := NewProxyClient(strings.ToLower(ipstring.(string)))
 		sp.Client = client
 		sp.Ipstring = ipstring.(string)
 		return sp, err

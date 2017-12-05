@@ -14,10 +14,14 @@ limitations under the License.
 package spider
 
 import (
-	"github.com/hunterhug/GoTool/util"
+	"errors"
 	"net/http"
 	"net/http/cookiejar"
 	"net/url"
+	"strings"
+
+	"github.com/hunterhug/GoTool/util"
+	"golang.org/x/net/proxy"
 )
 
 // Cookie record Jar
@@ -48,10 +52,33 @@ var (
 )
 
 // New a Proxy client, Default save cookie, Can timeout
+// We should support some proxy way such as http(s) or socks
 func NewProxyClient(proxystring string) (*http.Client, error) {
-	proxy, err := url.Parse(proxystring)
+	proxyUrl, err := url.Parse(proxystring)
 	if err != nil {
 		return nil, err
+	}
+
+	prefix := strings.Split(proxystring, ":")[0]
+
+	// setup a http transport
+	httpTransport := &http.Transport{}
+
+	// http://
+	// https://
+	// socks5://
+	switch prefix {
+	case "http", "https":
+		httpTransport.Proxy = http.ProxyURL(proxyUrl)
+	case "socks5":
+		// create a socks5 dialer
+		dialer, err := proxy.FromURL(proxyUrl, proxy.Direct)
+		if err != nil {
+			return nil, err
+		}
+		httpTransport.Dial = dialer.Dial
+	default:
+		return nil, errors.New("this proxy way not allow:" + prefix)
 	}
 
 	// This a alone client, diff from global client.
@@ -61,10 +88,8 @@ func NewProxyClient(proxystring string) (*http.Client, error) {
 			Logger.Debugf("[GoSpider] Redirect:%v", req.URL)
 			return nil
 		},
-		// Allow proxy
-		Transport: &http.Transport{
-			Proxy: http.ProxyURL(proxy),
-		},
+		// Allow proxy: http, https, socks5
+		Transport: httpTransport,
 		// Allow keep cookie
 		Jar: NewJar(),
 		// Allow Timeout

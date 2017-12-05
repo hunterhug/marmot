@@ -9,6 +9,8 @@
 
 [中文介绍](/doc/Chinese.md)
 
+HTTP Download Helper, Supports Many Features such as Cookie Persistence, HTTP(S) and SOCKS5 Proxy....
+
 ![Marmot](/doc/tubo.png)
 
 [TOC]
@@ -241,9 +243,9 @@ Easy to use, you just need to `New` one `Spider`, and `SetUrl`, then make some s
 
 There are four kinds of spider:
 
-1. `sp, err := boss.NewSpider("http://smart:smart2016@104.128.121.46:808") ` // proxy spider, format: `protocol://user(optional):password(optional)@ip:port`, alias to`New()`
+1. `sp, err := boss.NewSpider("http://smart:smart2016@104.128.121.46:808") ` // proxy spider, format: `protocol://user(optional):password(optional)@ip:port`, alias to`New()`, support http(s), socks5
 2. `sp, err := boss.NewSpider(nil)`  // normal spider, default keep Cookie, alias to `New()`
-3. `sp, err := boss.NewAPI()` // API spider, will not keep Cookie
+3. `sp := boss.NewAPI()` // API spider, will not keep Cookie
 4. `sp, err := boss.NewSpiderByClient(&http.Client{})` // You can also pass a `http.Client` if you want
 
 ### 3.2 The Second Step
