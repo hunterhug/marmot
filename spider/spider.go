@@ -129,7 +129,7 @@ func (sp *Spider) sent(method, contenttype string, binary bool) (body []byte, e 
 
 	// Before FAction we can change or add something before Go()
 	if sp.BeforeAction != nil {
-		sp.BeforeAction(sp)
+		sp.BeforeAction(sp.Ctx, sp)
 	}
 
 	// Wait if must
@@ -200,7 +200,7 @@ func (sp *Spider) sent(method, contenttype string, binary bool) (body []byte, e 
 
 	// After action
 	if sp.AfterAction != nil {
-		sp.AfterAction(sp)
+		sp.AfterAction(sp.Ctx, sp)
 	}
 	return
 }

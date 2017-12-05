@@ -13,6 +13,7 @@ limitations under the License.
 package spider
 
 import (
+	"context"
 	"net/http"
 	"net/url"
 	"strings"
@@ -44,8 +45,9 @@ type Spider struct {
 	Ipstring      string // spider ip, just for user to record their proxy ip, default: localhost
 
 	// AOP like Java
-	BeforeAction func(*Spider)
-	AfterAction  func(*Spider)
+	Ctx          context.Context
+	BeforeAction func(context.Context, *Spider)
+	AfterAction  func(context.Context, *Spider)
 }
 
 // Java Bean Chain pattern
@@ -208,21 +210,31 @@ func SetFormParm(k, v string) *Spider {
 	return DefaultSpider.SetFormParm(k, v)
 }
 
-func (sp *Spider) SetBeforeAction(fc func(*Spider)) *Spider {
+// Set Context so Action can soft
+func (sp *Spider) SetContext(ctx context.Context) *Spider {
+	sp.Ctx = ctx
+	return sp
+}
+
+func SetContext(ctx context.Context) *Spider {
+	return DefaultSpider.SetContext(ctx)
+}
+
+func (sp *Spider) SetBeforeAction(fc func(context.Context, *Spider)) *Spider {
 	sp.BeforeAction = fc
 	return sp
 }
 
-func SetBeforeAction(fc func(*Spider)) *Spider {
+func SetBeforeAction(fc func(context.Context, *Spider)) *Spider {
 	return DefaultSpider.SetBeforeAction(fc)
 }
 
-func (sp *Spider) SetAfterAction(fc func(*Spider)) *Spider {
+func (sp *Spider) SetAfterAction(fc func(context.Context, *Spider)) *Spider {
 	sp.AfterAction = fc
 	return sp
 }
 
-func SetAfterAction(fc func(*Spider)) *Spider {
+func SetAfterAction(fc func(context.Context, *Spider)) *Spider {
 	return DefaultSpider.SetAfterAction(fc)
 }
 

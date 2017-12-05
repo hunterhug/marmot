@@ -72,6 +72,8 @@ cd src/github.com/hunterhug
 git clone https://github.com/hunterhug/GoSpider
 ```
 
+Suggest Golang1.8+
+
 ## 3. Example
 
 The most simple example such below, more see `example/lesson` dir:
@@ -190,7 +192,7 @@ package main
 import (
 	"fmt"
 	"strings"
-
+	"context"
 	"github.com/hunterhug/GoSpider/query"
 	"github.com/hunterhug/GoSpider/spider"
 )
@@ -206,13 +208,13 @@ func main() {
 	sp := spider.NewAPI()
 
 	// Before we make some change, And every GET Or POST it will action
-	sp.SetBeforeAction(func(this *spider.Spider) {
+	sp.SetBeforeAction(func(ctx context.Context, this *spider.Spider) {
 		fmt.Println("Before Action, I will add a HTTP header")
 		this.SetHeaderParm("GoSpider", "v2")
 		this.SetHeaderParm("DUDUDUU", "DUDU")
 	})
 
-	sp.SetAfterAction(func(this *spider.Spider) {
+	sp.SetAfterAction(func(ctx context.Context, this *spider.Spider) {
 		fmt.Println("After Action, I just print this sentence")
 	})
 

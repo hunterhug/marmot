@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"strings"
 
@@ -18,14 +19,30 @@ func main() {
 	// IAM we can NewAPI
 	sp := spider.NewAPI()
 
+	// We can aop by context
+	// ctx, cancle := context.WithCancel(context.Background())
+	// ctx := context.TODO()
+	// sp.SetContext(ctx)
+
 	// Before we make some change, And every GET Or POST it will action
-	sp.SetBeforeAction(func(this *spider.Spider) {
+	sp.SetBeforeAction(func(ctx context.Context, this *spider.Spider) {
 		fmt.Println("Before Action, I will add a HTTP header")
 		this.SetHeaderParm("GoSpider", "v2")
 		this.SetHeaderParm("DUDUDUU", "DUDU")
+		// select {
+		// case <-ctx.Done():
+		// 	fmt.Println(ctx.Err()) // block in here util cancle()
+		// 	os.Exit(1)
+		// }
 	})
 
-	sp.SetAfterAction(func(this *spider.Spider) {
+	// we cancle it after 5 secord
+	// go func() {
+	// 	util.Sleep(5)
+	// 	cancle()
+	// }()
+
+	sp.SetAfterAction(func(ctx context.Context, this *spider.Spider) {
 		fmt.Println("After Action, I just print this sentence")
 	})
 
@@ -37,6 +54,10 @@ func main() {
 		// Parse We want
 		fmt.Printf("Output:\n %s\n", parse(body))
 	}
+
+	// for {
+	//  in here we loop util cancle() success
+	// }
 }
 
 // Parse HTML page
