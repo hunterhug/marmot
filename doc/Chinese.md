@@ -2,11 +2,11 @@
 
 ![土拨](tubo.png)
 
->万维网网络机器人,又称蜘蛛,爬虫,原理主要是通过构造符合HTTP协议的网络数据包,向指定主机请求资源,获取返回的数据.万维网有大量的公开信息,人力采集数据费时费力,故激发了矿工的产业化.
+>万维网网络机器人,又称蜘蛛,爬虫,原理主要是通过构造符合HTTP协议的网络数据包,向指定主机请求资源,获取返回的数据.万维网有大量的公开信息,人力采集数据费时费力,故激发了爬虫的产业化.
 批量获取公开网络数据并不违反,但由于无差别性,无节制,十分暴力的手段会导致对方服务的不稳定,因此,大部分资源提供商对数据包进行了某些过滤,在此背景下,小批量数据获取成为了难题.
-综合各种需求，如各种API对接,自动化测试等原理均一样，故开发了此矿工库.
+综合各种需求，如各种API对接,自动化测试等原理均一样，故开发了此爬虫库.
 
->土拨鼠项目是一个人类友好姿势的代码库,开发采用面向对象的方式,易于理解.通过对Golang原生HTTP库的封装,帮用户处理了一些琐碎逻辑(如收集信息,检测参数),并加入了一些容错机制(如加锁,及时关闭流),保证了矿工高并发的安全.此库提供了大量优美的API接口,复用率高,十分方便地支持Cookie接力,矿工代理设置,以及一般的HTTP请求设置如头部设置,超时,暂停设置,数据设置等,支持全部的HTTP方法如POST/PUT/GET/DELETE等,内置矿工池和浏览器UA池,易于开发多UA多Cookie分布式矿工.
+>土拨鼠项目是一个人类友好姿势的代码库,开发采用面向对象的方式,易于理解.通过对Golang原生HTTP库的封装,帮用户处理了一些琐碎逻辑(如收集信息,检测参数),并加入了一些容错机制(如加锁,及时关闭流),保证了爬虫高并发的安全.此库提供了大量优美的API接口,复用率高,十分方便地支持Cookie接力,爬虫代理设置,以及一般的HTTP请求设置如头部设置,超时,暂停设置,数据设置等,支持全部的HTTP方法如POST/PUT/GET/DELETE等,内置爬虫池和浏览器UA池,易于开发多UA多Cookie分布式爬虫.
 
 >此外,还提供第三方存储库,支持mysql/postgresql/redis/cassandra/hbase等.该库简单实用,短短几行代码即可取代以往杂乱无章的面包条代码片段,已经应用在某些大项目中:如`大型亚马逊分布式爬虫(美国/日本/德国/英国)`,经受住两千代理IP超长时间高并发的考验,单台机器每天获取上百万数据.
 
@@ -131,18 +131,18 @@ func main() {
 
 矿工有三种类型:
 
-1. `worker, err := boss.NewWorker("http://smart:smart2016@104.128.121.46:808") ` // 代理IP矿工 默认自动化Cookie接力 格式:`协议://代理帐号(可选):代理密码(可选)@ip:port`, 支持http(s),socks5, 别名函数`New()`
-2. `worker, err := boss.NewWorker(nil)`  // 正常矿工 默认自动化Cookie接力 别名函数`New()`
-3. `worker, err := boss.NewAPI()` // API矿工 默认Cookie不接力
+1. `worker, err := miner.NewWorker("http://smart:smart2016@104.128.121.46:808") ` // 代理IP矿工 默认自动化Cookie接力 格式:`协议://代理帐号(可选):代理密码(可选)@ip:port`, 支持http(s),socks5, 别名函数`New()`
+2. `worker, err := miner.NewWorker(nil)`  // 正常矿工 默认自动化Cookie接力 别名函数`New()`
+3. `worker, err := miner.NewAPI()` // API矿工 默认Cookie不接力
 
 ### 第二步
 
 模拟矿工设置头部:
 
 1. `worker.SetUrl("http://www.cjhug.me")`  // 设置Http请求要抓取的网址,必须
-2. `worker.SetMethod(boss.GET)`  // 设置Http请求的方法:`POST/GET/PUT/POSTJSON`等
+2. `worker.SetMethod(miner.GET)`  // 设置Http请求的方法:`POST/GET/PUT/POSTJSON`等
 3. `worker.SetWaitTime(2)` // 设置Http请求超时时间
-4. `worker.SetUa(boss.RandomUa())`                // 设置Http请求浏览器标志,本项目提供445个浏览器标志，可选设置
+4. `worker.SetUa(miner.RandomUa())`                // 设置Http请求浏览器标志,本项目提供445个浏览器标志，可选设置
 5. `worker.SetRefer("http://www.baidu.com")`       // 设置Http请求Refer头
 6. `worker.SetHeaderParm("diyheader", "lenggirl")` // 设置Http请求自定义头部
 7. `worker.SetBData([]byte("file data"))` // Http请求需要上传数据

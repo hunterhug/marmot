@@ -340,11 +340,7 @@ func main() {
 	// You can Proxy!
 	// ProxyAddress = "socks5://127.0.0.1:1080"
 
-	fmt.Println(`
-		Welcome: Input "url" and picture keep "dir"
-
-		
-		`)
+	fmt.Println(`Welcome: Input "url" and picture keep "dir"`)
 	for {
 		fmt.Println("---------------------------------------------")
 		url := util.Input(`URL(Like: "http://publicdomainarchive.com")`, "http://publicdomainarchive.com")
