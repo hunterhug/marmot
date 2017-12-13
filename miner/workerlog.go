@@ -13,12 +13,45 @@
 	2017.7 by hunterhug
 */
 
-package main
+package miner
 
 import (
-	"fmt"
+	"os"
+
+	"github.com/op/go-logging"
 )
 
-func main() {
-	fmt.Println("Hello Marmot")
+var Logger = logging.MustGetLogger("Marmot")
+
+var format = logging.MustStringFormatter(
+	"%{color}%{time:2006-01-02 15:04:05.000} %{longpkg}:%{longfunc} [%{level:.5s}]:%{color:reset} %{message}",
+)
+
+// Level name you can refer
+var LevelNames = []string{
+	"CRITICAL",
+	"ERROR",
+	"WARNING",
+	"NOTICE",
+	"INFO",
+	"DEBUG",
+}
+
+// Init log record
+func init() {
+	backend := logging.NewLogBackend(os.Stderr, "", 0)
+	backendFormatter := logging.NewBackendFormatter(backend, format)
+	logging.SetBackend(backendFormatter)
+	logging.SetLevel(logging.INFO, "Marmot")
+}
+
+// SET log level
+func SetLogLevel(level string) {
+	lvl, _ := logging.LogLevel(level)
+	logging.SetLevel(lvl, "Marmot")
+}
+
+// Return global log
+func Log() *logging.Logger {
+	return Logger
 }

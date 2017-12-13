@@ -1,17 +1,19 @@
 package main
+
 import (
 	"bufio"
 	"fmt"
-	"github.com/PuerkitoBio/goquery"
-	"github.com/hunterhug/GoSpider/spider"
-	"github.com/hunterhug/GoSpider/query"
-	"github.com/hunterhug/GoTool/util"
 	"math"
 	"os"
 	"strings"
+
+	"github.com/PuerkitoBio/goquery"
+	"github.com/hunterhug/marmot/expert"
+	"github.com/hunterhug/marmot/miner"
+	"github.com/hunterhug/parrot/util"
 )
 
-var client *spider.Spider
+var client *miner.Worker
 var dir = "./data/company/raw"
 var dirdetail = "./data/company/detailraw"
 var dirresult = "./data/company/result"
@@ -22,7 +24,7 @@ func main() {
 	mainx()
 	//fmt.Printf("%#v", detail("http://zdb.pedaily.cn/company/show587/"))
 }
-func welcome(){
+func welcome() {
 	fmt.Println(`
 ************************************************************
 
@@ -34,13 +36,8 @@ func welcome(){
 		2.查看结果
 		查看data/company/result中csv文件
 
-		作者:一只尼玛
-		联系:569929309
-
-		Golang大法
 
 		/*
-		go get -u -v github.com/hunterhug/spiderexample
 		go build *.go，然后点击exe运行或go run *.go
 		*/
 ************************************************************
@@ -48,7 +45,7 @@ func welcome(){
 }
 func initx() {
 	var e error = nil
-	client, e = spider.NewSpider(nil)
+	client, e = miner.NewWorker(nil)
 	if e != nil {
 		panic(e.Error())
 	}
@@ -141,7 +138,7 @@ func detail(url string) map[string]string {
 		return returnmap
 	}
 	util.SaveToFile(keep, body)
-	doc, e := query.QueryBytes(body)
+	doc, e := expert.QueryBytes(body)
 	if e != nil {
 		return returnmap
 	}
@@ -151,11 +148,11 @@ func detail(url string) map[string]string {
 	returnmap["website"] = trip(doc.Find("li.link a").Text())
 	info := ""
 	doc.Find(".info ul li").Each(func(i int, node *goquery.Selection) {
-	temp:=node.Text()
-		temp=trip(strings.Replace(temp,"\n","",-1))
-		temp=strings.Replace(temp,"&nbsp;","",-1)
-		temp=strings.Replace(temp,"　","",-1)
-		info=info+"\n"+temp
+		temp := node.Text()
+		temp = trip(strings.Replace(temp, "\n", "", -1))
+		temp = strings.Replace(temp, "&nbsp;", "", -1)
+		temp = strings.Replace(temp, "　", "", -1)
+		info = info + "\n" + temp
 	})
 
 	dudu := tripemptyl(strings.Split(info, "\n"))
@@ -223,7 +220,7 @@ func featchcompany(keyword string) ([]map[string]string, int, error) {
 
 func parsecompany(body []byte) ([]map[string]string, int, error) {
 	returnmap := []map[string]string{}
-	d, e := query.QueryBytes(body)
+	d, e := expert.QueryBytes(body)
 	if e != nil {
 		return returnmap, 0, e
 	}

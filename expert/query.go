@@ -1,4 +1,3 @@
-
 /*
 	版权所有，侵权必究
 	署名-非商业性使用-禁止演绎 4.0 国际
@@ -13,3 +12,32 @@
 	Ask for commercial licensing please contact Mail:gdccmcm14@live.com Or QQ:459527502
 	2017.7 by hunterhug
 */
+package expert
+
+import (
+	"regexp"
+	"strings"
+
+	"github.com/PuerkitoBio/goquery" // please include by yourself
+)
+
+func QueryBytes(content []byte) (*goquery.Document, error) {
+	doc, err := goquery.NewDocumentFromReader(strings.NewReader(string(content)))
+	return doc, err
+}
+
+func QueryString(content string) (*goquery.Document, error) {
+	doc, err := goquery.NewDocumentFromReader(strings.NewReader(content))
+	return doc, err
+}
+
+// Find All picture. Must prefix http(s)://
+func FindPicture(s string) []string {
+	returnlist := []string{}
+	re, _ := regexp.Compile(`src\s*=\s*["'](http[s]?:\/\/.*?\.(jpg|jpeg|png|gif))["']`)
+	output := re.FindAllStringSubmatch(s, -1)
+	for _, o := range output {
+		returnlist = append(returnlist, o[1])
+	}
+	return returnlist
+}

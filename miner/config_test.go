@@ -1,4 +1,3 @@
-
 /*
 	版权所有，侵权必究
 	署名-非商业性使用-禁止演绎 4.0 国际
@@ -13,3 +12,23 @@
 	Ask for commercial licensing please contact Mail:gdccmcm14@live.com Or QQ:459527502
 	2017.7 by hunterhug
 */
+package miner
+
+import (
+	"context"
+	"fmt"
+	"testing"
+)
+
+func TestConfig(t *testing.T) {
+	worker, _ := New(nil)
+	fmt.Printf("%#v\n", worker)
+
+	if worker.BeforeAction == nil {
+		fmt.Println("good")
+	}
+
+	worker.BeforeAction = func(c context.Context, worker *Worker) {
+		worker.SetHeaderParm("Marmot", "v2")
+	}
+}

@@ -3,17 +3,18 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"github.com/PuerkitoBio/goquery"
-	"github.com/hunterhug/GoSpider/spider"
-	"github.com/hunterhug/GoSpider/query"
-	"github.com/hunterhug/GoTool/util"
 	"math"
 	"os"
 	"regexp"
 	"strings"
+
+	"github.com/PuerkitoBio/goquery"
+	"github.com/hunterhug/marmot/expert"
+	"github.com/hunterhug/marmot/miner"
+	"github.com/hunterhug/parrot/util"
 )
 
-var tclient *spider.Spider
+var tclient *miner.Worker
 var tresult = "./data/companyt/result"
 var traw = "./data/companyt/raw"
 
@@ -28,7 +29,7 @@ func main() {
 
 func parset(body []byte) ([]string, string) {
 	returnlist := []string{}
-	doc, _ := query.QueryBytes(body)
+	doc, _ := expert.QueryBytes(body)
 	total := doc.Find(".total").Text()
 	doc.Find("#inv-list li").Each(func(i int, node *goquery.Selection) {
 		href, ok := node.Find("dt.view a").Attr("href")
@@ -43,7 +44,7 @@ func parset(body []byte) ([]string, string) {
 }
 func inittouzi() {
 	var e error = nil
-	tclient, e = spider.NewSpider(nil)
+	tclient, e = miner.NewWorker(nil)
 	if e != nil {
 		panic(e.Error())
 	}
@@ -168,7 +169,7 @@ func parsetouzi(body []byte) map[string]string {
 		"han":   "",
 		"desc":  "",
 	}
-	doc, _ := query.QueryBytes(body)
+	doc, _ := expert.QueryBytes(body)
 	returnmap["name"] = doc.Find(".info h1").Text()
 	returnmap["desc"] = strings.Replace(trip(doc.Find("#desc").Text()), "\n", "<br/>", -1)
 
@@ -238,13 +239,7 @@ func dudu() {
 		2.查看结果
 		查看data/company/tresult中csv文件
 
-		作者:一只尼玛
-		联系:569929309
-
-		Golang大法
-
 		/*
-		go get -u -v github.com/hunterhug/spiderexample
 		go build *.go，然后点击exe运行或go run *.go
 		*/
 ************************************************************

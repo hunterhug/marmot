@@ -5,29 +5,29 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/hunterhug/GoSpider/query"
-	"github.com/hunterhug/GoSpider/spider"
+	"github.com/hunterhug/marmot/expert"
+	"github.com/hunterhug/marmot/miner"
 )
 
 func main() {
 	// We can debug, to see whether SetBeforeAction make sense
-	spider.SetLogLevel(spider.DEBUG)
+	miner.SetLogLevel(miner.DEBUG)
 
 	// The url we want
 	url := "https://www.whitehouse.gov"
 
 	// IAM we can NewAPI
-	sp := spider.NewAPI()
+	worker := miner.NewAPI()
 
 	// We can aop by context
 	// ctx, cancle := context.WithCancel(context.Background())
 	// ctx := context.TODO()
-	// sp.SetContext(ctx)
+	// worker.SetContext(ctx)
 
 	// Before we make some change, And every GET Or POST it will action
-	sp.SetBeforeAction(func(ctx context.Context, this *spider.Spider) {
+	worker.SetBeforeAction(func(ctx context.Context, this *miner.Worker) {
 		fmt.Println("Before Action, I will add a HTTP header")
-		this.SetHeaderParm("GoSpider", "v2")
+		this.SetHeaderParm("Marmot", "v2")
 		this.SetHeaderParm("DUDUDUU", "DUDU")
 		// select {
 		// case <-ctx.Done():
@@ -42,12 +42,12 @@ func main() {
 	// 	cancle()
 	// }()
 
-	sp.SetAfterAction(func(ctx context.Context, this *spider.Spider) {
+	worker.SetAfterAction(func(ctx context.Context, this *miner.Worker) {
 		fmt.Println("After Action, I just print this sentence")
 	})
 
 	// Let's Go
-	body, err := sp.SetUrl(url).GoByMethod(spider.GET)
+	body, err := worker.SetUrl(url).GoByMethod(miner.GET)
 	if err != nil {
 		fmt.Println(err.Error())
 	} else {
@@ -62,7 +62,7 @@ func main() {
 
 // Parse HTML page
 func parse(data []byte) string {
-	doc, err := query.QueryBytes(data)
+	doc, err := expert.QueryBytes(data)
 	if err != nil {
 		fmt.Println(err.Error())
 	}

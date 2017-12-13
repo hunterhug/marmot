@@ -6,13 +6,13 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/hunterhug/GoSpider/query"
-	"github.com/hunterhug/GoSpider/spider"
-	"github.com/hunterhug/GoTool/util"
+	"github.com/hunterhug/marmot/expert"
+	"github.com/hunterhug/marmot/miner"
+	"github.com/hunterhug/parrot/util"
 )
 
-// Num of spider, We can run it at the same time to crawl data fast
-var SpiderNum = 5
+// Num of miner, We can run it at the same time to crawl data fast
+var MinerNum = 5
 
 // You can update this decide whether to proxy
 var ProxyAddress interface{}
@@ -55,24 +55,24 @@ func CatchPicture(picture_url string, dir string) error {
 		return err
 	}
 
-	// New a sp to get url
-	sp, _ := spider.New(ProxyAddress)
+	// New a worker to get url
+	worker, _ := miner.New(ProxyAddress)
 
-	result, err := sp.SetUrl(picture_url).SetUa(spider.RandomUa()).Get()
+	result, err := worker.SetUrl(picture_url).SetUa(miner.RandomUa()).Get()
 	if err != nil {
 		return err
 	}
 
 	// Find all picture
-	pictures := query.FindPicture(string(result))
+	pictures := expert.FindPicture(string(result))
 
 	// Empty, What a pity!
 	if len(pictures) == 0 {
 		return errors.New("empty")
 	}
 
-	// Devide pictures into several sp
-	xxx, _ := util.DevideStringList(pictures, SpiderNum)
+	// Devide pictures into several worker
+	xxx, _ := util.DevideStringList(pictures, MinerNum)
 
 	// Chanel to info exchange
 	chs := make(chan int, len(pictures))
@@ -80,18 +80,18 @@ func CatchPicture(picture_url string, dir string) error {
 	// Go at the same time
 	for num, imgs := range xxx {
 
-		// Get pool spider
-		sp_picture, ok := spider.Pool.Get(util.IS(num))
+		// Get pool miner
+		worker_picture, ok := miner.Pool.Get(util.IS(num))
 		if !ok {
 			// No? set one!
-			sp_temp, _ := spider.New(ProxyAddress)
-			sp_picture = sp_temp
-			sp_temp.SetUa(spider.RandomUa())
-			spider.Pool.Set(util.IS(num), sp_temp)
+			worker_temp, _ := miner.New(ProxyAddress)
+			worker_picture = worker_temp
+			worker_temp.SetUa(miner.RandomUa())
+			miner.Pool.Set(util.IS(num), worker_temp)
 		}
 
 		// Go save picture!
-		go func(imgs []string, sp *spider.Spider, num int) {
+		go func(imgs []string, worker *miner.Worker, num int) {
 			for _, img := range imgs {
 
 				// Check, May be Pass
@@ -110,7 +110,7 @@ func CatchPicture(picture_url string, dir string) error {
 				} else {
 
 					// Not Exsit?
-					imgsrc, e := sp.SetUrl(img).Get()
+					imgsrc, e := worker.SetUrl(img).Get()
 					if e != nil {
 						fmt.Println("Download " + img + " error:" + e.Error())
 						chs <- 0
@@ -125,7 +125,7 @@ func CatchPicture(picture_url string, dir string) error {
 					chs <- 1
 				}
 			}
-		}(imgs, sp_picture, num)
+		}(imgs, worker_picture, num)
 	}
 
 	// Every picture should return

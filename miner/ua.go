@@ -1,22 +1,25 @@
 /*
-Copyright 2017 by GoSpider author. Email: gdccmcm14@live.com
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-    http://www.apache.org/licenses/LICENSE-2.0
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+	版权所有，侵权必究
+	署名-非商业性使用-禁止演绎 4.0 国际
+	警告： 以下的代码版权归属hunterhug，请不要传播或修改代码
+	你可以在教育用途下使用该代码，但是禁止公司或个人用于商业用途(在未授权情况下不得用于盈利)
+	商业授权请联系邮箱：gdccmcm14@live.com QQ:459527502
+	All right reserved
+	Attribution-NonCommercial-NoDerivatives 4.0 International
+	Notice: The following code's copyright by hunterhug, Please do not spread and modify.
+	You can use it for education only but can't make profits for any companies and individuals!
+	For more information on commercial licensing please contact hunterhug.
+	Ask for commercial licensing please contact Mail:gdccmcm14@live.com Or QQ:459527502
+	2017.7 by hunterhug
 */
 
-package spider
+package miner
 
 import (
-	"github.com/hunterhug/GoTool/util"
 	"math/rand"
 	"strings"
+
+	"github.com/hunterhug/parrot/util"
 )
 
 var Ua = map[int]string{}
