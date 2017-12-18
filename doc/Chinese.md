@@ -129,11 +129,12 @@ func main() {
 
 ### 第一步
 
-矿工有三种类型:
+矿工有四种类型:
 
 1. `worker, err := miner.NewWorker("http://smart:smart2016@104.128.121.46:808") ` // 代理IP矿工 默认自动化Cookie接力 格式:`协议://代理帐号(可选):代理密码(可选)@ip:port`, 支持http(s),socks5, 别名函数`New()`
 2. `worker, err := miner.NewWorker(nil)`  // 正常矿工 默认自动化Cookie接力 别名函数`New()`
 3. `worker, err := miner.NewAPI()` // API矿工 默认Cookie不接力
+4. `worker, err := miner.NewWorkerByClient(&http.Client{})` //  可自定义客户端
 
 ### 第二步
 
@@ -165,6 +166,7 @@ func main() {
 10. `body, err := worker.PutXML()`
 11. `body, err := worker.PutFILE()`
 12. `body, err := worker.OtherGo("OPTIONS", "application/x-www-form-urlencoded")` // 其他自定义的HTTP方法
+13. `body, err := worker.GoByMethod("POST")` // you can override SetMethod() By this, equal SetMethod() then Go()
 
 ### 第四步
 
@@ -185,7 +187,7 @@ func main() {
 1. [亚马逊大型分布式爬虫](https://github.com/hunterhug/AmazonBigSpider) // 查看[图文](/doc/amazon.md)
 2. [煎蛋分布式文章爬虫](https://github.com/hunterhug/jiandan)
 3. [知乎全能API小工具](https://github.com/hunterhug/GoZhihu)
-4. [网易无损音乐下载](/example/music/README.md)
+4. [网易无损音乐下载](/example/practice/music/README.md)
 5. [天猫淘宝有关的采集小程序](https://github.com/hunterhug/GoTaoBao)
 6. ...
 
