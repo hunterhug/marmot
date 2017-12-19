@@ -1,3 +1,6 @@
+/*
+	Funny lesson
+*/
 package main
 
 import (

@@ -1,6 +1,5 @@
 /*
 	Most Simple: Use Default Worker!
-
 */
 package main
 

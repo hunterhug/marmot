@@ -1,15 +1,3 @@
-/*
-	Copyright 2017 by marmot author: gdccmcm14@live.com.
-	Licensed under the Apache License, Version 2.0 (the "License");
-	you may not use this file except in compliance with the License.
-	You may obtain a copy of the License at
-		http://www.apache.org/licenses/LICENSE-2.0
-	Unless required by applicable law or agreed to in writing, software
-	distributed under the License is distributed on an "AS IS" BASIS,
-	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	See the License for the specific language governing permissions and
-	limitations under the License
-*/
 package miner
 
 import (
@@ -22,21 +10,20 @@ import (
 	"github.com/hunterhug/parrot/util"
 )
 
+// Worker is the main object to sent http request and return result of response
 type Worker struct {
-	Url    string      // Which url we want
-	Method string      // Get/Post method
-	Header http.Header // Http header
-	Data   url.Values  // Sent by form data
-	BData  []byte      // Sent by binary data
-	Wait   int         // Wait Time
-	// In order fast chain func call I put the basic config in above.
-	////////////////////////////////////////////////////////
-	mux      sync.RWMutex   // lock, execute concurrently please use worker Pool!
+	// In order fast chain func call I put the basic config below
+	Url      string         // Which url we want
+	Method   string         // Get/Post method
+	Header   http.Header    // Http header
+	Data     url.Values     // Sent by form data
+	BData    []byte         // Sent by binary data
+	Wait     int            // Wait Time
 	Client   *http.Client   // Our Client
 	Request  *http.Request  // Debug
 	Response *http.Response // Debug
 	Raw      []byte         // Raw data we get
-	///////////////////////////////////////////////////////
+
 	// The name below is not so good but has already been used in many project, so bear it.
 	Preurl        string // Pre url
 	UrlStatuscode int    // the last url response code, such as 404
@@ -48,6 +35,8 @@ type Worker struct {
 	Ctx          context.Context
 	BeforeAction func(context.Context, *Worker)
 	AfterAction  func(context.Context, *Worker)
+
+	mux sync.RWMutex // Lock, execute concurrently please use worker Pool!
 }
 
 // Java Bean Chain pattern
@@ -56,7 +45,7 @@ func (worker *Worker) SetHeader(header http.Header) *Worker {
 	return worker
 }
 
-// Default Set!
+// Default Worker SetHeader!
 func SetHeader(header http.Header) *Worker {
 	return DefaultWorker.SetHeader(header)
 }
@@ -70,8 +59,6 @@ func SetHeaderParm(k, v string) *Worker {
 	return DefaultWorker.SetHeaderParm(k, v)
 }
 
-// Set Cookie!
-// Cookie 这样设置如果有jar != nil 那么同名cookie会和这个一起发送过去
 func (worker *Worker) SetCookie(v string) *Worker {
 	worker.SetHeaderParm("Cookie", v)
 	return worker
