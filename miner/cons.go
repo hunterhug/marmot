@@ -78,7 +78,7 @@ func MergeCookie(before []*http.Cookie, after []*http.Cookie) []*http.Cookie {
 
 }
 
-// Clone a header, If Not Ua, Set our Ua!
+// Clone a header, If not exist Ua, Set our Ua!
 func CloneHeader(h map[string][]string) map[string][]string {
 	if h == nil || len(h) == 0 {
 		h = DefaultHeader
