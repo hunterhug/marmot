@@ -194,7 +194,7 @@ func main() {
 
 1. [亚马逊大型分布式爬虫](https://github.com/hunterhug/AmazonBigSpider) // 查看[图文](/doc/amazon.md)
 2. [煎蛋分布式文章爬虫](https://github.com/hunterhug/jiandan)
-3. [知乎全能API小工具](https://github.com/hunterhug/GoZhihu)
+3. [知乎全能API小工具](https://github.com/hunterhug/huhu)
 4. [网易无损音乐下载](/example/practice/music/README.md)
 5. [天猫淘宝有关的采集小程序](https://github.com/hunterhug/GoTaoBao)
 6. ...

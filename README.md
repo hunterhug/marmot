@@ -460,10 +460,8 @@ More see the code source.
 It has already used in many project(although some is very simple) :
 
 1. [Full Golang Automatic Amazon Distributed crawler|spider](https://github.com/hunterhug/AmazonBigSpider) // Just see [Picture](doc/amazon.md)
-2. [Jiandan Distributed articles spider](https://github.com/hunterhug/jiandan)
-3. [Zhihu API tool](https://github.com/hunterhug/GoZhihu)
-4. [GoTaobao](https://github.com/hunterhug/GoTaoBao)
-5. A lot closed source...
+2. [GoTaobao](https://github.com/hunterhug/GoTaoBao)
+3. A lot closed source...
 
 Project change you can see [log](/doc/log.md), Install development environment you can refer:[GoSpider-docker](https://github.com/hunterhug/GoSpider-docker)
 
