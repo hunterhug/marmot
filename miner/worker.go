@@ -152,7 +152,7 @@ func (worker *Worker) sent(method, contenttype string, binary bool) (body []byte
 	// Transport.DisableKeepAlives were set.
 	// todo
 	// maybe you want long connection
-	request.Close = true
+	//request.Close = true
 
 	// Clone Header, I add some HTTP header!
 	request.Header = CloneHeader(worker.Header)
