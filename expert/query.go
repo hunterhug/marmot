@@ -33,11 +33,11 @@ func QueryString(content string) (*goquery.Document, error) {
 
 // Find All picture. Must prefix with http(s)
 func FindPicture(s string) []string {
-	returnlist := []string{}
+	picList := make([]string, 0)
 	re, _ := regexp.Compile(`src\s*=\s*["'](http[s]?:\/\/.*?\.(jpg|jpeg|png|gif))["']`)
 	output := re.FindAllStringSubmatch(s, -1)
 	for _, o := range output {
-		returnlist = append(returnlist, o[1])
+		picList = append(picList, o[1])
 	}
-	return returnlist
+	return picList
 }

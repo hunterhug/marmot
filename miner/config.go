@@ -26,16 +26,18 @@ import (
 // Worker is the main object to sent http request and return result of response
 type Worker struct {
 	// In order fast chain func call I put the basic config below
-	Url      string         // Which url we want
-	Method   string         // Get/Post method
-	Header   http.Header    // Http header
-	Data     url.Values     // Sent by form data
-	BData    []byte         // Sent by binary data
-	Wait     int            // Wait Time
-	Client   *http.Client   // Our Client
-	Request  *http.Request  // Debug
-	Response *http.Response // Debug
-	Raw      []byte         // Raw data we get
+	Url          string         // Which url we want
+	Method       string         // Get/Post method
+	Header       http.Header    // Http header
+	Data         url.Values     // Sent by form data
+	FileName     string         // FileName which sent to remote
+	FileFormName string         // File Form Name which sent to remote
+	BData        []byte         // Sent by binary data, can together with File
+	Wait         int            // Wait Time
+	Client       *http.Client   // Our Client
+	Request      *http.Request  // Debug
+	Response     *http.Response // Debug
+	Raw          []byte         // Raw data we get
 
 	// The name below is not so good but has already been used in many project, so bear it.
 	Preurl        string // Pre url
@@ -135,6 +137,16 @@ func (worker *Worker) SetUrl(url string) *Worker {
 
 func SetUrl(url string) *Worker {
 	return DefaultWorker.SetUrl(url)
+}
+
+func (worker *Worker) SetFileInfo(fileName, fileFormName string) *Worker {
+	worker.FileName = fileName
+	worker.FileFormName = fileFormName
+	return worker
+}
+
+func SetFileInfo(fileName, fileFormName string) *Worker {
+	return DefaultWorker.SetFileInfo(fileName, fileFormName)
 }
 
 func (worker *Worker) SetMethod(method string) *Worker {

@@ -31,7 +31,8 @@ func main() {
 	log := miner.Log() // 矿工为你提供的日志工具,可不用
 
 	// 第三步： 必须新建一个矿工对象
-	//worker, err := miner.NewWorker("http://smart:smart2016@104.128.121.46:808") // 代理IP格式: 协议://代理帐号(可选):代理密码(可选)@ip:port
+	// 代理IP格式: 协议://代理帐号(可选):代理密码(可选)@ip:port
+	//worker, err := miner.NewWorker("http://smart:smart2016@104.128.121.46:808")
 	//worker, err := miner.NewWorker(nil)  // 正常矿工 默认带Cookie
 	//worker, err := miner.NewAPI() // API矿工 默认不带Cookie
 	worker, err := miner.New(nil) // NewWorker同名函数
@@ -43,9 +44,9 @@ func main() {
 	// SetUrl:Url必须设置
 	// SetMethod:HTTP方法可以是POST或GET,可不设置,默认GET,传错值默认为GET
 	// SetWaitTime:暂停时间,可不设置,默认不暂停
-	worker.SetUrl("http://cjhug.me/fuck.html").SetMethod(miner.GET).SetWaitTime(2)
+	worker.SetUrl("http://www.lenggirl.com").SetMethod(miner.GET).SetWaitTime(2)
 	worker.SetUa(miner.RandomUa())                //设置随机浏览器标志
-	worker.SetRefer("http://cjhug.me/fuck.html")  // 设置Refer头
+	worker.SetRefer("http://www.lenggirl.com")    // 设置Refer头
 	worker.SetHeaderParm("diyheader", "lenggirl") // 自定义头部
 	//worker.SetBData([]byte("file data")) // 如果你要提交JSON数据/上传文件
 	//worker.SetFormParm("username","jinhan") // 提交表单
@@ -66,15 +67,18 @@ func main() {
 
 	log.Debugf("%#v", worker.GetCookies()) // 不设置全局log为debug是不会出现这个东西的
 
-	worker.Clear() // 爬取完毕后可以清除POST的表单数据/文件数据/JSON数据
-	//worker.ClearAll() // 爬取完毕后可以清除设置的Http头部和POST的表单数据/文件数据/JSON数据
+	// 爬取完毕后可以清除POST的表单数据/文件数据/JSON数据
+	worker.Clear()
+
+	// 爬取完毕后可以清除设置的Http头部和POST的表单数据/文件数据/JSON数据
+	//worker.ClearAll()
 
 	// 矿工池子
-	miner.Pool.Set("myfirstworker", worker)
-	if poolworkerider, ok := miner.Pool.Get("myfirstworker"); ok {
+	miner.Pool.Set("worker1", worker)
+	if pools, ok := miner.Pool.Get("worker1"); ok {
 		go func() {
-			poolworkerider.SetUrl("http://cjhug.me/fuck.html")
-			data, _ := poolworkerider.Get()
+			pools.SetUrl("http://www.lenggirl.com")
+			data, _ := pools.Get()
 			log.Info(string(data))
 		}()
 		util.Sleep(10)

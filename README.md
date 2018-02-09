@@ -13,8 +13,6 @@ HTTP Download Helper, Supports Many Features such as Cookie Persistence, HTTP(S)
 
 ![Marmot](/doc/tubo.png)
 
-[TOC]
-
 ## 1. Introduction
 
 World-Wide-Web robot, also known as spiders and crawlers. The principle is to falsify network data by constructing appointed HTTP protocol data packet, then request resource to the specified host, goal is to access the data returned. 
@@ -295,14 +293,15 @@ Run our worker:
 3. `body, err := worker.Post()` // post form request, data fill by SetFormParm()
 4. `body, err := worker.PostJSON()` // post JSON request, data fill by SetBData()
 5. `body, err := worker.PostXML()` // post XML request, data fill by SetBData()
-6. `body, err := worker.PostFILE()` // upload file, data fill by SetBData()
+6. `body, err := worker.PostFILE()` // upload file, data fill by SetBData(), and should set SetFileInfo(fileName, fileFormName string)
 7. `body, err := worker.Delete()` // you know!
 8. `body, err := worker.Put()` // ones http method...
 9. `body, err := worker.PutJSON()` // put JSON request
 10. `body, err := worker.PutXML()`
 11. `body, err := worker.PutFILE()`
-12. `body, err := worker.OtherGo("OPTIONS", "application/x-www-form-urlencoded")` // Other http method, Such as OPTIONS etcd.
-13. `body, err := worker.GoByMethod("POST")` // you can override SetMethod() By this, equal SetMethod() then Go()
+12. `body, err := worker.OtherGo("OPTIONS", "application/x-www-form-urlencoded")` // Other http method, Such as OPTIONS etc., can not sent binary.
+13. `body, err := worker.OtherGoBinary("OPTIONS", "application/x-www-form-urlencoded")` // Other http method, Such as OPTIONS etc., just sent binary.
+14. `body, err := worker.GoByMethod("POST")` // you can override SetMethod() By this, equal SetMethod() then Go()
 
 ### 3.4 The Fourth Step
 
@@ -315,145 +314,16 @@ Deal the return data, all data will be return as binary, You can immediately sto
 Attention: after every request for a url, the next request you can cover your http request header, otherwise header you set still exist,
 if just want clear post data, use `Clear()`, and want clear HTTP header too please use `ClearAll()` .
 
-Here is a example `lesson6.go` again:
-
-```go
-package main
-
-import (
-	"errors"
-	"fmt"
-	"net/url"
-	"strings"
-
-	"github.com/hunterhug/marmot/expert"
-	"github.com/hunterhug/marmot/miner"
-	"github.com/hunterhug/parrot/util"
-)
-
-// Num of miner, We can run it at the same time to crawl data fast
-var MinerNum = 5
-
-// You can update this decide whether to proxy
-var ProxyAddress interface{}
-
-func main() {
-	// You can Proxy!
-	// ProxyAddress = "socks5://127.0.0.1:1080"
-
-	fmt.Println(`Welcome: Input "url" and picture keep "dir"`)
-	for {
-		fmt.Println("---------------------------------------------")
-		url := util.Input(`URL(Like: "http://publicdomainarchive.com")`, "http://publicdomainarchive.com")
-		dir := util.Input(`DIR(Default: "./picture")`, "./picture")
-		fmt.Printf("You will keep %s picture in dir %s\n", url, dir)
-		fmt.Println("---------------------------------------------")
-
-		// Start Catch
-		err := CatchPicture(url, dir)
-		if err != nil {
-			fmt.Println("Error:" + err.Error())
-		}
-	}
-}
-
-// Come on!
-func CatchPicture(picture_url string, dir string) error {
-	// Check valid
-	_, err := url.Parse(picture_url)
-	if err != nil {
-		return err
-	}
-
-	// Make dir!
-	err = util.MakeDir(dir)
-	if err != nil {
-		return err
-	}
-
-	// New a worker to get url
-	worker, _ := miner.New(ProxyAddress)
-
-	result, err := worker.SetUrl(picture_url).SetUa(miner.RandomUa()).Get()
-	if err != nil {
-		return err
-	}
-
-	// Find all picture
-	pictures := expert.FindPicture(string(result))
-
-	// Empty, What a pity!
-	if len(pictures) == 0 {
-		return errors.New("empty")
-	}
-
-	// Devide pictures into several worker
-	xxx, _ := util.DevideStringList(pictures, MinerNum)
-
-	// Chanel to info exchange
-	chs := make(chan int, len(pictures))
-
-	// Go at the same time
-	for num, imgs := range xxx {
-
-		// Get pool miner
-		worker_picture, ok := miner.Pool.Get(util.IS(num))
-		if !ok {
-			// No? set one!
-			worker_temp, _ := miner.New(ProxyAddress)
-			worker_picture = worker_temp
-			worker_temp.SetUa(miner.RandomUa())
-			miner.Pool.Set(util.IS(num), worker_temp)
-		}
-
-		// Go save picture!
-		go func(imgs []string, worker *miner.Worker, num int) {
-			for _, img := range imgs {
-
-				// Check, May be Pass
-				_, err := url.Parse(img)
-				if err != nil {
-					continue
-				}
-
-				// Change Name of our picture
-				filename := strings.Replace(util.ValidFileName(img), "#", "_", -1)
-
-				// Exist?
-				if util.FileExist(dir + "/" + filename) {
-					fmt.Println("File Exist：" + dir + "/" + filename)
-					chs <- 0
-				} else {
-
-					// Not Exsit?
-					imgsrc, e := worker.SetUrl(img).Get()
-					if e != nil {
-						fmt.Println("Download " + img + " error:" + e.Error())
-						chs <- 0
-						return
-					}
-
-					// Save it!
-					e = util.SaveToFile(dir+"/"+filename, imgsrc)
-					if e == nil {
-						fmt.Printf("SP%d: Keep in %s/%s\n", num, dir, filename)
-					}
-					chs <- 1
-				}
-			}
-		}(imgs, worker_picture, num)
-	}
-
-	// Every picture should return
-	for i := 0; i < len(pictures); i++ {
-		<-chs
-	}
-
-	return nil
-}
-```
+Here is some practice in the example dir.
 
 More see the code source.
+
+### 3.5 Other
+
+Hook:
+
+1. `SetBeforeAction(fc func(context.Context, *Worker))`
+2. `SetAfterAction(fc func(context.Context, *Worker))`
 
 ## 4. Project Application
 

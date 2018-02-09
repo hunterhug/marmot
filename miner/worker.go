@@ -22,6 +22,7 @@ import (
 	"strings"
 
 	"github.com/hunterhug/parrot/util"
+	"mime/multipart"
 )
 
 // New a worker, if ipstring is a proxy address, New a proxy client.
@@ -93,7 +94,7 @@ func (worker *Worker) Go() (body []byte, e error) {
 	case DELETE:
 		return worker.Delete()
 	case OTHER:
-		return []byte(""), errors.New("please use method OtherGo(method, content type)")
+		return []byte(""), errors.New("please use method OtherGo(method, contentType string) or OtherGoBinary(method, contentType string)")
 	default:
 		return worker.Get()
 	}
@@ -126,7 +127,7 @@ func (worker *Worker) JsonToString() (string, error) {
 }
 
 // Main method I make!
-func (worker *Worker) sent(method, contenttype string, binary bool) (body []byte, e error) {
+func (worker *Worker) sent(method, contentType string, binary bool) (body []byte, e error) {
 	// Lock it for save
 	worker.mux.Lock()
 	defer worker.mux.Unlock()
@@ -171,8 +172,8 @@ func (worker *Worker) sent(method, contenttype string, binary bool) (body []byte
 	request.Header = CloneHeader(worker.Header)
 
 	// In fact content type must not empty
-	if contenttype != "" {
-		request.Header.Set("Content-Type", contenttype)
+	if contentType != "" {
+		request.Header.Set("Content-Type", contentType)
 	}
 	worker.Request = request
 
@@ -250,8 +251,33 @@ func (worker *Worker) PostXML() (body []byte, e error) {
 }
 
 func (worker *Worker) PostFILE() (body []byte, e error) {
-	return worker.sent(POST, HTTPFILEContentType, true)
+	return worker.sentFile(POST)
 
+}
+
+func (worker *Worker) sentFile(method string) ([]byte, error) {
+	if worker.FileName == "" || worker.FileFormName == "" {
+		return nil, errors.New("fileName or fileFormName must not empty")
+	}
+	if len(worker.BData) == 0 {
+		return nil, errors.New("BData must not empty")
+	}
+
+	bodyBuf := &bytes.Buffer{}
+	bodyWriter := multipart.NewWriter(bodyBuf)
+
+	fileWriter, err := bodyWriter.CreateFormFile(worker.FileFormName, worker.FileName)
+	if err != nil {
+		return nil, err
+	}
+
+	fileWriter.Write(worker.BData)
+	contentType := bodyWriter.FormDataContentType()
+	bodyWriter.Close()
+
+	worker.SetBData(bodyBuf.Bytes())
+
+	return worker.sent(method, contentType, true)
 }
 
 // Put
@@ -268,7 +294,7 @@ func (worker *Worker) PutXML() (body []byte, e error) {
 }
 
 func (worker *Worker) PutFILE() (body []byte, e error) {
-	return worker.sent(PUT, HTTPFILEContentType, true)
+	return worker.sentFile(PUT)
 
 }
 
@@ -295,6 +321,10 @@ Content Type
 	"text/xml"
 	"multipart/form-data"
 */
-func (worker *Worker) OtherGo(method, contenttype string) (body []byte, e error) {
-	return worker.sent(method, contenttype, true)
+func (worker *Worker) OtherGo(method, contentType string) (body []byte, e error) {
+	return worker.sent(method, contentType, false)
+}
+
+func (worker *Worker) OtherGoBinary(method, contentType string) (body []byte, e error) {
+	return worker.sent(method, contentType, true)
 }

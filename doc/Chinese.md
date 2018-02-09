@@ -22,7 +22,7 @@
 
 ## 一.下载
 
-自己封装的爬虫库,类似于Python的requests,你只需通过该方式获取库
+自己封装的Golang爬虫下载库,类似于Python的`requests`, 但很弱, 你只需通过该方式获取库
 
 ```
 go get -v github.com/hunterhug/marmot/miner
@@ -30,7 +30,7 @@ go get -v github.com/hunterhug/marmot/miner
 
 ## 二.使用
 
-请参考最新的英文版本, 中文版本不再更新...
+请参考最新的英文版本.
 
 官方部分示例已经合进本库，参见`example`文件夹
 
@@ -167,14 +167,15 @@ func main() {
 3. `body, err := worker.Post()` // POST表单请求,数据在SetFormParm()
 4. `body, err := worker.PostJSON()` // 提交JSON请求,数据在SetBData()
 5. `body, err := worker.PostXML()` // 提交XML请求,数据在SetBData()
-6. `body, err := worker.PostFILE()` // 提交文件上传请求,数据在SetBData()
+6. `body, err := worker.PostFILE()` // 提交文件上传请求,数据在SetBData(), 你必须设置SetFileInfo(fileName, fileFormName string)
 7. `body, err := worker.Delete()` 
 8. `body, err := worker.Put()`
 9. `body, err := worker.PutJSON()` 
 10. `body, err := worker.PutXML()`
 11. `body, err := worker.PutFILE()`
-12. `body, err := worker.OtherGo("OPTIONS", "application/x-www-form-urlencoded")` // 其他自定义的HTTP方法
-13. `body, err := worker.GoByMethod("POST")` // you can override SetMethod() By this, equal SetMethod() then Go()
+12. `body, err := worker.OtherGo("OPTIONS", "application/x-www-form-urlencoded")` // 其他自定义的HTTP方法, 不能模拟二进制
+13. `body, err := worker.OtherGo("OPTIONS", "application/x-www-form-urlencoded")` // 其他自定义的HTTP方法, 模拟二进制
+14. `body, err := worker.GoByMethod("POST")` // you can override SetMethod() By this, equal SetMethod() then Go()
 
 ### 第四步
 
@@ -186,7 +187,14 @@ func main() {
 
 注意：每次抓取网站后,下次请求你可以覆盖原先的头部,但是没覆盖的头部还是上次的,所以清除头部或请求数据,请使用`Clear()`(只清除Post数据)或者`ClearAll()`(还清除http头部)
 
-[API参考](doc/api.md),更多自行查看源代码
+### 其他
+
+勾子:
+
+1. `SetBeforeAction(fc func(context.Context, *Worker))` 爬虫动作前可AOP注入
+2. `SetAfterAction(fc func(context.Context, *Worker))` 爬虫动作完成后
+
+`tool`和`expert`下为一些封装好的工具函数, 某些如亚马逊云, 腾讯云, 微信开发API的签名工具函数暂不开源.
 
 ## 三.项目应用
 
@@ -200,30 +208,6 @@ func main() {
 6. ...
 
 版本日志信息见[日志](/doc/log.md), 爬虫环境安装请参考:[Docker快速版本](https://github.com/hunterhug/GoSpider-docker)
-
-示例编译二进制方法：
-
-Linux二进制
-
-```bash
-cd main
-
-# 64位
-GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -x -o zhihu_linux_amd64 main.go
-
-# 32位
-GOOS=linux GOARCH=386 go build -ldflags "-s -w" -x -o zhihu_linux_386 main.go
-```
-
-Windows二进制
-
-```bash
-# 64位
-GOOS=windows GOARCH=amd64 go build -ldflags "-s -w" -x -o zhihu_windows_amd64.exe main.go
-
-# 32位
-GOOS=windows GOARCH=386 go build -ldflags "-s -w" -x -o zhihu_windows_386.exe main.go
-```
 
 如果你觉得项目帮助到你,欢迎请我喝杯咖啡
 
