@@ -22,11 +22,22 @@
 
 ## 一.下载
 
-自己封装的Golang爬虫下载库,类似于Python的`requests`, 但很弱, 你只需通过该方式获取库
+自己封装的Golang爬虫下载库,类似于Python的`requests`, 但很弱, 支持各种代理模式和伪装功能, 你只需通过该方式获取库
 
 ```
 go get -v github.com/hunterhug/marmot/miner
 ```
+
+或者直接下载:
+
+```
+cd src && mkdir github.com/hunterhug
+cd src/github.com/hunterhug
+git clone https://github.com/hunterhug/marmot
+```
+
+中国用户因为墙的问题下载不到依赖库， 可以将`GOPATH`文件夹下的库移到您环境的`GOPATH`下
+
 
 ## 二.使用
 

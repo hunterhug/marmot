@@ -9,6 +9,10 @@
 
 [中文介绍](/doc/Chinese.md)
 
+中国用户因为墙的问题下载不到依赖库， 可以将`GOPATH`文件夹下的库移到您环境的`GOPATH`下
+
+If you `go get` difficult, you can move those files under `GOPATH` in this project to your Golang env's `GOPATH`. 
+
 HTTP Download Helper, Supports Many Features such as Cookie Persistence, HTTP(S) and SOCKS5 Proxy....
 
 ![Marmot](/doc/tubo.png)
@@ -63,7 +67,7 @@ You can get it by:
 go get -v github.com/hunterhug/marmot/miner
 ```
 
-Or make your GOPATH sub dir: `/src/github.com/hunterhug`, and
+Or make your `GOPATH` sub dir: `/src/github.com/hunterhug`, and
 
 ```
 cd src/github.com/hunterhug
