@@ -7,6 +7,13 @@
 [![GitHub issues](https://img.shields.io/github/issues/hunterhug/marmot.svg)](https://github.com/hunterhug/marmot/issues)
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ChinaEnglish/marmot?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge)
 
+中国用户因为墙的问题下载不到依赖库， 可以将`GOPATH`文件夹下的库移到您环境的`GOPATH`下
+
+亲爱的，请用[支付宝APP](https://auth.alipay.com/login/index.htm)先扫红包码，然后如果你想打赏的话可以用红包给我打赏<br/>
+
+![](https://raw.githubusercontent.com/hunterhug/rabbit/master/file/red/red.png)<br/>
+
+![](https://raw.githubusercontent.com/hunterhug/rabbit/master/file/red/red1.png)
 
 ![土拨](tubo.png)
 
@@ -227,6 +234,3 @@ func main() {
 
 支付宝
 ![支付宝](https://raw.githubusercontent.com/hunterhug/hunterhug.github.io/master/static/jpg/ali.png)
-
-
-问题咨询请发邮件:gdccmcm14@live.com.
