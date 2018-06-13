@@ -11,14 +11,6 @@
 
 [中文介绍](/doc/Chinese.md)
 
-中国用户因为墙的问题下载不到依赖库， 可以将`GOPATH`文件夹下的库移到您环境的`GOPATH`下
-
-亲爱的，请用[支付宝APP](https://auth.alipay.com/login/index.htm)先扫红包码，然后如果你想打赏的话可以用红包给我打赏<br/>
-
-![](https://raw.githubusercontent.com/hunterhug/rabbit/master/file/red/red.png)<br/>
-
-![](https://raw.githubusercontent.com/hunterhug/rabbit/master/file/red/red1.png)
-
 If you `go get` difficult, you can move those files under `GOPATH` in this project to your Golang env's `GOPATH`. 
 
 HTTP Download Helper, Supports Many Features such as Cookie Persistence, HTTP(S) and SOCKS5 Proxy....
