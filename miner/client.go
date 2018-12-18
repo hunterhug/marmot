@@ -21,7 +21,8 @@ import (
 	"strings"
 
 	"github.com/hunterhug/parrot/util"
-	"golang.org/x/net/proxy" // see https://github.com/golang/net
+	"github.com/hunterhug/marmot/proxy"
+	//"golang.org/x/net/proxy" // see https://github.com/golang/net
 )
 
 // Cookie record Jar

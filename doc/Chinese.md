@@ -7,14 +7,6 @@
 [![GitHub issues](https://img.shields.io/github/issues/hunterhug/marmot.svg)](https://github.com/hunterhug/marmot/issues)
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ChinaEnglish/marmot?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge)
 
-中国用户因为墙的问题下载不到依赖库， 可以将`GOPATH`文件夹下的库移到您环境的`GOPATH`下
-
-亲爱的，请用[支付宝APP](https://auth.alipay.com/login/index.htm)先扫红包码，然后如果你想打赏的话可以用红包给我打赏<br/>
-
-![](https://raw.githubusercontent.com/hunterhug/rabbit/master/file/red/red.png)<br/>
-
-![](https://raw.githubusercontent.com/hunterhug/rabbit/master/file/red/red1.png)
-
 ![土拨](tubo.png)
 
 >万维网网络机器人,又称蜘蛛,爬虫,原理主要是通过构造符合HTTP协议的网络数据包,向指定主机请求资源,获取返回的数据.万维网有大量的公开信息,人力采集数据费时费力,故激发了爬虫的产业化.
@@ -48,9 +40,10 @@ git clone https://github.com/hunterhug/marmot
 
 ## 二.使用
 
-请参考最新的英文版本.
+请参考最新的英文版本. 此库可模拟上传文件，模拟表单提交，模拟各种各样的操作，疑问请来：[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ChinaEnglish/marmot?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge)
 
-官方部分示例已经合进本库，参见`example`文件夹
+
+官方部分示例已经合进本库，参见`example`文件夹，示例我有
 
 ```go
 package main
@@ -111,9 +104,9 @@ func main() {
 	// SetUrl:Url必须设置
 	// SetMethod:HTTP方法可以是POST或GET,可不设置,默认GET,传错值默认为GET
 	// SetWaitTime:暂停时间,可不设置,默认不暂停
-	worker.SetUrl("http://cjhug.me/fuck.html").SetMethod(miner.GET).SetWaitTime(2)
+	worker.SetUrl("https://hunterhug.github.io/fuck.html").SetMethod(miner.GET).SetWaitTime(2)
 	worker.SetUa(miner.RandomUa())                //设置随机浏览器标志
-	worker.SetRefer("http://cjhug.me/fuck.html")  // 设置Refer头
+	worker.SetRefer("https://hunterhug.github.io/fuck.html")  // 设置Refer头
 	worker.SetHeaderParm("diyheader", "lenggirl") // 自定义头部
 	//worker.SetBData([]byte("file data")) // 如果你要提交JSON数据/上传文件
 	//worker.SetFormParm("username","jinhan") // 提交表单
@@ -141,7 +134,7 @@ func main() {
 	miner.Pool.Set("myfirstworker", worker)
 	if poolworkerider, ok := miner.Pool.Get("myfirstworker"); ok {
 		go func() {
-			poolworkerider.SetUrl("http://cjhug.me/fuck.html")
+			poolworkerider.SetUrl("https://hunterhug.github.io/fuck.html")
 			data, _ := poolworkerider.Get()
 			log.Info(string(data))
 		}()

@@ -59,6 +59,8 @@ func main() {
 }
 ```
 
+See the `example` dir.such as lesson or practice.
+
 ## 2. How To Use
 
 You can get it by:
@@ -142,7 +144,7 @@ func main() {
 	// SetUrl: required, the Url
 	// SetMethod: optional, HTTP method: POST/GET/..., default GET
 	// SetWaitTime: optional, HTTP request wait/pause time
-	worker.SetUrl("http://cjhug.me/fuck.html").SetMethod(miner.GET).SetWaitTime(2)
+	worker.SetUrl("https://hunterhug.github.io/fuck.html").SetMethod(miner.GET).SetWaitTime(2)
 	worker.SetUa(miner.RandomUa())                // optional, browser user agent: IE/Firefox...
 	worker.SetRefer("https://www.whitehouse.gov") // optional, url refer
 	worker.SetHeaderParm("diyheader", "lenggirl") // optional, some other diy http header
@@ -175,7 +177,7 @@ func main() {
 	miner.Pool.Set("myfirstworker", worker)
 	if w, ok := miner.Pool.Get("myfirstworker"); ok {
 		go func() {
-			data, _ := w.SetUrl("http://cjhug.me/fuck.html").Get()
+			data, _ := w.SetUrl("https://hunterhug.github.io/fuck.html").Get()
 			log.Info(string(data))
 		}()
 		util.Sleep(10)
