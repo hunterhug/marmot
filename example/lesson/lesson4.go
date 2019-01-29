@@ -27,7 +27,7 @@ func main() {
 	miner.SetLogLevel(miner.DEBUG)
 
 	// The url we want
-	url := "https://www.whitehouse.gov"
+	url := "https://hunterhug.github.io"
 
 	// IAM we can NewAPI
 	worker := miner.NewAPI()
@@ -65,7 +65,7 @@ func main() {
 		fmt.Println(err.Error())
 	} else {
 		// Parse We want
-		fmt.Printf("Output:\n %s\n", parse(body))
+		fmt.Printf("Output:\n %s\n", Myparse(body))
 	}
 
 	// for {
@@ -74,7 +74,7 @@ func main() {
 }
 
 // Parse HTML page
-func parse(data []byte) string {
+func Myparse(data []byte) string {
 	doc, err := expert.QueryBytes(data)
 	if err != nil {
 		fmt.Println(err.Error())

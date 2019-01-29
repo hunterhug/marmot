@@ -40,8 +40,7 @@ git clone https://github.com/hunterhug/marmot
 
 ## 二.使用
 
-请参考最新的英文版本. 此库可模拟上传文件，模拟表单提交，模拟各种各样的操作，疑问请来：[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ChinaEnglish/marmot?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge)
-
+请参考最新的英文版本. 此库可模拟上传文件，模拟表单提交，模拟各种各样的操作.
 
 官方部分示例已经合进本库，参见`example`文件夹，示例我有
 
@@ -58,7 +57,7 @@ func main() {
 	// 1.新建一个矿工
 	worker, _ := miner.New(nil)
 	// 2.设置网址
-	worker.SetUrl("http://www.cjhug.me").SetUa(worker.RandomUa()).SetMethod(worker.GET)
+	worker.SetUrl("https://hunterhug.github.io").SetUa(worker.RandomUa()).SetMethod(worker.GET)
 	// 3.抓取网址
 	html, err := worker.Go()
 	if err != nil {
@@ -107,7 +106,7 @@ func main() {
 	worker.SetUrl("https://hunterhug.github.io/fuck.html").SetMethod(miner.GET).SetWaitTime(2)
 	worker.SetUa(miner.RandomUa())                //设置随机浏览器标志
 	worker.SetRefer("https://hunterhug.github.io/fuck.html")  // 设置Refer头
-	worker.SetHeaderParm("diyheader", "lenggirl") // 自定义头部
+	worker.SetHeaderParm("diyheader", "diy") // 自定义头部
 	//worker.SetBData([]byte("file data")) // 如果你要提交JSON数据/上传文件
 	//worker.SetFormParm("username","jinhan") // 提交表单
 	//worker.SetFormParm("password","123")
@@ -159,12 +158,12 @@ func main() {
 
 模拟矿工设置头部:
 
-1. `worker.SetUrl("http://www.cjhug.me")`  // 设置Http请求要抓取的网址,必须
+1. `worker.SetUrl("https://hunterhug.github.io")`  // 设置Http请求要抓取的网址,必须
 2. `worker.SetMethod(miner.GET)`  // 设置Http请求的方法:`POST/GET/PUT/POSTJSON`等
 3. `worker.SetWaitTime(2)` // 设置Http请求超时时间
 4. `worker.SetUa(miner.RandomUa())`                // 设置Http请求浏览器标志,本项目提供445个浏览器标志，可选设置
 5. `worker.SetRefer("http://www.baidu.com")`       // 设置Http请求Refer头
-6. `worker.SetHeaderParm("diyheader", "lenggirl")` // 设置Http请求自定义头部
+6. `worker.SetHeaderParm("diyheader", "diy")` // 设置Http请求自定义头部
 7. `worker.SetBData([]byte("file data"))` // Http请求需要上传数据
 8. `worker.SetFormParm("username","jinhan")` // Http请求需要提交表单
 9. `worker.SetCookie("xx=dddd")` // Http请求设置cookie, 某些网站需要登录后F12复制cookie

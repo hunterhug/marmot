@@ -50,7 +50,7 @@ func main() {
 	// Use Default Worker, You can Also New One:
 	// worker:=miner.New(nil)
 	miner.SetLogLevel(miner.DEBUG)
-	_, err := miner.SetUrl("https://www.whitehouse.gov").Go()
+	_, err := miner.SetUrl("https://hunterhug.github.io").Go()
 	if err != nil {
 		fmt.Println(err.Error())
 	} else {
@@ -98,7 +98,7 @@ func main() {
 	// 1. New a worker
 	worker, _ := miner.New(nil)
 	// 2. Set a URL And Fetch
-	html, err := worker.SetUrl("https://www.whitehouse.gov").SetUa(miner.RandomUa()).SetMethod(miner.GET).Go()
+	html, err := worker.SetUrl("https://hunterhug.github.io").SetUa(miner.RandomUa()).SetMethod(miner.GET).Go()
 	if err != nil {
 		fmt.Println(err.Error())
 	}
@@ -146,8 +146,8 @@ func main() {
 	// SetWaitTime: optional, HTTP request wait/pause time
 	worker.SetUrl("https://hunterhug.github.io/fuck.html").SetMethod(miner.GET).SetWaitTime(2)
 	worker.SetUa(miner.RandomUa())                // optional, browser user agent: IE/Firefox...
-	worker.SetRefer("https://www.whitehouse.gov") // optional, url refer
-	worker.SetHeaderParm("diyheader", "lenggirl") // optional, some other diy http header
+	worker.SetRefer("https://hunterhug.github.io") // optional, url refer
+	worker.SetHeaderParm("diyheader", "diy") // optional, some other diy http header
 	//worker.SetBData([]byte("file data"))    // optional, if you want post JSON data or upload file
 	//worker.SetFormParm("username","jinhan") // optional: if you want post form
 	//worker.SetFormParm("password","123")
@@ -206,7 +206,7 @@ func main() {
 	miner.SetLogLevel(miner.DEBUG)
 
 	// The url we want
-	url := "https://www.whitehouse.gov"
+	url := "https://hunterhug.github.io"
 
 	// IAM we can NewAPI
 	worker := miner.NewAPI()
@@ -279,12 +279,12 @@ There are four kinds of worker:
 
 Camouflage our worker:
 
-1. `worker.SetUrl("https://www.whitehouse.gov")`  // required: set url you want to
+1. `worker.SetUrl("https://hunterhug.github.io")`  // required: set url you want to
 2. `worker.SetMethod(miner.GET)`  // optional: set http method `POST/GET/PUT/POSTJSON` and so on
 3. `worker.SetWaitTime(2)`                         // optional: set timeout of http request
 4. `worker.SetUa(miner.RandomUa())`                 // optional: set http browser user agent, you can see miner/config/ua.txt
-5. `worker.SetRefer("https://www.whitehouse.gov")`       // optional: set http request Refer
-6. `worker.SetHeaderParm("diyheader", "lenggirl")` // optional: set http diy header
+5. `worker.SetRefer("https://hunterhug.github.io")`       // optional: set http request Refer
+6. `worker.SetHeaderParm("diyheader", "diy")` // optional: set http diy header
 7. `worker.SetBData([]byte("file data"))` // optional: set binary data for post or put
 8. `worker.SetFormParm("username","jinhan")` // optional: set form data for post or put 
 9. `worker.SetCookie("xx=dddd")` // optional: you can set a init cookie, some website you can login and F12 copy the cookie
@@ -322,8 +322,6 @@ if just want clear post data, use `Clear()`, and want clear HTTP header too plea
 
 Here is some practice in the example dir.
 
-More see the code source.
-
 ### 3.5 Other
 
 Hook:
@@ -331,17 +329,8 @@ Hook:
 1. `SetBeforeAction(fc func(context.Context, *Worker))`
 2. `SetAfterAction(fc func(context.Context, *Worker))`
 
-## 4. Project Application
-
-It has already used in many project(although some is very simple) :
-
-1. [Full Golang Automatic Amazon Distributed crawler|spider](https://github.com/hunterhug/AmazonBigSpider) // Just see [Picture](doc/amazon.md)
-2. [GoTaobao](https://github.com/hunterhug/GoTaoBao)
-3. A lot closed source...
-
-Project change you can see [log](/doc/log.md), Install development environment you can refer:[GoSpider-docker](https://github.com/hunterhug/GoSpider-docker)
-
 # LICENSE
+
 ```
 	Copyright 2017 by marmot author: gdccmcm14@live.com.
 	Licensed under the Apache License, Version 2.0 (the "License");

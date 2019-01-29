@@ -11,7 +11,6 @@
 // 	limitations under the License
 //
 
-
 /*
 	More detail Example
 */
@@ -48,10 +47,10 @@ func main() {
 	// SetUrl: required, the Url
 	// SetMethod: optional, HTTP method: POST/GET/..., default GET
 	// SetWaitTime: optional, HTTP request wait/pause time
-	worker.SetUrl("https://hunterhug.github.io/fuck.html").SetMethod(miner.GET).SetWaitTime(2)
+	worker.SetUrl("https://hunterhug.github.io").SetMethod(miner.GET).SetWaitTime(2)
 	worker.SetUa(miner.RandomUa())                // optional, browser user agent: IE/Firefox...
-	worker.SetRefer("https://www.whitehouse.gov") // optional, url refer
-	worker.SetHeaderParm("diyheader", "lenggirl") // optional, some other diy http header
+	worker.SetRefer("https://hunterhug.github.io") // optional, url refer
+	worker.SetHeaderParm("diyheader", "diy")      // optional, some other diy http header
 	//worker.SetBData([]byte("file data"))    // optional, if you want post JSON data or upload file
 	//worker.SetFormParm("username","jinhan") // optional: if you want post form
 	//worker.SetFormParm("password","123")

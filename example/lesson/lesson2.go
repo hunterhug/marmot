@@ -28,7 +28,7 @@ func main() {
 	// 1. New a worker
 	worker, _ := miner.New(nil)
 	// 2. Set a URL And Fetch
-	html, err := worker.SetUrl("https://www.whitehouse.gov").SetUa(miner.RandomUa()).SetMethod(miner.GET).Go()
+	html, err := worker.SetUrl("https://hunterhug.github.io").SetUa(miner.RandomUa()).SetMethod(miner.GET).Go()
 	if err != nil {
 		fmt.Println(err.Error())
 	}

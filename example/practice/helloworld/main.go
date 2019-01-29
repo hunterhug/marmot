@@ -44,10 +44,10 @@ func main() {
 	// SetUrl:Url必须设置
 	// SetMethod:HTTP方法可以是POST或GET,可不设置,默认GET,传错值默认为GET
 	// SetWaitTime:暂停时间,可不设置,默认不暂停
-	worker.SetUrl("http://www.lenggirl.com").SetMethod(miner.GET).SetWaitTime(2)
+	worker.SetUrl("https://hunterhug.github.io").SetMethod(miner.GET).SetWaitTime(2)
 	worker.SetUa(miner.RandomUa())                //设置随机浏览器标志
-	worker.SetRefer("http://www.lenggirl.com")    // 设置Refer头
-	worker.SetHeaderParm("diyheader", "lenggirl") // 自定义头部
+	worker.SetRefer("https://hunterhug.github.io")    // 设置Refer头
+	worker.SetHeaderParm("diyheader", "diy") // 自定义头部
 	//worker.SetBData([]byte("file data")) // 如果你要提交JSON数据/上传文件
 	//worker.SetFormParm("username","jinhan") // 提交表单
 	//worker.SetFormParm("password","123")
@@ -77,7 +77,7 @@ func main() {
 	miner.Pool.Set("worker1", worker)
 	if pools, ok := miner.Pool.Get("worker1"); ok {
 		go func() {
-			pools.SetUrl("http://www.lenggirl.com")
+			pools.SetUrl("https://hunterhug.github.io")
 			data, _ := pools.Get()
 			log.Info(string(data))
 		}()
