@@ -1,5 +1,4 @@
-
-// 
+//
 // 	Copyright 2017 by marmot author: gdccmcm14@live.com.
 // 	Licensed under the Apache License, Version 2.0 (the "License");
 // 	you may not use this file except in compliance with the License.
@@ -28,7 +27,7 @@ func main() {
 	// Use Default Worker, You can Also New One:
 	// worker:=miner.New(nil)
 	miner.SetLogLevel(miner.DEBUG)
-	_, err := miner.SetUrl("https://www.whitehouse.gov").Go()
+	_, err := miner.SetUrl("https://hunterhug.github.io").Go()
 	if err != nil {
 		fmt.Println(err.Error())
 	} else {

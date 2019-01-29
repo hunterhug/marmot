@@ -30,7 +30,7 @@ import (
 //		// Use Default Worker, You can Also New One:
 //		// worker:=miner.New(nil)
 //		miner.SetLogLevel(miner.DEBUG)
-//		_, err := miner.SetUrl("https://www.whitehouse.gov").Go()
+//		_, err := miner.SetUrl("https://hunterhug.github.io").Go()
 //		if err != nil {
 //			fmt.Println(err.Error())
 //		} else {
