@@ -206,19 +206,6 @@ func main() {
 
 `tool`和`expert`下为一些封装好的工具函数, 某些如亚马逊云, 腾讯云, 微信开发API的签名工具函数暂不开源.
 
-## 三.项目应用
-
-该爬虫库已经在多个项目中使用
-
-1. [亚马逊大型分布式爬虫](https://github.com/hunterhug/AmazonBigSpider) // 查看[图文](/doc/amazon.md)
-2. [煎蛋分布式文章爬虫](https://github.com/hunterhug/jiandan)
-3. [知乎全能API小工具](https://github.com/hunterhug/huhu)
-4. [网易无损音乐下载](/example/practice/music/README.md)
-5. [天猫淘宝有关的采集小程序](https://github.com/hunterhug/GoTaoBao)
-6. ...
-
-版本日志信息见[日志](/doc/log.md), 爬虫环境安装请参考:[Docker快速版本](https://github.com/hunterhug/GoSpider-docker)
-
 如果你觉得项目帮助到你,欢迎请我喝杯咖啡
 
 微信
