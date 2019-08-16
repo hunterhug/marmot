@@ -21,7 +21,7 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/hunterhug/parrot/util"
+	"github.com/hunterhug/marmot/util"
 	"mime/multipart"
 )
 

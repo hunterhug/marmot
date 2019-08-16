@@ -17,7 +17,7 @@ import (
 	"math/rand"
 	"strings"
 
-	"github.com/hunterhug/parrot/util"
+	"github.com/hunterhug/marmot/util"
 )
 
 // Global User-Agent provide

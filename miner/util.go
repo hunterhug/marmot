@@ -19,7 +19,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/hunterhug/parrot/util"
+	"github.com/hunterhug/marmot/util"
 )
 
 // Wait some secord

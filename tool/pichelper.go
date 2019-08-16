@@ -6,7 +6,7 @@ import (
 	"net/url"
 	"github.com/hunterhug/marmot/miner"
 	"github.com/hunterhug/marmot/expert"
-	"github.com/hunterhug/parrot/util"
+	"github.com/hunterhug/marmot/util"
 	"errors"
 	"strings"
 	"fmt"

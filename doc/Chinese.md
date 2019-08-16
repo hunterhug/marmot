@@ -37,9 +37,6 @@ cd src/github.com/hunterhug
 git clone https://github.com/hunterhug/marmot
 ```
 
-中国用户因为墙的问题下载不到依赖库， 可以将`GOPATH`文件夹下的库移到您环境的`GOPATH`下
-
-
 ## 二.使用
 
 请参考最新的英文版本. 此库可模拟上传文件，模拟表单提交，模拟各种各样的操作.
