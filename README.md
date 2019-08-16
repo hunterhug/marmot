@@ -13,8 +13,6 @@
 
 [中文介绍](/doc/Chinese.md)
 
-If you `go get` difficult, you can move those files under `GOPATH` in this project to your Golang env's `GOPATH`. 
-
 HTTP Download Helper, Supports Many Features such as Cookie Persistence, HTTP(S) and SOCKS5 Proxy....
 
 ![Marmot](/doc/tubo.png)

@@ -15,7 +15,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/hunterhug/parrot/util"
+	"github.com/hunterhug/marmot/util"
 	"github.com/hunterhug/marmot/tool"
 )
 

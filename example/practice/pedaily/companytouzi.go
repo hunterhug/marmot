@@ -21,10 +21,10 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/PuerkitoBio/goquery"
+	"github.com/hunterhug/marmot/util/goquery"
 	"github.com/hunterhug/marmot/expert"
 	"github.com/hunterhug/marmot/miner"
-	"github.com/hunterhug/parrot/util"
+	"github.com/hunterhug/marmot/util"
 )
 
 var tclient *miner.Worker

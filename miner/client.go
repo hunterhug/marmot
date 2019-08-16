@@ -20,7 +20,7 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/hunterhug/parrot/util"
+	"github.com/hunterhug/marmot/util"
 	"github.com/hunterhug/marmot/proxy"
 	//"golang.org/x/net/proxy" // see https://github.com/golang/net
 )

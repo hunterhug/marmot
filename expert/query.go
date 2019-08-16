@@ -11,14 +11,14 @@
 // 	limitations under the License
 //
 
-// Pacakge expert is use to parse content
+// Package expert is use to parse content
 package expert
 
 import (
 	"regexp"
 	"strings"
 
-	"github.com/PuerkitoBio/goquery" // please include by yourself
+	"github.com/hunterhug/marmot/util/goquery"
 )
 
 func QueryBytes(content []byte) (*goquery.Document, error) {

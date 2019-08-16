@@ -14,9 +14,8 @@
 package miner
 
 import (
+	"github.com/hunterhug/marmot/util/go-logging"
 	"os"
-
-	"github.com/op/go-logging"
 )
 
 // Global logger config for debug
