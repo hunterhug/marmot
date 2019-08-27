@@ -17,6 +17,7 @@
 package miner
 
 import (
+	"crypto/tls"
 	"errors"
 	"net/http"
 	"net/http/cookiejar"
@@ -43,6 +44,9 @@ var (
 			return nil
 		},
 		Jar: NewJar(),
+		Transport: &http.Transport{
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		},
 	}
 
 	// Not Save Cookie
@@ -51,21 +55,24 @@ var (
 			Logger.Debugf("[GoWorker] Redirect:%v", req.URL)
 			return nil
 		},
+		Transport: &http.Transport{
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		},
 	}
 )
 
 // New a Proxy client, Default save cookie, Can timeout
 // We should support some proxy way such as http(s) or socks
-func NewProxyClient(proxystring string) (*http.Client, error) {
-	proxyUrl, err := url.Parse(proxystring)
+func NewProxyClient(proxyString string) (*http.Client, error) {
+	proxyUrl, err := url.Parse(proxyString)
 	if err != nil {
 		return nil, err
 	}
 
-	prefix := strings.Split(proxystring, ":")[0]
+	prefix := strings.Split(proxyString, ":")[0]
 
 	// setup a http transport
-	httpTransport := &http.Transport{}
+	httpTransport := &http.Transport{TLSClientConfig: &tls.Config{InsecureSkipVerify: true}}
 
 	// http://
 	// https://
@@ -111,6 +118,9 @@ func NewClient() (*http.Client, error) {
 		},
 		Jar:     NewJar(),
 		Timeout: util.Second(DefaultTimeOut),
+		Transport: &http.Transport{
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		},
 	}
 	return client, nil
 }

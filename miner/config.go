@@ -42,12 +42,12 @@ type Worker struct {
 	Response     *http.Response // Debug
 	Raw          []byte         // Raw data we get
 
-	// The name below is not so good but has already been used in many project, so bear it.
+	// can ignore ! The name below is not so good but has already been used in many project, so bear it.
 	Preurl        string // Pre url
-	UrlStatuscode int    // the last url response code, such as 404
+	UrlStatuscode int    // The last url response code, such as 404
 	Fetchtimes    int    // Url fetch number times
 	Errortimes    int    // Url fetch error times
-	Ipstring      string // worker proxy ip, just for user to record their proxy ip, default: localhost
+	Ipstring      string // Worker proxy ip, just for user to record their proxy ip, default: localhost
 
 	// AOP like Java
 	Ctx          context.Context

@@ -37,6 +37,21 @@ cd src/github.com/hunterhug
 git clone https://github.com/hunterhug/marmot
 ```
 
+
+支持微信公众号开发，微信支付等服务商API。见`api`。
+
+```
+├── miner   核心库（HTTP请求封装）
+├── expert  解析库（HTML解析封装）
+├── example Example示例库
+├── tool    小工具
+├── api     API封装SDK
+│   └── wx      微信公众号对接
+│   ├── awses   亚马逊对接Elastic HTTP
+├── proxy   Golang官方代理库
+└── util    基础库，为了避免外部依赖包失效，某些核心依赖包放置于此
+
+```
 ## 二.使用
 
 请参考最新的英文版本. 此库可模拟上传文件，模拟表单提交，模拟各种各样的操作.
