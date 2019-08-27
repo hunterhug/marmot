@@ -31,15 +31,15 @@ import (
 // New a worker, if ipstring is a proxy address, New a proxy client.
 // Proxy address such as:
 // 		http://[user]:[password@]ip:port, [] stand it can choose or not. case: socks5://127.0.0.1:1080
-func NewWorker(ipstring interface{}) (*Worker, error) {
+func NewWorker(ipString interface{}) (*Worker, error) {
 	worker := new(Worker)
 	worker.Header = http.Header{}
 	worker.Data = url.Values{}
 	worker.BData = []byte{}
-	if ipstring != nil {
-		client, err := NewProxyClient(strings.ToLower(ipstring.(string)))
+	if ipString != nil {
+		client, err := NewProxyClient(strings.ToLower(ipString.(string)))
 		worker.Client = client
-		worker.Ipstring = ipstring.(string)
+		worker.Ipstring = ipString.(string)
 		return worker, err
 	} else {
 		client, err := NewClient()
@@ -51,8 +51,8 @@ func NewWorker(ipstring interface{}) (*Worker, error) {
 }
 
 // Alias Name for NewWorker
-func New(ipstring interface{}) (*Worker, error) {
-	return NewWorker(ipstring)
+func New(ipString interface{}) (*Worker, error) {
+	return NewWorker(ipString)
 }
 
 // New Worker by Your Client
@@ -151,7 +151,7 @@ func (worker *Worker) sent(method, contentType string, binary bool) (body []byte
 	// New a Request
 	var request = &http.Request{}
 
-	// If binary parm value is true and BData is not empty
+	// If binary value is true and BData is not empty
 	// suit for POSTJSON(), POSTFILE()
 	if len(worker.BData) != 0 && binary {
 		pr := ioutil.NopCloser(bytes.NewReader(worker.BData))
