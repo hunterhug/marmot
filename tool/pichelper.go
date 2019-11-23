@@ -1,5 +1,3 @@
-// Date: 18-2-9
-
 package tool
 
 import (

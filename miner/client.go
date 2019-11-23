@@ -26,7 +26,6 @@ import (
 
 	"github.com/hunterhug/marmot/util"
 	"github.com/hunterhug/marmot/proxy"
-	//"golang.org/x/net/proxy" // see https://github.com/golang/net
 )
 
 // Cookie record Jar

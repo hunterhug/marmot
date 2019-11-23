@@ -6,8 +6,6 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/hunterhug/marmot)](https://goreportcard.com/report/github.com/hunterhug/marmot)
 [![GitHub issues](https://img.shields.io/github/issues/hunterhug/marmot.svg)](https://github.com/hunterhug/marmot/issues)
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ChinaEnglish/marmot?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge)
-[![996.icu](https://img.shields.io/badge/link-996.icu-red.svg)](https://996.icu) 
-[![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
 
 ![土拨](tubo.png)
 
@@ -23,7 +21,7 @@
 
 ## 一.下载
 
-自己封装的Golang爬虫下载库,类似于Python的`requests`, 但很弱, 支持各种代理模式和伪装功能, 你只需通过该方式获取库
+自己封装的Golang爬虫下载库,类似于Python的`requests`, 但很弱, 支持各种代理模式和伪装功能, 你只需通过该方式获取库：
 
 ```
 go get -v github.com/hunterhug/marmot/miner
@@ -37,26 +35,22 @@ cd src/github.com/hunterhug
 git clone https://github.com/hunterhug/marmot
 ```
 
-
-支持微信公众号开发，微信支付等服务商API。见`api`。
+代码结构：
 
 ```
 ├── miner   核心库（HTTP请求封装）
 ├── expert  解析库（HTML解析封装）
 ├── example Example示例库
 ├── tool    小工具
-├── api     API封装SDK
-│   └── wx      微信公众号对接
-│   ├── awses   亚马逊对接Elastic HTTP
 ├── proxy   Golang官方代理库
 └── util    基础库，为了避免外部依赖包失效，某些核心依赖包放置于此
-
 ```
+
 ## 二.使用
 
 请参考最新的英文版本. 此库可模拟上传文件，模拟表单提交，模拟各种各样的操作.
 
-官方部分示例已经合进本库，参见`example`文件夹，示例我有
+官方部分示例已经合进本库，参见`example`文件夹。
 
 ```go
 package main
@@ -217,8 +211,6 @@ func main() {
 
 1. `SetBeforeAction(fc func(context.Context, *Worker))` 爬虫动作前可AOP注入
 2. `SetAfterAction(fc func(context.Context, *Worker))` 爬虫动作完成后
-
-`tool`和`expert`下为一些封装好的工具函数, 某些如亚马逊云, 腾讯云, 微信开发API的签名工具函数暂不开源.
 
 如果你觉得项目帮助到你,欢迎请我喝杯咖啡
 
