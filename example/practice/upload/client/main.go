@@ -1,5 +1,3 @@
-// Date: 18-2-9
-
 package main
 
 import (
@@ -19,7 +17,7 @@ func postFile(filename string, targetUrl string) {
 
 // sample usage
 func main() {
-	target_url := "http://127.0.0.1:1789/upload"
+	targetUrl := "http://127.0.0.1:1789/upload"
 	filename := "./doc.go"
-	postFile(filename, target_url)
+	postFile(filename, targetUrl)
 }
