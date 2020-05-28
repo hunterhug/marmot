@@ -42,7 +42,7 @@ func TestWorker(t *testing.T) {
 	// wait times,can zero
 	worker.SetWaitTime(1)
 	// which url fetch
-	worker.SetUrl("https://hunterhug.github.io")
+	worker.SetUrl("https://github.com/hunterhug")
 
 	//worker.SetUa(spider.RandomUa())
 

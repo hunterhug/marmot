@@ -149,26 +149,32 @@ func (worker *Worker) sent(method, contentType string, binary bool) (body []byte
 	Logger.Debugf("[GoWorker] %s %s", method, worker.Url)
 
 	// New a Request
-	var request = &http.Request{}
-
+	var request *http.Request
+	var err error
 	// If binary value is true and BData is not empty
 	// suit for POSTJSON(), POSTFILE()
 	if len(worker.BData) != 0 && binary {
-		pr := ioutil.NopCloser(bytes.NewReader(worker.BData))
-		request, _ = http.NewRequest(method, worker.Url, pr)
+		pr := bytes.NewReader(worker.BData)
+		request, err = http.NewRequest(method, worker.Url, pr)
 	} else if len(worker.Data) != 0 { // such POST() from table form
-		pr := ioutil.NopCloser(strings.NewReader(worker.Data.Encode()))
-		request, _ = http.NewRequest(method, worker.Url, pr)
+		pr := strings.NewReader(worker.Data.Encode())
+		request, err = http.NewRequest(method, worker.Url, pr)
 	} else {
-		request, _ = http.NewRequest(method, worker.Url, nil)
+		request, err = http.NewRequest(method, worker.Url, nil)
+	}
+
+	if err != nil {
+		// I count Error time
+		worker.Errortimes++
+		return nil, err
 	}
 
 	// Close avoid EOF
 	// For client requests, setting this field prevents re-use of
 	// TCP connections between requests to the same hosts, as if
 	// Transport.DisableKeepAlives were set.
-	// todo
 	// maybe you want long connection
+	// todo
 	//request.Close = true
 
 	// Clone Header, I add some HTTP header!
@@ -190,17 +196,16 @@ func (worker *Worker) sent(method, contentType string, binary bool) (body []byte
 
 	// Do it
 	response, err := worker.Client.Do(request)
+	if err != nil {
+		// I count Error time
+		worker.Errortimes++
+		return nil, err
+	}
 
 	// Close it attention response may be nil
 	if response != nil {
 		//response.Close = true
 		defer response.Body.Close()
-	}
-
-	if err != nil {
-		// I count Error time
-		worker.Errortimes++
-		return nil, err
 	}
 
 	// Debug

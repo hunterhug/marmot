@@ -18,8 +18,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/hunterhug/marmot/util"
 	"github.com/hunterhug/marmot/tool"
+	"github.com/hunterhug/marmot/util"
 )
 
 // Num of miner, We can run it at the same time to crawl data fast
@@ -34,7 +34,7 @@ func main() {
 
 	fmt.Println(`Welcome: Input "url" and picture keep "dir"`)
 	fmt.Println("---------------------------------------------")
-	url := util.Input(`URL(Like: "http://publicdomainarchive.com")`, "http://publicdomainarchive.com")
+	url := util.Input(`URL(Like: "https://tu.enterdesk.com")`, "https://tu.enterdesk.com")
 	dir := util.Input(`DIR(Default: "./picture")`, "./picture")
 	fmt.Printf("You will keep %s picture in dir %s\n", url, dir)
 	fmt.Println("---------------------------------------------")

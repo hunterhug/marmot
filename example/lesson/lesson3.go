@@ -50,9 +50,9 @@ func main() {
 	// SetUrl: required, the Url
 	// SetMethod: optional, HTTP method: POST/GET/..., default GET
 	// SetWaitTime: optional, HTTP request wait/pause time
-	worker.SetUrl("https://hunterhug.github.io").SetMethod(miner.GET).SetWaitTime(2)
+	worker.SetUrl("http://www.github.com/hunterhug").SetMethod(miner.GET).SetWaitTime(2)
 	worker.SetUa(miner.RandomUa())                // optional, browser user agent: IE/Firefox...
-	worker.SetRefer("https://hunterhug.github.io") // optional, url refer
+	worker.SetRefer("http://www.github.com/hunterhug") // optional, url refer
 	worker.SetHeaderParm("diyheader", "diy")      // optional, some other diy http header
 	//worker.SetBData([]byte("file data"))    // optional, if you want post JSON data or upload file
 	//worker.SetFormParm("username","jinhan") // optional: if you want post form
@@ -83,7 +83,7 @@ func main() {
 	miner.Pool.Set("myfirstworker", worker)
 	if w, ok := miner.Pool.Get("myfirstworker"); ok {
 		go func() {
-			data, _ := w.SetUrl("https://hunterhug.github.io/fuck.html").Get()
+			data, _ := w.SetUrl("https://github.com/hunterhug/fuck.html").Get()
 			log.Info(string(data))
 		}()
 		util.Sleep(10)
