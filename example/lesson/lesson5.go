@@ -37,11 +37,11 @@ func init() {
 
 func main() {
 	// You can use a lot of proxy ip such "https/http/socks5"
-	proxy_ip := "socks5://127.0.0.1:1080"
+	proxyIp := "socks5://127.0.0.1:1080"
 
 	url := "https://www.google.com"
 
-	worker, err := miner.New(proxy_ip)
+	worker, err := miner.New(proxyIp)
 	if err != nil {
 		fmt.Println(err.Error())
 		os.Exit(1)

@@ -182,7 +182,7 @@ func main() {
 						fmt.Println("临时文件重命名失败:" + filenametemp)
 					}
 				}
-				fmt.Println(songname, "下载完成,文件大小：", fmt.Sprintf("%.2f", (float64(written) / (1024 * 1024))), "MB")
+				fmt.Println(songname, "下载完成,文件大小：", fmt.Sprintf("%.2f", (float64(written)/(1024*1024))), "MB")
 			}()
 
 		}

@@ -1,6 +1,5 @@
+# Project: Marmot | HTTP Download
 
-
-# Project: Marmot
 
 [![GitHub forks](https://img.shields.io/github/forks/hunterhug/marmot.svg?style=social&label=Forks)](https://github.com/hunterhug/marmot/network)
 [![GitHub stars](https://img.shields.io/github/stars/hunterhug/marmot.svg?style=social&label=Stars)](https://github.com/hunterhug/marmot/stargazers)
@@ -9,7 +8,7 @@
 [![GitHub issues](https://img.shields.io/github/issues/hunterhug/marmot.svg)](https://github.com/hunterhug/marmot/issues)
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ChinaEnglish/marmot?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge)
 
-[中文介绍](/doc/Chinese.md)
+[中文介绍](/doc/README_CN.md)
 
 HTTP Download Helper, Supports Many Features such as Cookie Persistence, HTTP(S) and SOCKS5 Proxy....
 
@@ -48,7 +47,7 @@ func main() {
 	// Use Default Worker, You can Also New One:
 	// worker:=miner.New(nil)
 	miner.SetLogLevel(miner.DEBUG)
-	_, err := miner.SetUrl("https://hunterhug.github.io").Go()
+	_, err := miner.SetUrl("https://github.com/hunterhug").Go()
 	if err != nil {
 		fmt.Println(err.Error())
 	} else {
@@ -74,11 +73,11 @@ cd src/github.com/hunterhug
 git clone https://github.com/hunterhug/marmot
 ```
 
-Suggest Golang1.8+
+Suggest Golang1.8+.
 
 ## 3. Example
 
-The most simple example such below, more see `example/lesson` dir:
+The most simple example such below, can see `example/lesson` dir, also you can practice more see `example/practice`:
 
 `lesson2.go`
 
@@ -96,7 +95,7 @@ func main() {
 	// 1. New a worker
 	worker, _ := miner.New(nil)
 	// 2. Set a URL And Fetch
-	html, err := worker.SetUrl("https://hunterhug.github.io").SetUa(miner.RandomUa()).SetMethod(miner.GET).Go()
+	html, err := worker.SetUrl("https://github.com/hunterhug").SetUa(miner.RandomUa()).SetMethod(miner.GET).Go()
 	if err != nil {
 		fmt.Println(err.Error())
 	}
@@ -142,9 +141,9 @@ func main() {
 	// SetUrl: required, the Url
 	// SetMethod: optional, HTTP method: POST/GET/..., default GET
 	// SetWaitTime: optional, HTTP request wait/pause time
-	worker.SetUrl("https://hunterhug.github.io/fuck.html").SetMethod(miner.GET).SetWaitTime(2)
+	worker.SetUrl("https://github.com/hunterhug/fuck.html").SetMethod(miner.GET).SetWaitTime(2)
 	worker.SetUa(miner.RandomUa())                // optional, browser user agent: IE/Firefox...
-	worker.SetRefer("https://hunterhug.github.io") // optional, url refer
+	worker.SetRefer("https://github.com/hunterhug") // optional, url refer
 	worker.SetHeaderParm("diyheader", "diy") // optional, some other diy http header
 	//worker.SetBData([]byte("file data"))    // optional, if you want post JSON data or upload file
 	//worker.SetFormParm("username","jinhan") // optional: if you want post form
@@ -175,7 +174,7 @@ func main() {
 	miner.Pool.Set("myfirstworker", worker)
 	if w, ok := miner.Pool.Get("myfirstworker"); ok {
 		go func() {
-			data, _ := w.SetUrl("https://hunterhug.github.io/fuck.html").Get()
+			data, _ := w.SetUrl("https://github.com/hunterhug/fuck.html").Get()
 			log.Info(string(data))
 		}()
 		util.Sleep(10)
@@ -183,7 +182,7 @@ func main() {
 }
 ```
 
-Last example
+Last example:
 
 `lesson4.go`
 
@@ -193,6 +192,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/hunterhug/marmot/util"
 	"strings"
 
 	"github.com/hunterhug/marmot/expert"
@@ -204,33 +204,35 @@ func main() {
 	miner.SetLogLevel(miner.DEBUG)
 
 	// The url we want
-	url := "https://hunterhug.github.io"
+	url := "https://github.com/hunterhug"
 
 	// IAM we can NewAPI
 	worker := miner.NewAPI()
 
 	// We can aop by context
-	// ctx, cancle := context.WithCancel(context.Background())
-	// ctx := context.TODO()
-	// worker.SetContext(ctx)
+	ctx, cancel := context.WithCancel(context.Background())
+	//ctx := context.TODO()
+	worker.SetContext(ctx)
+
+	// we cancel it after 5 secord
+	go func() {
+		fmt.Println("I stop and sleep 5")
+		util.Sleep(5)
+		fmt.Println("I wake up after sleep 5")
+		cancel()
+	}()
 
 	// Before we make some change, And every GET Or POST it will action
 	worker.SetBeforeAction(func(ctx context.Context, this *miner.Worker) {
-		fmt.Println("Before Action, I will add a HTTP header")
+		fmt.Println("Before Action, I will add a HTTP header, then sleep wait cancel")
 		this.SetHeaderParm("Marmot", "v2")
 		this.SetHeaderParm("DUDUDUU", "DUDU")
-		// select {
-		// case <-ctx.Done():
-		// 	fmt.Println(ctx.Err()) // block in here util cancle()
-		// 	os.Exit(1)
-		// }
+		select {
+		case <-ctx.Done(): // block in here util cancel()
+			//fmt.Println(ctx.Err())
+			fmt.Println("after sleep, i do action.")
+		}
 	})
-
-	// we cancle it after 5 secord
-	// go func() {
-	// 	util.Sleep(5)
-	// 	cancle()
-	// }()
 
 	worker.SetAfterAction(func(ctx context.Context, this *miner.Worker) {
 		fmt.Println("After Action, I just print this sentence")
@@ -242,24 +244,19 @@ func main() {
 		fmt.Println(err.Error())
 	} else {
 		// Parse We want
-		fmt.Printf("Output:\n %s\n", parse(body))
+		fmt.Printf("Output:\n %s\n", MyParse(body))
 	}
 
-	// for {
-	//  in here we loop util cancle() success
-	// }
 }
 
 // Parse HTML page
-func parse(data []byte) string {
+func MyParse(data []byte) string {
 	doc, err := expert.QueryBytes(data)
 	if err != nil {
 		fmt.Println(err.Error())
 	}
-	return strings.TrimSpace(doc.Find("#hero-caption").Text())
-	// return doc.Find("title").Text()
+	return strings.TrimSpace(doc.Find("title").Text())
 }
-
 ```
 
 Easy to use, you just need to `New` one `Worker`, and `SetUrl`, then make some settings and `worker.Go()`.
@@ -277,11 +274,11 @@ There are four kinds of worker:
 
 Camouflage our worker:
 
-1. `worker.SetUrl("https://hunterhug.github.io")`  // required: set url you want to
+1. `worker.SetUrl("https://github.com/hunterhug")`  // required: set url you want to
 2. `worker.SetMethod(miner.GET)`  // optional: set http method `POST/GET/PUT/POSTJSON` and so on
 3. `worker.SetWaitTime(2)`                         // optional: set timeout of http request
 4. `worker.SetUa(miner.RandomUa())`                 // optional: set http browser user agent, you can see miner/config/ua.txt
-5. `worker.SetRefer("https://hunterhug.github.io")`       // optional: set http request Refer
+5. `worker.SetRefer("https://github.com/hunterhug")`       // optional: set http request Refer
 6. `worker.SetHeaderParm("diyheader", "diy")` // optional: set http diy header
 7. `worker.SetBData([]byte("file data"))` // optional: set binary data for post or put
 8. `worker.SetFormParm("username","jinhan")` // optional: set form data for post or put 

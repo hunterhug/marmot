@@ -1,6 +1,8 @@
-首先打开浏览器：http://music.163.com/#/discover/playlist
+# 网易云歌单爬虫
 
-然后随意打开一个歌单，点击exe
+首先打开浏览器：[http://music.163.com/#/discover/playlist](http://music.163.com/#/discover/playlist)
+
+然后随意打开一个歌单，点击 `exe`
 
 ```
 go run main.go或者*.exe
@@ -30,5 +32,4 @@ Angel 下载完成,文件大小： 4.13 MB
 没有无损音乐地址: 樱花雨 
 没有找到音乐资源: 桜道
 存在无损音乐地址: you http://yinyueshiting.baidu.com/data2/music/134518400/34240081176400320.mp3?xcode=3d086cad7af97dfc554bf4edd997f8d2
-
 ```

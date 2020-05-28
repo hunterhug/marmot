@@ -19,15 +19,15 @@
 
 >该库主要用途： 微信开发/API对接/自动化测试/抢票脚本/网站监控/点赞插件/数据爬取
 
-## 一.下载
+## 一. 下载
 
-自己封装的Golang爬虫下载库,类似于Python的`requests`, 但很弱, 支持各种代理模式和伪装功能, 你只需通过该方式获取库：
+自己封装的 `Golang` 爬虫下载库， 支持各种代理模式和伪装功能, 你只需通过该方式获取库：
 
 ```
 go get -v github.com/hunterhug/marmot/miner
 ```
 
-或者直接下载:
+或者直接下载：
 
 ```
 cd src && mkdir github.com/hunterhug
@@ -41,16 +41,19 @@ git clone https://github.com/hunterhug/marmot
 ├── miner   核心库（HTTP请求封装）
 ├── expert  解析库（HTML解析封装）
 ├── example Example示例库
+    ├── lession   示例
+    ├── practice  练习    
 ├── tool    小工具
+    ├── wx   微信开发相关接口
 ├── proxy   Golang官方代理库
 └── util    基础库，为了避免外部依赖包失效，某些核心依赖包放置于此
 ```
 
-## 二.使用
+## 二. 使用
 
-请参考最新的英文版本. 此库可模拟上传文件，模拟表单提交，模拟各种各样的操作.
+请参考最新的英文版本。此库可模拟上传文件，模拟表单提交，模拟各种各样的操作。
 
-官方部分示例已经合进本库，参见`example`文件夹。
+官方部分示例已经合进本库，参见 `example` 文件夹。
 
 ```go
 package main
@@ -65,7 +68,7 @@ func main() {
 	// 1.新建一个矿工
 	worker, _ := miner.New(nil)
 	// 2.设置网址
-	worker.SetUrl("https://hunterhug.github.io").SetUa(worker.RandomUa()).SetMethod(worker.GET)
+	worker.SetUrl("https://github.com/hunterhug").SetUa(worker.RandomUa()).SetMethod(worker.GET)
 	// 3.抓取网址
 	html, err := worker.Go()
 	if err != nil {
@@ -111,9 +114,9 @@ func main() {
 	// SetUrl:Url必须设置
 	// SetMethod:HTTP方法可以是POST或GET,可不设置,默认GET,传错值默认为GET
 	// SetWaitTime:暂停时间,可不设置,默认不暂停
-	worker.SetUrl("https://hunterhug.github.io/fuck.html").SetMethod(miner.GET).SetWaitTime(2)
+	worker.SetUrl("https://github.com/hunterhug/fuck.html").SetMethod(miner.GET).SetWaitTime(2)
 	worker.SetUa(miner.RandomUa())                //设置随机浏览器标志
-	worker.SetRefer("https://hunterhug.github.io/fuck.html")  // 设置Refer头
+	worker.SetRefer("https://github.com/hunterhug/fuck.html")  // 设置Refer头
 	worker.SetHeaderParm("diyheader", "diy") // 自定义头部
 	//worker.SetBData([]byte("file data")) // 如果你要提交JSON数据/上传文件
 	//worker.SetFormParm("username","jinhan") // 提交表单
@@ -141,7 +144,7 @@ func main() {
 	miner.Pool.Set("myfirstworker", worker)
 	if poolworkerider, ok := miner.Pool.Get("myfirstworker"); ok {
 		go func() {
-			poolworkerider.SetUrl("https://hunterhug.github.io/fuck.html")
+			poolworkerider.SetUrl("https://github.com/hunterhug/fuck.html")
 			data, _ := poolworkerider.Get()
 			log.Info(string(data))
 		}()
@@ -151,11 +154,11 @@ func main() {
 }
 ```
 
-使用特别简单,先`New`一个`Worker`, 即土拨鼠矿工, 然后`SetUrl`,适当加头部,最后`worker.Go()`即可。
+使用特别简单，先 `New` 一个 `Worker`，即土拨鼠矿工，然后 `SetUrl`，适当加头部，最后 `worker.Go()` 即可。
 
 ### 第一步
 
-矿工有四种类型:
+矿工有四种类型：
 
 1. `worker, err := miner.NewWorker("http://smart:smart2016@104.128.121.46:808") ` // 代理IP矿工 默认自动化Cookie接力 格式:`协议://代理帐号(可选):代理密码(可选)@ip:port`, 支持http(s),socks5, 别名函数`New()`
 2. `worker, err := miner.NewWorker(nil)`  // 正常矿工 默认自动化Cookie接力 别名函数`New()`
@@ -166,7 +169,7 @@ func main() {
 
 模拟矿工设置头部:
 
-1. `worker.SetUrl("https://hunterhug.github.io")`  // 设置Http请求要抓取的网址,必须
+1. `worker.SetUrl("https://github.com/hunterhug")`  // 设置Http请求要抓取的网址,必须
 2. `worker.SetMethod(miner.GET)`  // 设置Http请求的方法:`POST/GET/PUT/POSTJSON`等
 3. `worker.SetWaitTime(2)` // 设置Http请求超时时间
 4. `worker.SetUa(miner.RandomUa())`                // 设置Http请求浏览器标志,本项目提供445个浏览器标志，可选设置
@@ -203,16 +206,23 @@ func main() {
 2. `fmt.Println(worker.ToString())` // http响应后二进制数据也会保存在矿工对象的Raw字段中,使用ToString可取出来
 3. `fmt.Println(worker.JsonToString())` // 如果获取到的是JSON数据,请采用此方法转义回来,不然会乱码
 
-注意：每次抓取网站后,下次请求你可以覆盖原先的头部,但是没覆盖的头部还是上次的,所以清除头部或请求数据,请使用`Clear()`(只清除Post数据)或者`ClearAll()`(还清除http头部)
+注意：每次抓取网站后，下次请求你可以覆盖原先的头部，但是没覆盖的头部还是上次的，所以清除头部可使用 `Clear()` (只清除Post数据)或者 `ClearAll()` (还清除http头部)。
 
 ### 其他
 
 勾子:
 
-1. `SetBeforeAction(fc func(context.Context, *Worker))` 爬虫动作前可AOP注入
-2. `SetAfterAction(fc func(context.Context, *Worker))` 爬虫动作完成后
+1. `SetBeforeAction(fc func(context.Context, *Worker))` 爬虫动作前可AOP注入。
+2. `SetAfterAction(fc func(context.Context, *Worker))` 爬虫动作完成后。
 
-如果你觉得项目帮助到你,欢迎请我喝杯咖啡
+以下是几个实战例子：
+
+1. [多线程批量抓图片](/example/practice/pictures/README.md)。
+2. [模拟上传文件](/example/practice/upload/README.md)。
+3. [微信开发相关：如微信登录，小程序开发](/tool/wx/README.md)。
+4. [亚马逊评论获取](https://github.com/hunterhug/goamazon)。
+
+如果你觉得项目帮助到你,欢迎请我喝杯咖啡：
 
 微信
 ![微信](https://raw.githubusercontent.com/hunterhug/hunterhug.github.io/master/static/jpg/wei.png)

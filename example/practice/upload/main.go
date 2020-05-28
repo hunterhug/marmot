@@ -8,7 +8,8 @@ import (
 )
 
 func main() {
-	fmt.Println(32 << 20)
+	fmt.Println("max upload size",32 << 20)
+	fmt.Println("web url: 127.0.0.1:1789")
 	http.HandleFunc("/", index)
 	http.HandleFunc("/upload", upload)
 	http.ListenAndServe(":1789", nil)
