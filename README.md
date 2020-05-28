@@ -11,7 +11,7 @@
 
 HTTP Download Helper, Supports Many Features such as Cookie Persistence, HTTP(S) and SOCKS5 Proxy....
 
-![Marmot](/logo.png)
+![Marmot](logo.png)
 
 ## 1. Introduction
 
