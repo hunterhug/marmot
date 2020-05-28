@@ -1,13 +1,13 @@
 package tool
 
 import (
-	"net/url"
-	"github.com/hunterhug/marmot/miner"
-	"github.com/hunterhug/marmot/expert"
-	"github.com/hunterhug/marmot/util"
 	"errors"
-	"strings"
 	"fmt"
+	"github.com/hunterhug/marmot/expert"
+	"github.com/hunterhug/marmot/miner"
+	"github.com/hunterhug/marmot/util"
+	"net/url"
+	"strings"
 )
 
 // Download one HTML page's all pictures
@@ -50,7 +50,7 @@ func DownloadURLPictures(PictureUrls []string, SaveDir string, MinerNum int, Pro
 	}
 
 	// Divide pictures into several worker
-	xxx, _ := util.DevideStringList(PictureUrls, MinerNum)
+	xxx, _ := util.DivideStringList(PictureUrls, MinerNum)
 
 	// Chanel to info exchange
 	chs := make(chan int, len(PictureUrls))

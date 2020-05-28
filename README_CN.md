@@ -7,7 +7,7 @@
 [![GitHub issues](https://img.shields.io/github/issues/hunterhug/marmot.svg)](https://github.com/hunterhug/marmot/issues)
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ChinaEnglish/marmot?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge)
 
-![土拨](tubo.png)
+![Marmot](/logo.png)
 
 >万维网网络机器人,又称蜘蛛,爬虫,原理主要是通过构造符合HTTP协议的网络数据包,向指定主机请求资源,获取返回的数据.万维网有大量的公开信息,人力采集数据费时费力,故激发了爬虫的产业化.
 批量获取公开网络数据并不违反,但由于无差别性,无节制,十分暴力的手段会导致对方服务的不稳定,因此,大部分资源提供商对数据包进行了某些过滤,在此背景下,小批量数据获取成为了难题.
@@ -221,11 +221,3 @@ func main() {
 2. [模拟上传文件](/example/practice/upload/README.md)。
 3. [微信开发相关：如微信登录，小程序开发](/tool/wx/README.md)。
 4. [亚马逊评论获取](https://github.com/hunterhug/goamazon)。
-
-如果你觉得项目帮助到你,欢迎请我喝杯咖啡：
-
-微信
-![微信](https://raw.githubusercontent.com/hunterhug/hunterhug.github.io/master/static/jpg/wei.png)
-
-支付宝
-![支付宝](https://raw.githubusercontent.com/hunterhug/hunterhug.github.io/master/static/jpg/ali.png)
