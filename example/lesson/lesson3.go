@@ -29,7 +29,7 @@ func main() {
 	// 3: Must new a Worker object, three ways
 	//worker, err := miner.NewWorker("http://smart:smart2016@104.128.121.46:808") // proxy format: protocol://user(optional):password(optional)@ip:port
 	//worker, err := miner.NewWorker(nil)  // normal worker, default keep Cookie
-	//worker, err := miner.NewAPI() // API worker, not keep Cookie
+	//worker := miner.NewAPI() // API worker, not keep Cookie
 	worker, err := miner.New(nil) // NewWorker alias
 	if err != nil {
 		panic(err)
