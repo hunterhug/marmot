@@ -1,4 +1,4 @@
-# Project: Marmot | HTTP Download
+# 项目代号：土拨鼠
 
 [![GitHub forks](https://img.shields.io/github/forks/hunterhug/marmot.svg?style=social&label=Forks)](https://github.com/hunterhug/marmot/network)
 [![GitHub stars](https://img.shields.io/github/stars/hunterhug/marmot.svg?style=social&label=Stars)](https://github.com/hunterhug/marmot/stargazers)
@@ -7,318 +7,210 @@
 [![GitHub issues](https://img.shields.io/github/issues/hunterhug/marmot.svg)](https://github.com/hunterhug/marmot/issues)
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ChinaEnglish/marmot?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge)
 
-[中文介绍](/README_CN.md)
-
-HTTP Download Helper, Supports Many Features such as Cookie Persistence, HTTP(S) and SOCKS5 Proxy....
+[English README](/README_EN.md)
 
 ![Marmot](logo.png)
 
-## 1. Introduction
+>万维网网络机器人,又称蜘蛛,爬虫,原理主要是通过构造符合HTTP协议的网络数据包,向指定主机请求资源,获取返回的数据.万维网有大量的公开信息,人力采集数据费时费力,故激发了爬虫的产业化.
+批量获取公开网络数据并不违反,但由于无差别性,无节制,十分暴力的手段会导致对方服务的不稳定,因此,大部分资源提供商对数据包进行了某些过滤,在此背景下,小批量数据获取成为了难题.
+综合各种需求，如各种API对接,自动化测试等原理均一样，故开发了此爬虫库.
 
-World-Wide-Web robot, also known as spiders and crawlers. The principle is to falsify network data by constructing appointed HTTP protocol data packet, then request resource to the specified host, goal is to access the data returned. 
-There are a large number of web information, human's hand movement such as `copy-paste data` from web page is `time-consuming` and `laborious`, thus inspired the data acquisition industry.
+>土拨鼠项目是一个人类友好姿势的代码库,开发采用面向对象的方式,易于理解.通过对Golang原生HTTP库的封装,帮用户处理了一些琐碎逻辑(如收集信息,检测参数),并加入了一些容错机制(如加锁,及时关闭流),保证了爬虫高并发的安全.此库提供了大量优美的API接口,复用率高,十分方便地支持Cookie接力,爬虫代理设置,以及一般的HTTP请求设置如头部设置,超时,暂停设置,数据设置等,支持全部的HTTP方法如POST/PUT/GET/DELETE等,内置爬虫池和浏览器UA池,易于开发多UA多Cookie分布式爬虫.
 
-Batch access to public network data does not break the law, but because there is no difference, no control, very violent means will lead to other services is not stable, therefore, most of the resources provider will filtering some data packets(falsify), 
-in this context,  batch small data acquisition has become a problem. Integrated with various requirements, such as various API development, automated software testing(all this have similar technical principle). So this project come into the world(very simple).
+>该库简单实用,短短几行代码即可取代以往杂乱无章的面包条代码片段,已经应用在某些大项目中:如`大型亚马逊分布式爬虫(美国/日本/德国/英国)`,经受住两千代理IP超长时间高并发的考验,单台机器每天获取上百万数据.
 
-The `Marmot` is very easy to understand, just like Python's library `requests`(Not yet Smile~ --| ). By enhancing native Golang HTTP library, help you deal with some trivial logic (such as collecting information, checking parameters), and add some fault-tolerant mechanisms (such as add lock, close time flow, ensure the high concurrent run without accident).
-It provides a human friendly API interface, you can reuse it often. Very convenient to support `Cookie Persistence`, `Crawler Proxy Settings`, as well as others general settings, such as  `HTTP request header settings, timeout/pause settings, data upload/post settings`.
-It support all of the HTTP methods `POST/PUT/GET/DELETE/...` and has built-in spider pool and browser UA pool, easy to develop UA+Cookie persistence distributed spider.
+>该库主要用途： 微信开发/API对接/自动化测试/抢票脚本/网站监控/点赞插件/数据爬取
 
-The library is simple and practical, just a few lines of code to replace the previous `Spaghetti code`, has been applied in some large projects such as `Full Golang Automatic Amazon Distributed crawler|spider`, has withstood the test of two thousand long acting proxy IP and high concurrency, single machine every day to get millions of data.
+## 一. 下载
 
-The main uses: `WeChat development`/ `API docking` / `Automated test` / `Rush Ticket Scripting` / `Vote Plug-in` / `Data Crawling`
-
-Now We support Default Worker, You can easy use:
-
-`lesson1.go`
-
-```go
-package main
-
-import (
-	"fmt"
-
-	"github.com/hunterhug/marmot/miner"
-)
-
-func main() {
-	// Use Default Worker, You can Also New One:
-	// worker:=miner.New(nil)
-	miner.SetLogLevel(miner.DEBUG)
-	_, err := miner.SetUrl("https://github.com/hunterhug").Go()
-	if err != nil {
-		fmt.Println(err.Error())
-	} else {
-		fmt.Println(miner.ToString())
-	}
-}
-```
-
-See the `example` dir.such as lesson or practice.
-
-## 2. How To Use
-
-You can get it by:
+自己封装的 `Golang` 爬虫下载库， 支持各种代理模式和伪装功能, 你只需通过该方式获取库：
 
 ```
 go get -v github.com/hunterhug/marmot/miner
 ```
 
-Or make your `GOPATH` sub dir: `/src/github.com/hunterhug`, and
+或者直接下载：
 
 ```
+cd src && mkdir github.com/hunterhug
 cd src/github.com/hunterhug
 git clone https://github.com/hunterhug/marmot
 ```
 
-Suggest Golang1.8+.
+代码结构：
 
-## 3. Example
+```
+├── miner   核心库（HTTP请求封装）
+├── expert  解析库（HTML解析封装）
+├── example Example示例库
+    ├── lession   示例
+    ├── practice  练习    
+├── tool    小工具
+    ├── wx   微信开发相关接口
+├── proxy   Golang官方代理库
+└── util    基础库，为了避免外部依赖包失效，某些核心依赖包放置于此
+```
 
-The most simple example such below, can see `example/lesson` dir, also you can practice more see `example/practice`:
+以下是几个实战例子：
 
-`lesson2.go`
+1. [多线程批量抓图片](/example/practice/pictures/README.md)。
+2. [模拟上传文件](/example/practice/upload/README.md)。
+3. [微信开发相关：如微信登录，小程序开发](/tool/wx/README.md)。
+4. [亚马逊评论获取](https://github.com/hunterhug/goamazon)。
+
+## 二. 使用
+
+此库可模拟上传文件，模拟表单提交，模拟各种各样的操作。
+
+官方部分示例已经合进本库，参见 `example` 文件夹。
 
 ```go
 package main
 
-// Example
+// 示例
 import (
 	"fmt"
-
 	"github.com/hunterhug/marmot/miner"
 )
 
 func main() {
-	// 1. New a worker
+	// 1.新建一个矿工
 	worker, _ := miner.New(nil)
-	// 2. Set a URL And Fetch
-	html, err := worker.SetUrl("https://github.com/hunterhug").SetUa(miner.RandomUa()).SetMethod(miner.GET).Go()
+	// 2.设置网址
+	worker.SetUrl("https://github.com/hunterhug").SetUa(worker.RandomUa()).SetMethod(worker.GET)
+	// 3.抓取网址
+	html, err := worker.Go()
 	if err != nil {
 		fmt.Println(err.Error())
 	}
-	// 4.Print content equal to fmt.Println(worker.ToString())
+	// 4.打印内容,等同于fmt.Println(worker.ToString())
 	fmt.Println(string(html))
 }
 ```
 
-More detail Example is:
-
-`lesson3.go`
+详细具体步骤如下：
 
 ```go
 package main
 
 import (
-	// 1:import package
+	// 第一步：引入库
 	"github.com/hunterhug/marmot/miner"
 	"github.com/hunterhug/marmot/util"
 )
 
 func init() {
-	// 2:Optional global setting
-	miner.SetLogLevel(miner.DEBUG) // optional, set log to debug
-	miner.SetGlobalTimeout(3)      // optional, http request timeout time
+	// 第二步：可选设置全局
+	miner.SetLogLevel(miner.DEBUG) // 设置全局矿工日志,可不设置,设置debug可打印出http请求轨迹
+	miner.SetGlobalTimeout(3)      // 矿工超时时间,可不设置
 
 }
 
 func main() {
 
-	log := miner.Log() // optional, miner log you can choose to use
+	log := miner.Log() // 矿工为你提供的日志工具,可不用
 
-	// 3: Must new a Worker object, three ways
-	//worker, err := miner.NewWorker("http://smart:smart2016@104.128.121.46:808") // proxy format: protocol://user(optional):password(optional)@ip:port
-	//worker, err := miner.NewWorker(nil)  // normal worker, default keep Cookie
-	//worker, err := miner.NewAPI() // API worker, not keep Cookie
-	worker, err := miner.New(nil) // NewWorker alias
+	// 第三步： 必须新建一个矿工对象
+	//worker, err := miner.NewWorker("http://smart:smart2016@104.128.121.46:808") // 代理IP格式: 协议://代理帐号(可选):代理密码(可选)@ip:port
+	//worker, err := miner.NewWorker(nil)  // 正常矿工 默认带Cookie
+	//worker := miner.NewAPI() // API矿工 默认不带Cookie
+	worker, err := miner.New(nil) // NewWorker同名函数
 	if err != nil {
 		panic(err)
 	}
 
-	// 4: Set the request Method/URL and some others, can chain set, only SetUrl is required.
-	// SetUrl: required, the Url
-	// SetMethod: optional, HTTP method: POST/GET/..., default GET
-	// SetWaitTime: optional, HTTP request wait/pause time
+	// 第四步：设置抓取方式和网站,可链式结构设置,只有SetUrl是必须的
+	// SetUrl:Url必须设置
+	// SetMethod:HTTP方法可以是POST或GET,可不设置,默认GET,传错值默认为GET
+	// SetWaitTime:暂停时间,可不设置,默认不暂停
 	worker.SetUrl("https://github.com/hunterhug/fuck.html").SetMethod(miner.GET).SetWaitTime(2)
-	worker.SetUa(miner.RandomUa())                // optional, browser user agent: IE/Firefox...
-	worker.SetRefer("https://github.com/hunterhug") // optional, url refer
-	worker.SetHeaderParm("diyheader", "diy") // optional, some other diy http header
-	//worker.SetBData([]byte("file data"))    // optional, if you want post JSON data or upload file
-	//worker.SetFormParm("username","jinhan") // optional: if you want post form
+	worker.SetUa(miner.RandomUa())                //设置随机浏览器标志
+	worker.SetRefer("https://github.com/hunterhug/fuck.html")  // 设置Refer头
+	worker.SetHeaderParm("diyheader", "diy") // 自定义头部
+	//worker.SetBData([]byte("file data")) // 如果你要提交JSON数据/上传文件
+	//worker.SetFormParm("username","jinhan") // 提交表单
 	//worker.SetFormParm("password","123")
 
-	// 5: Start Run
-	//worker.Get()             // default GET
-	//worker.Post()            // POST form request data, data can fill by SetFormParm()
-	//worker.PostJSON()        // POST JSON dara, use SetBData()
-	//worker.PostXML()         // POST XML, use SetBData()
-	//worker.PostFILE()        // POST to Upload File, data in SetBData() too
-	//worker.OtherGo("OPTIONS", "application/x-www-form-urlencoded") // Other http method, Such as OPTIONS etcd
-	body, err := worker.Go() // if you use SetMethod(), otherwise equal to Get()
+	// 第五步：开始爬
+	//worker.Get()             // 默认GET
+	//worker.Post()            // POST表单请求,数据在SetFormParm()
+	//worker.PostJSON()        // 提交JSON请求,数据在SetBData()
+	//worker.PostXML()         // 提交XML请求,数据在SetBData()
+	//worker.PostFILE()        // 提交文件上传请求,数据在SetBData()
+	body, err := worker.Go() // 如果设置SetMethod(),采用,否则Get()
 	if err != nil {
 		log.Error(err.Error())
 	} else {
-		log.Infof("%s", string(body)) // Print return data
+		log.Infof("%s", string(body)) // 打印获取的数据
 	}
 
-	log.Debugf("%#v", worker.GetCookies) // if you not set log as debug, it will not appear
+	log.Debugf("%#v", worker.GetCookies()) // 不设置全局log为debug是不会出现这个东西的
 
-	// You must Clear it! If you want to POST Data by SetFormParm()/SetBData() again
-	// After get the return data by post data, you can clear the data you fill
-	worker.Clear()
-	//worker.ClearAll() // you can also want to clear all, include http header you set
-
-	// Worker pool for concurrent, every Worker Object is serial as the browser. if you want collateral execution, use this.
-	miner.Pool.Set("myfirstworker", worker)
-	if w, ok := miner.Pool.Get("myfirstworker"); ok {
-		go func() {
-			data, _ := w.SetUrl("https://github.com/hunterhug/fuck.html").Get()
-			log.Info(string(data))
-		}()
-		util.Sleep(10)
-	}
-}
+	worker.Clear() // 爬取完毕后可以清除POST的表单数据/文件数据/JSON数据
+	//worker.ClearAll() // 爬取完毕后可以清除设置的HTTP头部和POST的表单数据/文件数据/JSON数据
 ```
 
-Last example:
+使用特别简单，先 `New` 一个 `Worker`，即土拨鼠矿工，然后 `SetUrl`，适当加头部，最后 `worker.Go()` 即可。
 
-`lesson4.go`
+### 第一步
 
-```go
-package main
+矿工有四种类型：
 
-import (
-	"context"
-	"fmt"
-	"github.com/hunterhug/marmot/util"
-	"strings"
+1. `miner.NewWorker("http://smart:smart2016@104.128.121.46:808") `  // 代理矿工，默认自动化Cookie接力 格式:`协议://代理帐号(可选):代理密码(可选)@ip:port`, 支持http(s),socks5, 别名函数 `New()`
+2. `miner.NewWorker(nil)`   // 正常矿工，默认自动化Cookie接力，别名函数`New()`
+3. `miner.NewAPI()` // API矿工，默认Cookie不接力，主要用来对接服务端 API
+4. `miner.NewWorkerByClient(&http.Client{})`    // 可自定义客户端
 
-	"github.com/hunterhug/marmot/expert"
-	"github.com/hunterhug/marmot/miner"
-)
+### 第二步
 
-func main() {
-	// We can debug, to see whether SetBeforeAction make sense
-	miner.SetLogLevel(miner.DEBUG)
+模拟矿工设置头部:
 
-	// The url we want
-	url := "https://github.com/hunterhug"
+1. `worker.SetUrl("https://github.com/hunterhug")`  // 设置HTTP请求要抓取的网址, **必须**
+2. `worker.SetMethod(miner.GET)`  // 设置HTTP请求的方法:`POST/GET/PUT/POSTJSON`等
+3. `worker.SetWaitTime(2)` // 设置HTTP请求超时时间
+4. `worker.SetUa(miner.RandomUa())`                // 设置HTTP请求浏览器标志,本项目提供445个浏览器标志，可选设置
+5. `worker.SetRefer("http://www.baidu.com")`       // 设置HTTP请求Refer头
+6. `worker.SetHeaderParm("diyheader", "diy")` // 设置HTTP请求自定义头部
+7. `worker.SetBData([]byte("file data"))` // HTTP请求需要上传数据
+8. `worker.SetFormParm("username","jinhan")` // HTTP请求需要提交表单
+9. `worker.SetCookie("xx=dddd")` // HTTP请求设置cookie, 某些网站需要登录后F12复制cookie
 
-	// IAM we can NewAPI
-	worker := miner.NewAPI()
+### 第三步
 
-	// We can aop by context
-	ctx, cancel := context.WithCancel(context.Background())
-	//ctx := context.TODO()
-	worker.SetContext(ctx)
+矿工启动方式有：
 
-	// we cancel it after 5 secord
-	go func() {
-		fmt.Println("I stop and sleep 5")
-		util.Sleep(5)
-		fmt.Println("I wake up after sleep 5")
-		cancel()
-	}()
-
-	// Before we make some change, And every GET Or POST it will action
-	worker.SetBeforeAction(func(ctx context.Context, this *miner.Worker) {
-		fmt.Println("Before Action, I will add a HTTP header, then sleep wait cancel")
-		this.SetHeaderParm("Marmot", "v2")
-		this.SetHeaderParm("DUDUDUU", "DUDU")
-		select {
-		case <-ctx.Done(): // block in here util cancel()
-			//fmt.Println(ctx.Err())
-			fmt.Println("after sleep, i do action.")
-		}
-	})
-
-	worker.SetAfterAction(func(ctx context.Context, this *miner.Worker) {
-		fmt.Println("After Action, I just print this sentence")
-	})
-
-	// Let's Go
-	body, err := worker.SetUrl(url).GoByMethod(miner.GET)
-	if err != nil {
-		fmt.Println(err.Error())
-	} else {
-		// Parse We want
-		fmt.Printf("Output:\n %s\n", MyParse(body))
-	}
-
-}
-
-// Parse HTML page
-func MyParse(data []byte) string {
-	doc, err := expert.QueryBytes(data)
-	if err != nil {
-		fmt.Println(err.Error())
-	}
-	return strings.TrimSpace(doc.Find("title").Text())
-}
-```
-
-Easy to use, you just need to `New` one `Worker`, and `SetUrl`, then make some settings and `worker.Go()`.
-
-### 3.1 The First Step
-
-There are four kinds of worker:
-
-1. `worker, err := miner.NewWorker("http://smart:smart2016@104.128.121.46:808") ` // proxy worker, format: `protocol://user(optional):password(optional)@ip:port`, alias to`New()`, support http(s), socks5
-2. `worker, err := miner.NewWorker(nil)`  // normal worker, default keep Cookie, alias to `New()`
-3. `worker := miner.NewAPI()` // API worker, will not keep Cookie
-4. `worker, err := miner.NewWorkerByClient(&http.Client{})` // You can also pass a `http.Client` if you want
-
-### 3.2 The Second Step
-
-Camouflage our worker:
-
-1. `worker.SetUrl("https://github.com/hunterhug")`  // required: set url you want to
-2. `worker.SetMethod(miner.GET)`  // optional: set http method `POST/GET/PUT/POSTJSON` and so on
-3. `worker.SetWaitTime(2)`                         // optional: set timeout of http request
-4. `worker.SetUa(miner.RandomUa())`                 // optional: set http browser user agent, you can see miner/config/ua.txt
-5. `worker.SetRefer("https://github.com/hunterhug")`       // optional: set http request Refer
-6. `worker.SetHeaderParm("diyheader", "diy")` // optional: set http diy header
-7. `worker.SetBData([]byte("file data"))` // optional: set binary data for post or put
-8. `worker.SetFormParm("username","jinhan")` // optional: set form data for post or put 
-9. `worker.SetCookie("xx=dddd")` // optional: you can set a init cookie, some website you can login and F12 copy the cookie
-10. `worker.SetCookieByFile("/root/cookie.txt")` // optional: set cookie which store in a file
-
-### 3.3 The Third Step
-
-Run our worker:
-
-1. `body, err := worker.Go()` // if you use SetMethod(), auto use following ways, otherwise use Get()
-2. `body, err := worker.Get()` // default
-3. `body, err := worker.Post()` // post form request, data fill by SetFormParm()
-4. `body, err := worker.PostJSON()` // post JSON request, data fill by SetBData()
-5. `body, err := worker.PostXML()` // post XML request, data fill by SetBData()
-6. `body, err := worker.PostFILE()` // upload file, data fill by SetBData(), and should set SetFileInfo(fileName, fileFormName string)
-7. `body, err := worker.Delete()` // you know!
-8. `body, err := worker.Put()` // ones http method...
-9. `body, err := worker.PutJSON()` // put JSON request
+1. `body, err := worker.Go()` // 如果设置SetMethod(),会调用下方对应的方法,否则使用Get()
+2. `body, err := worker.Get()` // 默认
+3. `body, err := worker.Post()` // POST表单请求,数据在SetFormParm()
+4. `body, err := worker.PostJSON()` // 提交JSON请求,数据在SetBData()
+5. `body, err := worker.PostXML()` // 提交XML请求,数据在SetBData()
+6. `body, err := worker.PostFILE()` // 提交文件上传请求，文件二进制数据通过SetBData()设置, 然后设置SetFileInfo(fileName, fileFormName string) 表明文件名和表单field Name
+7. `body, err := worker.Delete()` 
+8. `body, err := worker.Put()`
+9. `body, err := worker.PutJSON()`
 10. `body, err := worker.PutXML()`
 11. `body, err := worker.PutFILE()`
-12. `body, err := worker.OtherGo("OPTIONS", "application/x-www-form-urlencoded")` // Other http method, Such as OPTIONS etc., can not sent binary.
-13. `body, err := worker.OtherGoBinary("OPTIONS", "application/x-www-form-urlencoded")` // Other http method, Such as OPTIONS etc., just sent binary.
-14. `body, err := worker.GoByMethod("POST")` // you can override SetMethod() By this, equal SetMethod() then Go()
+12. `body, err := worker.OtherGo("OPTIONS", "application/x-www-form-urlencoded")` // 其他自定义的HTTP方法, 不能模拟二进制
+13. `body, err := worker.OtherGoBinary("OPTIONS", "application/x-www-form-urlencoded")` // 其他自定义的HTTP方法, 模拟二进制
+14. `body, err := worker.GoByMethod("POST")` // 等同于 SetMethod() 然后 Go()
 
-### 3.4 The Fourth Step
+### 第四步
 
-Deal the return data, all data will be return as binary, You can immediately store it into a new variable:
+每次下载会返回 `[]byte`，请自行解析，调试时可以使用以下方法：
 
-1. `fmt.Println(string(html))` // type change directly
-2. `fmt.Println(worker.ToString())` // use spider method, after http response, data will keep in the field `Raw`, just use ToString
-3. `fmt.Println(worker.JsonToString())` // some json data will include chinese and other multibyte character, such as `我爱你,我的小绵羊`,`사랑해`
+1. `fmt.Println(string(html))` // 每次抓取后会返回二进制数据，直接类型转化
+2. `fmt.Println(worker.ToString())` // http响应后二进制数据也会保存在矿工对象的Raw字段中,使用ToString可取出来
+3. `fmt.Println(worker.JsonToString())` // 如果获取到的是JSON数据,请采用此方法转义回来,不然字符串会乱码
 
-Attention: after every request for a url, the next request you can cover your http request header, otherwise header you set still exist,
-if just want clear post data, use `Clear()`, and want clear HTTP header too please use `ClearAll()` .
+注意：每次下载后，需要使用以下方法将表单等数据重置：
 
-Here is some practice in the example dir.
+1. `Clear()` // 清除表单和二进制数据
+2. `ClearAll()` // 还清除全部HTTP头部
+3. `ClearCookie()` // 可清除Cookie
 
-### 3.5 Other
+### 其他
 
-Hook:
+勾子:
 
-1. `SetBeforeAction(fc func(context.Context, *Worker))`
-2. `SetAfterAction(fc func(context.Context, *Worker))`
+1. `SetBeforeAction(fc func(context.Context, *Worker))` 爬虫动作前可AOP注入。
+2. `SetAfterAction(fc func(context.Context, *Worker))` 爬虫动作完成后。

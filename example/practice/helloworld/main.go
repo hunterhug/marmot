@@ -27,7 +27,7 @@ func main() {
 	// 代理IP格式: 协议://代理帐号(可选):代理密码(可选)@ip:port
 	//worker, err := miner.NewWorker("http://smart:smart2016@104.128.121.46:808")
 	//worker, err := miner.NewWorker(nil)  // 正常矿工 默认带Cookie
-	//worker, err := miner.NewAPI() // API矿工 默认不带Cookie
+	//worker := miner.NewAPI() // API矿工 默认不带Cookie
 	worker, err := miner.New(nil) // NewWorker同名函数
 	if err != nil {
 		panic(err)
