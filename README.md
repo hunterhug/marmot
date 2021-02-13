@@ -25,7 +25,7 @@ The `Marmot` is very easy to understand, just like Python's library `requests`(N
 It provides a human friendly API interface, you can reuse it often. Very convenient to support `Cookie Persistence`, `Crawler Proxy Settings`, as well as others general settings, such as  `HTTP request header settings, timeout/pause settings, data upload/post settings`.
 It support all of the HTTP methods `POST/PUT/GET/DELETE/...` and has built-in spider pool and browser UA pool, easy to develop UA+Cookie persistence distributed spider.
 
-The library is simple and practical, just a few lines of code to replace the previous `Spaghetti code`, has been applied in some large projects such as `Full Golang Automatic Amazon Distributed crawler|spider`, has withstood the test of two thousand long acting proxy IP and high concurrency, single machine every day to get millions of data.
+The library is simple and practical, just a few lines of code to replace the previous `Spaghetti code`, has been applied in some large projects.
 
 The main uses: `WeChat development`/ `API docking` / `Automated test` / `Rush Ticket Scripting` / `Vote Plug-in` / `Data Crawling`
 
