@@ -1,5 +1,5 @@
 /*
-	All right reserved https://github.com/hunterhug/marmot at 2016-2020
+	All right reserved https://github.com/hunterhug/marmot at 2016-2021
 	Attribution-NonCommercial-NoDerivatives 4.0 International
 	Notice: The following code's copyright by hunterhug, Please do not spread and modify.
 	You can use it for education only but can't make profits for any companies and individuals!
@@ -26,13 +26,14 @@ func NewJar() *cookiejar.Jar {
 
 // Default Client
 var (
-	// Save Cookie, No timeout!
+	// Save Cookie
 	Client = &http.Client{
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {
 			Logger.Debugf("[GoWorker] Redirect:%v", req.URL)
 			return nil
 		},
-		Jar: NewJar(),
+		Jar:     NewJar(),
+		Timeout: util.Second(DefaultTimeOut),
 		Transport: &http.Transport{
 			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 		},
@@ -44,6 +45,7 @@ var (
 			Logger.Debugf("[GoWorker] Redirect:%v", req.URL)
 			return nil
 		},
+		Timeout: util.Second(DefaultTimeOut),
 		Transport: &http.Transport{
 			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 		},
@@ -98,7 +100,7 @@ func NewProxyClient(proxyString string) (*http.Client, error) {
 }
 
 // New a client, diff from proxy client
-func NewClient() (*http.Client, error) {
+func NewClient() *http.Client {
 	client := &http.Client{
 		// Allow redirect
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {
@@ -111,5 +113,6 @@ func NewClient() (*http.Client, error) {
 			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 		},
 	}
-	return client, nil
+
+	return client
 }

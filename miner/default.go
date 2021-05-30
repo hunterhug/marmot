@@ -1,15 +1,12 @@
 /*
-	All right reserved https://github.com/hunterhug/marmot at 2016-2020
+	All right reserved https://github.com/hunterhug/marmot at 2016-2021
 	Attribution-NonCommercial-NoDerivatives 4.0 International
 	Notice: The following code's copyright by hunterhug, Please do not spread and modify.
 	You can use it for education only but can't make profits for any companies and individuals!
 */
 package miner
 
-import (
-	"net/http"
-	"net/url"
-)
+import "net/http"
 
 // Global Worker
 var DefaultWorker *Worker
@@ -19,14 +16,13 @@ func init() {
 
 	// New a Worker
 	worker := new(Worker)
+	worker.Request = newRequest()
 	worker.Header = http.Header{}
-	worker.Data = url.Values{}
-	worker.BData = []byte{}
+	worker.Response = new(Response)
 	worker.Client = Client
 
 	// Global Worker!
 	DefaultWorker = worker
-
 }
 
 // This make effect only your Worker exec serial! Attention!
@@ -36,7 +32,7 @@ func ToString() string {
 }
 
 // This make effect only your Worker exec serial! Attention!
-// Change Your JSON'like Raw data to string
+// Change Your JSON like Raw data to string
 func JsonToString() (string, error) {
 	return DefaultWorker.JsonToString()
 }
@@ -57,8 +53,8 @@ func GoByMethod(method string) (body []byte, e error) {
 	return DefaultWorker.SetMethod(method).Go()
 }
 
-func OtherGo(method, contenttype string) (body []byte, e error) {
-	return DefaultWorker.OtherGo(method, contenttype)
+func OtherGo(method, contentType string) (body []byte, e error) {
+	return DefaultWorker.OtherGo(method, contentType)
 }
 
 func Post() (body []byte, e error) {

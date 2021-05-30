@@ -1,5 +1,5 @@
 /*
-	All right reserved https://github.com/hunterhug/marmot at 2016-2020
+	All right reserved https://github.com/hunterhug/marmot at 2016-2021
 	Attribution-NonCommercial-NoDerivatives 4.0 International
 	Notice: The following code's copyright by hunterhug, Please do not spread and modify.
 	You can use it for education only but can't make profits for any companies and individuals!
@@ -39,11 +39,11 @@ const (
 
 var (
 	// Browser User-Agent, Our default Http ua header!
-	ourloveUa = "Marmot+hunterhug"
+	ourLoveUa = "Marmot+github:hunterhug"
 
 	DefaultHeader = map[string][]string{
 		"User-Agent": {
-			ourloveUa,
+			ourLoveUa,
 		},
 	}
 
@@ -90,7 +90,7 @@ func CloneHeader(h map[string][]string) map[string][]string {
 	}
 
 	if len(h["User-Agent"]) == 0 {
-		h["User-Agent"] = []string{ourloveUa}
+		h["User-Agent"] = []string{ourLoveUa}
 	}
 	return CopyM(h)
 }

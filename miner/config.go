@@ -1,5 +1,5 @@
 /*
-	All right reserved https://github.com/hunterhug/marmot at 2016-2020
+	All right reserved https://github.com/hunterhug/marmot at 2016-2021
 	Attribution-NonCommercial-NoDerivatives 4.0 International
 	Notice: The following code's copyright by hunterhug, Please do not spread and modify.
 	You can use it for education only but can't make profits for any companies and individuals!
@@ -19,32 +19,48 @@ import (
 // Worker is the main object to sent http request and return result of response
 type Worker struct {
 	// In order fast chain func call I put the basic config below
-	Url          string         // Which url we want
-	Method       string         // Get/Post method
-	Header       http.Header    // Http header
-	Data         url.Values     // Sent by form data
-	FileName     string         // FileName which sent to remote
-	FileFormName string         // File Form Name which sent to remote
-	BData        []byte         // Sent by binary data, can together with File
-	Wait         int            // Wait Time
-	Client       *http.Client   // Our Client
-	Request      *http.Request  // Debug
-	Response     *http.Response // Debug
-	Raw          []byte         // Raw data we get
+	*Request
+	*Response
 
-	// can ignore ! The name below is not so good but has already been used in many project, so bear it.
-	Preurl        string // Pre url
-	UrlStatuscode int    // The last url response code, such as 404
-	Fetchtimes    int    // Url fetch number times
-	Errortimes    int    // Url fetch error times
-	Ipstring      string // Worker proxy ip, just for user to record their proxy ip, default: localhost
+	// Which url we want
+	Url string
+
+	// Get,Post method
+	Method string
+
+	// Our Client
+	Client *http.Client
+
+	// Wait Sleep Time
+	Wait int
+
+	// Worker proxy ip, just for user to record their proxy ip, default: localhost
+	Ip string
 
 	// AOP like Java
 	Ctx          context.Context
 	BeforeAction func(context.Context, *Worker)
 	AfterAction  func(context.Context, *Worker)
 
-	mux sync.RWMutex // Lock, execute concurrently please use worker Pool!
+	// Http header
+	Header http.Header
+
+	// Mux lock
+	mux sync.RWMutex
+}
+
+type Request struct {
+	Data         url.Values    // Sent by form data
+	FileName     string        // FileName which sent to remote
+	FileFormName string        // File Form Name which sent to remote
+	BData        []byte        // Sent by binary data, can together with File
+	Request      *http.Request // Debug
+}
+
+type Response struct {
+	Response           *http.Response // Debug
+	Raw                []byte         // Raw data we get
+	ResponseStatusCode int            // The last url response code, such as 404
 }
 
 // Java Bean Chain pattern
@@ -86,8 +102,7 @@ func (worker *Worker) SetCookieByFile(file string) (*Worker, error) {
 	cookie = strings.Replace(cookie, " ", "", -1)
 	cookie = strings.Replace(cookie, "\n", "", -1)
 	cookie = strings.Replace(cookie, "\r", "", -1)
-	sconfig := worker.SetCookie(cookie)
-	return sconfig, nil
+	return worker.SetCookie(cookie), nil
 }
 
 func SetCookieByFile(file string) (*Worker, error) {
@@ -120,7 +135,6 @@ func (worker *Worker) SetHost(host string) *Worker {
 // SetUrl, at the same time SetHost
 func (worker *Worker) SetUrl(url string) *Worker {
 	worker.Url = url
-	//https://www.zhihu.com/people/
 	temp := strings.Split(url, "//")
 	if len(temp) >= 2 {
 		worker.SetHost(strings.Split(temp[1], "/")[0])
@@ -245,8 +259,8 @@ func SetAfterAction(fc func(context.Context, *Worker)) *Worker {
 
 // Clear data we sent
 func (worker *Worker) Clear() *Worker {
-	worker.Data = url.Values{}
-	worker.BData = []byte{}
+	worker.Request = newRequest()
+	worker.Response = new(Response)
 	return worker
 }
 
@@ -256,9 +270,8 @@ func Clear() *Worker {
 
 // All clear include header
 func (worker *Worker) ClearAll() *Worker {
+	worker.Clear()
 	worker.Header = http.Header{}
-	worker.Data = url.Values{}
-	worker.BData = []byte{}
 	return worker
 }
 
@@ -278,15 +291,28 @@ func ClearCookie() *Worker {
 
 // Get Cookies
 func (worker *Worker) GetCookies() []*http.Cookie {
-	if worker.Response != nil {
-		return worker.Response.Cookies()
+	if worker.Response != nil && worker.Response.Response != nil {
+		return worker.Response.Response.Cookies()
 	} else {
 		return []*http.Cookie{}
 	}
 }
 
+// Get ResponseStatusCode
+func (worker *Worker) GetResponseStatusCode() int {
+	if worker.Response != nil && worker.Response.Response != nil {
+		return worker.Response.ResponseStatusCode
+	} else {
+		return 0
+	}
+}
+
 func GetCookies() []*http.Cookie {
 	return DefaultWorker.GetCookies()
+}
+
+func GetResponseStatusCode() int {
+	return DefaultWorker.GetResponseStatusCode()
 }
 
 // Deprecated
