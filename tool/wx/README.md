@@ -14,7 +14,7 @@ https://open.weixin.qq.com/connect/qrconnect?appid=wx01fdsffsds&redirect_uri=htt
 
 2.服务端收到回调，会连续调用以下链接获取到用户信息。
 
-https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx0189ce76eadccf91&secret=00cc512fc031aa0fba01c8a41f05b4b5&code=CODE&grant_type=authorization_code
+https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx0189ce76eadccf91&secret=00cc512fc031fcdsfsdfba01c8a41f05b4b5&code=CODE&grant_type=authorization_code
 
 https://api.weixin.qq.com/sns/userinfo?access_token=accessToken&openid=openid&lang=zh_CN
 

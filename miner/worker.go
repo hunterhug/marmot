@@ -167,7 +167,6 @@ func (worker *Worker) sent(method, contentType string, binary bool) (body []byte
 	// TCP connections between requests to the same hosts, as if
 	// Transport.DisableKeepAlives were set.
 	// maybe you want long connection
-	// todo
 	//request.Close = true
 
 	// Clone Header, I add some HTTP header!
