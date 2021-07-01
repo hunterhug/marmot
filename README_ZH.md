@@ -5,6 +5,7 @@
 [![GitHub last commit](https://img.shields.io/github/last-commit/hunterhug/marmot.svg)](https://github.com/hunterhug/marmot)
 [![Go Report Card](https://goreportcard.com/badge/github.com/hunterhug/marmot)](https://goreportcard.com/report/github.com/hunterhug/marmot)
 [![GitHub issues](https://img.shields.io/github/issues/hunterhug/marmot.svg)](https://github.com/hunterhug/marmot/issues)
+[![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
 
 [English README](/README.md)
 
@@ -26,14 +27,6 @@
 
 ```
 go get -v github.com/hunterhug/marmot/miner
-```
-
-或者直接下载：
-
-```
-cd src && mkdir github.com/hunterhug
-cd src/github.com/hunterhug
-git clone https://github.com/hunterhug/marmot
 ```
 
 代码结构：
@@ -60,104 +53,42 @@ git clone https://github.com/hunterhug/marmot
 
 此库可模拟上传文件，模拟表单提交，模拟各种各样的操作。
 
-官方部分示例已经合进本库，参见 `example` 文件夹。
+`lesson1.go`
 
 ```go
 package main
 
-// 示例
 import (
 	"fmt"
+
 	"github.com/hunterhug/marmot/miner"
 )
 
 func main() {
-	// 1.新建一个矿工
-	worker, _ := miner.New(nil)
-	// 2.设置网址
-	worker.SetUrl("https://github.com/hunterhug").SetUa(worker.RandomUa()).SetMethod(worker.GET)
-	// 3.抓取网址
-	html, err := worker.Go()
+	// 使用默认的全局矿工，当然你可以自己建一个
+	// worker:=miner.New(nil)
+	miner.SetLogLevel(miner.DEBUG)
+	_, err := miner.Clone().SetUrl("https://github.com/hunterhug").Go()
 	if err != nil {
 		fmt.Println(err.Error())
-	}
-	// 4.打印内容,等同于fmt.Println(worker.ToString())
-	fmt.Println(string(html))
-}
-```
-
-详细具体步骤如下：
-
-```go
-package main
-
-import (
-	// 第一步：引入库
-	"github.com/hunterhug/marmot/miner"
-	"github.com/hunterhug/marmot/util"
-)
-
-func init() {
-	// 第二步：可选设置全局
-	miner.SetLogLevel(miner.DEBUG) // 设置全局矿工日志,可不设置,设置debug可打印出http请求轨迹
-	miner.SetGlobalTimeout(3)      // 矿工超时时间,可不设置
-
-}
-
-func main() {
-
-	log := miner.Log() // 矿工为你提供的日志工具,可不用
-
-	// 第三步： 必须新建一个矿工对象
-	//worker, err := miner.NewWorker("http://smart:smart2016@104.128.121.46:808") // 代理IP格式: 协议://代理帐号(可选):代理密码(可选)@ip:port
-	//worker, err := miner.NewWorker(nil)  // 正常矿工 默认带Cookie
-	//worker := miner.NewAPI() // API矿工 默认不带Cookie
-	worker, err := miner.New(nil) // NewWorker同名函数
-	if err != nil {
-		panic(err)
-	}
-
-	// 第四步：设置抓取方式和网站,可链式结构设置,只有SetUrl是必须的
-	// SetUrl:Url必须设置
-	// SetMethod:HTTP方法可以是POST或GET,可不设置,默认GET,传错值默认为GET
-	// SetWaitTime:暂停时间,可不设置,默认不暂停
-	worker.SetUrl("https://github.com/hunterhug/fuck.html").SetMethod(miner.GET).SetWaitTime(2)
-	worker.SetUa(miner.RandomUa())                //设置随机浏览器标志
-	worker.SetRefer("https://github.com/hunterhug/fuck.html")  // 设置Refer头
-	worker.SetHeaderParm("diyheader", "diy") // 自定义头部
-	//worker.SetBData([]byte("file data")) // 如果你要提交JSON数据/上传文件
-	//worker.SetFormParm("username","jinhan") // 提交表单
-	//worker.SetFormParm("password","123")
-
-	// 第五步：开始爬
-	//worker.Get()             // 默认GET
-	//worker.Post()            // POST表单请求,数据在SetFormParm()
-	//worker.PostJSON()        // 提交JSON请求,数据在SetBData()
-	//worker.PostXML()         // 提交XML请求,数据在SetBData()
-	//worker.PostFILE()        // 提交文件上传请求,数据在SetBData()
-	body, err := worker.Go() // 如果设置SetMethod(),采用,否则Get()
-	if err != nil {
-		log.Error(err.Error())
 	} else {
-		log.Infof("%s", string(body)) // 打印获取的数据
+		fmt.Println(miner.ToString())
 	}
-
-	log.Debugf("%#v", worker.GetCookies()) // 不设置全局log为debug是不会出现这个东西的
-
-	worker.Clear() // 爬取完毕后可以清除POST的表单数据/文件数据/JSON数据
-	//worker.ClearAll() // 爬取完毕后可以清除设置的HTTP头部和POST的表单数据/文件数据/JSON数据
+}
 ```
 
-使用特别简单，先 `New` 一个 `Worker`，即土拨鼠矿工，然后 `SetUrl`，适当加头部，最后 `worker.Go()` 即可。
+官方部分示例已经合进本库，参见 [example](example) 文件夹。
 
 ### 第一步
 
 矿工有四种类型：
 
-1. `miner.NewWorker("http://smart:smart2016@104.128.121.46:808") `  // 代理矿工，默认自动化Cookie接力 格式:`协议://代理帐号(可选):代理密码(可选)@ip:port`, 支持http(s),socks5, 别名函数 `New()`
+1. `miner.NewWorker("http://user:password@104.128.121.46:808") `  // 代理矿工，默认自动化Cookie接力 格式:`协议://代理帐号(可选):代理密码(可选)@ip:port`, 支持http(s),socks5, 别名函数 `New()`
 2. `miner.NewWorker(nil)`   // 正常矿工，默认自动化Cookie接力，别名函数`New()`
 3. `miner.NewAPI()` // API矿工，默认Cookie不接力，主要用来对接服务端 API
 4. `miner.NewWorkerByClient(&http.Client{})`    // 可自定义客户端
+
+如果你想使用一个矿工多次，使用前请先调用 `Clone()` 方法，它会进行 HTTP 请求的数据隔离，避免你并发调用多次导致的混乱。
 
 ### 第二步
 
@@ -200,10 +131,10 @@ func main() {
 2. `fmt.Println(worker.ToString())` // http响应后二进制数据也会保存在矿工对象的Raw字段中,使用ToString可取出来
 3. `fmt.Println(worker.JsonToString())` // 如果获取到的是JSON数据,请采用此方法转义回来,不然字符串会乱码
 
-注意：每次下载后，需要使用以下方法将表单等数据重置：
+注意：每次下载后，需要使用以下方法将表单等数据重置（我推荐每次使用 `Clone()` 来避免这种做法，也就是克隆一个新的来进行下一次操作）：
 
 1. `Clear()` // 清除表单和二进制数据
-2. `ClearAll()` // 还清除全部HTTP头部
+2. `ClearAll()` // 清除表单和二进制数据，还清除全部HTTP头部
 3. `ClearCookie()` // 可清除Cookie
 
 ### 其他
@@ -212,3 +143,19 @@ func main() {
 
 1. `SetBeforeAction(fc func(context.Context, *Worker))` 爬虫动作前可AOP注入。
 2. `SetAfterAction(fc func(context.Context, *Worker))` 爬虫动作完成后。
+
+# License
+
+```
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```

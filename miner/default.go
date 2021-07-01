@@ -37,6 +37,10 @@ func JsonToString() (string, error) {
 	return DefaultWorker.JsonToString()
 }
 
+func Clone() *Worker {
+	return DefaultWorker.Clone()
+}
+
 func Get() (body []byte, e error) {
 	return DefaultWorker.Get()
 }

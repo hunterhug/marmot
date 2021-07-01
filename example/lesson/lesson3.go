@@ -23,7 +23,6 @@ func init() {
 }
 
 func main() {
-
 	log := miner.Log() // optional, miner log you can choose to use
 
 	// 3: Must new a Worker object, three ways
@@ -65,6 +64,7 @@ func main() {
 
 	// You must Clear it! If you want to POST Data by SetFormParm()/SetBData() again
 	// After get the return data by post data, you can clear the data you fill
+	// I suggest use Clone()
 	worker.Clear()
 	//worker.ClearAll() // you can also want to clear all, include http header you set
 
@@ -72,7 +72,7 @@ func main() {
 	miner.Pool.Set("myfirstworker", worker)
 	if w, ok := miner.Pool.Get("myfirstworker"); ok {
 		go func() {
-			data, _ := w.SetUrl("https://github.com/hunterhug/fuck.html").Get()
+			data, _ := w.Clone().SetUrl("https://github.com/hunterhug").Get()
 			log.Info(string(data))
 		}()
 		util.Sleep(10)

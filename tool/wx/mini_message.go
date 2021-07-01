@@ -57,7 +57,7 @@ func SendMessage(token string, openId string, templateId, page string, data map[
 		return err
 	}
 
-	worker := miner.NewAPI()
+	worker := miner.NewAPI().Clone()
 	body, err := worker.SetUrl(url).SetBData(raw).PostJSON()
 	if err != nil {
 		return err
@@ -65,8 +65,8 @@ func SendMessage(token string, openId string, templateId, page string, data map[
 
 	miner.Logger.Infof("wx send message result:%v", string(body))
 
-	if worker.UrlStatuscode != 200 {
-		return errors.New(fmt.Sprintf("wx send message http status:%d", worker.UrlStatuscode))
+	if worker.ResponseStatusCode != 200 {
+		return errors.New(fmt.Sprintf("wx send message http status:%d", worker.ResponseStatusCode))
 	}
 
 	e := ErrorRsp{}

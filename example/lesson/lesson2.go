@@ -17,6 +17,7 @@ import (
 func main() {
 	// 1. New a worker
 	worker, _ := miner.New(nil)
+
 	// 2. Set a URL And Fetch
 	html, err := worker.SetUrl("http://www.github.com/hunterhug").SetUa(miner.RandomUa()).SetMethod(miner.GET).Go()
 	if err != nil {

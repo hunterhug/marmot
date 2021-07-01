@@ -18,6 +18,22 @@ import (
 	"mime/multipart"
 )
 
+// New Worker by Your Client
+func NewWorkerByClient(client *http.Client) *Worker {
+	worker := new(Worker)
+	worker.Request = newRequest()
+	worker.Header = http.Header{}
+	worker.Response = new(Response)
+
+	worker.Client = client
+	return worker
+}
+
+// New API Worker, No Cookie Keep, share the same http client
+func NewAPI() *Worker {
+	return NewWorkerByClient(NoCookieClient)
+}
+
 // New a worker, if ipString is a proxy address, New a proxy client. evey time gen a new http client!
 // Proxy address such as:
 // 		http://[user]:[password@]ip:port, [] stand it can choose or not. case: socks5://127.0.0.1:1080
@@ -55,22 +71,6 @@ func New(ipString interface{}) (*Worker, error) {
 	return NewWorker(ipString)
 }
 
-// New Worker by Your Client
-func NewWorkerByClient(client *http.Client) *Worker {
-	worker := new(Worker)
-	worker.Request = newRequest()
-	worker.Header = http.Header{}
-	worker.Response = new(Response)
-
-	worker.Client = client
-	return worker
-}
-
-// New API Worker, No Cookie Keep, share the same http client
-func NewAPI() *Worker {
-	return NewWorkerByClient(NoCookieClient)
-}
-
 // fast new request
 func newRequest() *Request {
 	req := new(Request)
@@ -81,8 +81,11 @@ func newRequest() *Request {
 
 // Should Clone a new worker if you want to use repeat
 func (worker *Worker) Clone() *Worker {
-	return NewWorkerByClient(worker.Client)
+	cloneWorker := NewWorkerByClient(worker.Client)
+	cloneWorker.Ip = worker.Ip
+	return cloneWorker
 }
+
 
 // Auto decide which method, Default Get.
 func (worker *Worker) Go() (body []byte, e error) {

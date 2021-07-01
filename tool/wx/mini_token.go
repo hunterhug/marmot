@@ -17,8 +17,8 @@ func GlobalToken(appId, appSecret string) (token string, err error) {
 		return "", errors.New("empty")
 	}
 	url := fmt.Sprintf("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s", appId, appSecret)
-	c, _ := miner.New(nil)
-	raw, err := c.SetUrl(url).Get()
+	api := miner.NewAPI()
+	raw, err := api.Clone().SetUrl(url).Get()
 	if err != nil {
 		return "", err
 	}

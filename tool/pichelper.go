@@ -23,7 +23,10 @@ func DownloadHTMLPictures(URL string, SaveDir string, MinerNum int, ProxyAddress
 	}
 
 	// New a worker to get url
-	worker, _ := miner.New(ProxyAddress)
+	worker, err := miner.New(ProxyAddress)
+	if err != nil {
+		return err
+	}
 
 	result, err := worker.SetUrl(URL).SetUa(miner.RandomUa()).Get()
 	if err != nil {
@@ -33,11 +36,11 @@ func DownloadHTMLPictures(URL string, SaveDir string, MinerNum int, ProxyAddress
 	// Find all picture
 	pictures := expert.FindPicture(string(result))
 
-	return DownloadURLPictures(pictures, SaveDir, MinerNum, ProxyAddress)
+	return DownloadURLPictures(pictures, SaveDir, MinerNum, worker)
 }
 
 // Download pictures faster!
-func DownloadURLPictures(PictureUrls []string, SaveDir string, MinerNum int, ProxyAddress interface{}) error {
+func DownloadURLPictures(PictureUrls []string, SaveDir string, MinerNum int, initWorker *miner.Worker) error {
 	// Empty, What a pity!
 	if len(PictureUrls) == 0 {
 		return errors.New("empty")
@@ -57,16 +60,9 @@ func DownloadURLPictures(PictureUrls []string, SaveDir string, MinerNum int, Pro
 
 	// Go at the same time
 	for num, pictureList := range xxx {
-
-		// Get pool miner
-		workerPicture, ok := miner.Pool.Get(util.IS(num))
-		if !ok {
-			// No? set one!
-			workerTemp, _ := miner.New(ProxyAddress)
-			workerPicture = workerTemp
-			workerTemp.SetUa(miner.RandomUa())
-			miner.Pool.Set(util.IS(num), workerTemp)
-		}
+		// Clone new worker
+		workerPicture := initWorker.Clone()
+		workerPicture.SetUa(miner.RandomUa())
 
 		// Go save picture!
 		go func(images []string, worker *miner.Worker, num int) {

@@ -27,7 +27,7 @@ func Login(appId, appSecret, code string) (info *UserInfo, err error) {
 		appId, appSecret, code)
 
 	api := miner.NewAPI()
-	data, err := api.SetUrl(url).Get()
+	data, err := api.Clone().SetUrl(url).Get()
 	if err != nil {
 		return nil, err
 	}
@@ -56,7 +56,7 @@ func Login(appId, appSecret, code string) (info *UserInfo, err error) {
 	openId = wToken.OpenId
 
 	url = fmt.Sprintf("https://api.weixin.qq.com/sns/userinfo?access_token=%s&openid=%s&lang=zh_CN", accessToken, openId)
-	data, err = api.SetUrl(url).Get()
+	data, err = api.Clone().SetUrl(url).Get()
 	if err != nil {
 		return
 	}

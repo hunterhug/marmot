@@ -61,6 +61,7 @@ func main() {
 	log.Debugf("%#v", worker.GetCookies()) // 不设置全局log为debug是不会出现这个东西的
 
 	// 爬取完毕后可以清除POST的表单数据/文件数据/JSON数据
+	// 我建议使用 Clone()，这样也可以不用清除
 	worker.Clear()
 
 	// 爬取完毕后可以清除设置的Http头部和POST的表单数据/文件数据/JSON数据
@@ -68,10 +69,9 @@ func main() {
 
 	// 矿工池子
 	miner.Pool.Set("worker1", worker)
-	if pools, ok := miner.Pool.Get("worker1"); ok {
+	if w, ok := miner.Pool.Get("worker1"); ok {
 		go func() {
-			pools.SetUrl("https://github.com/hunterhug")
-			data, _ := pools.Get()
+			data, _ := w.Clone().SetUrl("https://github.com/hunterhug").Get()
 			log.Info(string(data))
 		}()
 		util.Sleep(10)

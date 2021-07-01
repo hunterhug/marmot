@@ -33,7 +33,7 @@ func MiniLogin(appId, appSecret, code, encryptedData, iv string) (info *MiniUser
 		appId, appSecret, code)
 
 	api := miner.NewAPI()
-	data, err := api.SetUrl(url).Get()
+	data, err := api.Clone().SetUrl(url).Get()
 	if err != nil {
 		return nil, err
 	}
