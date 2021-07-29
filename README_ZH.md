@@ -11,19 +11,19 @@
 
 ![Marmot](logo.png)
 
->万维网网络机器人,又称蜘蛛,爬虫,原理主要是通过构造符合HTTP协议的网络数据包,向指定主机请求资源,获取返回的数据.万维网有大量的公开信息,人力采集数据费时费力,故激发了爬虫的产业化.
-批量获取公开网络数据并不违反,但由于无差别性,无节制,十分暴力的手段会导致对方服务的不稳定,因此,大部分资源提供商对数据包进行了某些过滤,在此背景下,小批量数据获取成为了难题.
-综合各种需求，如各种API对接,自动化测试等原理均一样，故开发了此爬虫库.
+>万维网网络机器人，又称蜘蛛，爬虫，原理主要是通过构造符合HTTP协议的网络数据包，向指定主机请求资源，获取返回的数据.万维网有大量的公开信息，人力采集数据费时费力，故激发了爬虫的产业化.
+批量获取公开网络数据并不违反，但由于无差别性，无节制，十分暴力的手段会导致对方服务的不稳定，因此，大部分资源提供商对数据包进行了某些过滤，在此背景下，小批量数据获取成为了难题.
+综合各种需求，如各种API对接，自动化测试等原理均一样，故开发了此爬虫库.
 
->土拨鼠项目是一个人类友好姿势的代码库,开发采用面向对象的方式,易于理解.通过对Golang原生HTTP库的封装,帮用户处理了一些琐碎逻辑(如收集信息,检测参数),并加入了一些容错机制(如加锁,及时关闭流),保证了爬虫高并发的安全.此库提供了大量优美的API接口,复用率高,十分方便地支持Cookie接力,爬虫代理设置,以及一般的HTTP请求设置如头部设置,超时,暂停设置,数据设置等,支持全部的HTTP方法如POST/PUT/GET/DELETE等,内置爬虫池和浏览器UA池,易于开发多UA多Cookie分布式爬虫.
+>土拨鼠项目是一个人类友好姿势的代码库，开发采用面向对象的方式，易于理解.通过对Golang原生HTTP库的封装，帮用户处理了一些琐碎逻辑(如收集信息，检测参数)，并加入了一些容错机制(如加锁，及时关闭流)，保证了爬虫高并发的安全.此库提供了大量优美的API接口，复用率高，十分方便地支持Cookie接力，爬虫代理设置，以及一般的HTTP请求设置如头部设置，超时，暂停设置，数据设置等，支持全部的HTTP方法如POST/PUT/GET/DELETE等，内置爬虫池和浏览器UA池，易于开发多UA多Cookie分布式爬虫.
 
->该库简单实用,短短几行代码即可取代以往杂乱无章的面包条代码片段,已经应用在某些大项目中。
+>该库简单实用，短短几行代码即可取代以往杂乱无章的面包条代码片段，已经应用在某些大项目中。
 
->该库主要用途： 微信开发/API对接/自动化测试/抢票脚本/网站监控/点赞插件/数据爬取
+>该库主要用途：微信开发/API对接/自动化测试/抢票脚本/网站监控/点赞插件/数据爬取
 
 ## 一. 下载
 
-自己封装的 `Golang` 爬虫下载库， 支持各种代理模式和伪装功能, 你只需通过该方式获取库：
+自己封装的 `Golang` 爬虫下载库，支持各种代理模式和伪装功能，你只需通过该方式获取库：
 
 ```
 go get -v github.com/hunterhug/marmot/miner
@@ -83,7 +83,7 @@ func main() {
 
 矿工有四种类型：
 
-1. `miner.NewWorker("http://user:password@104.128.121.46:808") `  // 代理矿工，默认自动化Cookie接力 格式:`协议://代理帐号(可选):代理密码(可选)@ip:port`, 支持http(s),socks5, 别名函数 `New()`
+1. `miner.NewWorker("http://user:password@104.128.121.46:808") `  // 代理矿工，默认自动化Cookie接力 格式:`协议://代理帐号(可选):代理密码(可选)@ip:port`，支持http(s)，socks5，别名函数 `New()`
 2. `miner.NewWorker(nil)`   // 正常矿工，默认自动化Cookie接力，别名函数`New()`
 3. `miner.NewAPI()` // API矿工，默认Cookie不接力，主要用来对接服务端 API
 4. `miner.NewWorkerByClient(&http.Client{})`    // 可自定义客户端
@@ -94,33 +94,33 @@ func main() {
 
 模拟矿工设置头部:
 
-1. `worker.SetUrl("https://github.com/hunterhug")`  // 设置HTTP请求要抓取的网址, **必须**
+1. `worker.SetUrl("https://github.com/hunterhug")`  // 设置HTTP请求要抓取的网址，**必须**
 2. `worker.SetMethod(miner.GET)`  // 设置HTTP请求的方法:`POST/GET/PUT/POSTJSON`等
 3. `worker.SetWaitTime(2)` // 设置HTTP请求超时时间
-4. `worker.SetUa(miner.RandomUa())`                // 设置HTTP请求浏览器标志,本项目提供445个浏览器标志，可选设置
+4. `worker.SetUa(miner.RandomUa())`                // 设置HTTP请求浏览器标志，本项目提供445个浏览器标志，可选设置
 5. `worker.SetRefer("http://www.baidu.com")`       // 设置HTTP请求Refer头
 6. `worker.SetHeaderParm("diyheader", "diy")` // 设置HTTP请求自定义头部
 7. `worker.SetBData([]byte("file data"))` // HTTP请求需要上传数据
 8. `worker.SetFormParm("username","jinhan")` // HTTP请求需要提交表单
-9. `worker.SetCookie("xx=dddd")` // HTTP请求设置cookie, 某些网站需要登录后F12复制cookie
+9. `worker.SetCookie("xx=dddd")` // HTTP请求设置cookie，某些网站需要登录后F12复制cookie
 
 ### 第三步
 
 矿工启动方式有：
 
-1. `body, err := worker.Go()` // 如果设置SetMethod(),会调用下方对应的方法,否则使用Get()
+1. `body, err := worker.Go()` // 如果设置SetMethod()，会调用下方对应的方法，否则使用Get()
 2. `body, err := worker.Get()` // 默认
-3. `body, err := worker.Post()` // POST表单请求,数据在SetFormParm()
-4. `body, err := worker.PostJSON()` // 提交JSON请求,数据在SetBData()
-5. `body, err := worker.PostXML()` // 提交XML请求,数据在SetBData()
-6. `body, err := worker.PostFILE()` // 提交文件上传请求，文件二进制数据通过SetBData()设置, 然后设置SetFileInfo(fileName, fileFormName string) 表明文件名和表单field Name
+3. `body, err := worker.Post()` // POST表单请求，数据在SetFormParm()
+4. `body, err := worker.PostJSON()` // 提交JSON请求，数据在SetBData()
+5. `body, err := worker.PostXML()` // 提交XML请求，数据在SetBData()
+6. `body, err := worker.PostFILE()` // 提交文件上传请求，文件二进制数据通过SetBData()设置，然后设置SetFileInfo(fileName，fileFormName string) 表明文件名和表单field Name
 7. `body, err := worker.Delete()` 
 8. `body, err := worker.Put()`
 9. `body, err := worker.PutJSON()`
 10. `body, err := worker.PutXML()`
 11. `body, err := worker.PutFILE()`
-12. `body, err := worker.OtherGo("OPTIONS", "application/x-www-form-urlencoded")` // 其他自定义的HTTP方法, 不能模拟二进制
-13. `body, err := worker.OtherGoBinary("OPTIONS", "application/x-www-form-urlencoded")` // 其他自定义的HTTP方法, 模拟二进制
+12. `body, err := worker.OtherGo("OPTIONS", "application/x-www-form-urlencoded")` // 其他自定义的HTTP方法，不能模拟二进制
+13. `body, err := worker.OtherGoBinary("OPTIONS", "application/x-www-form-urlencoded")` // 其他自定义的HTTP方法，模拟二进制
 14. `body, err := worker.GoByMethod("POST")` // 等同于 SetMethod() 然后 Go()
 
 ### 第四步
@@ -128,8 +128,8 @@ func main() {
 每次下载会返回 `[]byte`，请自行解析，调试时可以使用以下方法：
 
 1. `fmt.Println(string(html))` // 每次抓取后会返回二进制数据，直接类型转化
-2. `fmt.Println(worker.ToString())` // http响应后二进制数据也会保存在矿工对象的Raw字段中,使用ToString可取出来
-3. `fmt.Println(worker.JsonToString())` // 如果获取到的是JSON数据,请采用此方法转义回来,不然字符串会乱码
+2. `fmt.Println(worker.ToString())` // http响应后二进制数据也会保存在矿工对象的Raw字段中，使用ToString可取出来
+3. `fmt.Println(worker.JsonToString())` // 如果获取到的是JSON数据，请采用此方法转义回来，不然字符串会乱码
 
 注意：每次下载后，需要使用以下方法将表单等数据重置（我推荐每次使用 `Clone()` 来避免这种做法，也就是克隆一个新的矿工来进行下一次操作）：
 
