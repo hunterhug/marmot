@@ -2,7 +2,7 @@
 
 ## 微信第三方登录
 
-适用于网页端，移动端APP的微信登录。参考[官方文档](https://developers.weixin.qq.com/doc/oplatform/Website_App/WeChat_Login/Wechat_Login.html)。
+适用于网页端，移动端APP的微信登录。参考[官方文档](https://developers.weixin.qq.com/doc/oplatform/Website_App/WeChat_Login/Wechat_Login.html) 。
 
 需要客户端和服务端联调。
 
@@ -36,7 +36,7 @@ https://api.weixin.qq.com/sns/userinfo?access_token=accessToken&openid=openid&la
 
 ### 小程序微信登录
 
-[小程序登录](https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/login.html)区别于网页登录。
+[小程序登录](https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/login.html) 区别于网页登录。
 
 需要客户端和服务端联调。
 
@@ -66,7 +66,7 @@ https://api.weixin.qq.com/sns/userinfo?access_token=accessToken&openid=openid&la
 
 完全在服务端执行，不需要客户端参与。
 
-1.先获取全局 [`token`](https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/access-token/auth.getAccessToken.html)：
+1.先获取全局 [`token`](https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/access-token/auth.getAccessToken.html) ：
 
 ```go
 	appId := ""
@@ -80,7 +80,7 @@ https://api.weixin.qq.com/sns/userinfo?access_token=accessToken&openid=openid&la
 	fmt.Println("token is:", token)
 ```
 
-2.发送[订阅消息](https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/subscribe-message/subscribeMessage.send.html)：
+2.发送[订阅消息](https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/subscribe-message/subscribeMessage.send.html) ：
 
 ```go
 	token, _ := GlobalToken(appId, appSecret)

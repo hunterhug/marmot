@@ -60,19 +60,23 @@ package main
 
 import (
 	"fmt"
-
 	"github.com/hunterhug/marmot/miner"
 )
 
 func main() {
-	// 使用默认的全局矿工，当然你可以自己建一个
-	// worker:=miner.New(nil)
 	miner.SetLogLevel(miner.DEBUG)
-	_, err := miner.Clone().SetUrl("https://github.com/hunterhug").Go()
+
+	// 使用默认的全局矿工，当然你可以自己建一个
+	//worker, _ := miner.New(nil)
+	//worker = miner.NewWorkerWithNoProxy()
+	//worker = miner.NewAPI()
+	//worker, _ = miner.NewWorkerWithProxy("socks5://127.0.0.1:1080")
+	worker := miner.Clone()
+	_, err := worker.SetUrl("https://www.gov.cn").Go()
 	if err != nil {
 		fmt.Println(err.Error())
 	} else {
-		fmt.Println(miner.ToString())
+		fmt.Println(worker.ToString())
 	}
 }
 ```
@@ -94,14 +98,14 @@ func main() {
 
 模拟矿工设置头部:
 
-1. `worker.SetUrl("https://github.com/hunterhug")`  // 设置HTTP请求要抓取的网址，**必须**
+1. `worker.SetUrl("https://www.gov.cn")`  // 设置HTTP请求要抓取的网址，**必须**
 2. `worker.SetMethod(miner.GET)`  // 设置HTTP请求的方法:`POST/GET/PUT/POSTJSON`等
 3. `worker.SetWaitTime(2)` // 设置HTTP请求超时时间
 4. `worker.SetUa(miner.RandomUa())`                // 设置HTTP请求浏览器标志，本项目提供445个浏览器标志，可选设置
 5. `worker.SetRefer("http://www.baidu.com")`       // 设置HTTP请求Refer头
-6. `worker.SetHeaderParm("diyheader", "diy")` // 设置HTTP请求自定义头部
+6. `worker.SetHeaderParam("diyheader", "diy")` // 设置HTTP请求自定义头部
 7. `worker.SetBData([]byte("file data"))` // HTTP请求需要上传数据
-8. `worker.SetFormParm("username","jinhan")` // HTTP请求需要提交表单
+8. `worker.SetFormParam("username","jinhan")` // HTTP请求需要提交表单
 9. `worker.SetCookie("xx=dddd")` // HTTP请求设置cookie，某些网站需要登录后F12复制cookie
 
 ### 第三步
@@ -110,7 +114,7 @@ func main() {
 
 1. `body, err := worker.Go()` // 如果设置SetMethod()，会调用下方对应的方法，否则使用Get()
 2. `body, err := worker.Get()` // 默认
-3. `body, err := worker.Post()` // POST表单请求，数据在SetFormParm()
+3. `body, err := worker.Post()` // POST表单请求，数据在SetFormParam()
 4. `body, err := worker.PostJSON()` // 提交JSON请求，数据在SetBData()
 5. `body, err := worker.PostXML()` // 提交XML请求，数据在SetBData()
 6. `body, err := worker.PostFILE()` // 提交文件上传请求，文件二进制数据通过SetBData()设置，然后设置SetFileInfo(fileName，fileFormName string) 表明文件名和表单field Name

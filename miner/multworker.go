@@ -14,7 +14,7 @@ import (
 var Pool = &_Workers{ws: make(map[string]*Worker)}
 
 type _Workers struct {
-	mux sync.RWMutex // simple lock
+	mux sync.RWMutex
 	ws  map[string]*Worker
 }
 

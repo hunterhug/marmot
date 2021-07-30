@@ -21,7 +21,7 @@ func main() {
 	miner.SetLogLevel(miner.DEBUG)
 
 	// The url we want
-	url := "https://github.com/hunterhug"
+	url := "https://www.gov.cn"
 
 	// IAM we can NewAPI
 	worker := miner.NewAPI()
@@ -31,7 +31,7 @@ func main() {
 	//ctx := context.TODO()
 	worker.SetContext(ctx)
 
-	// we cancel it after 5 secord
+	// we cancel it after 5 second
 	go func() {
 		fmt.Println("I stop and sleep 5")
 		util.Sleep(5)
@@ -42,8 +42,8 @@ func main() {
 	// Before we make some change, And every GET Or POST it will action
 	worker.SetBeforeAction(func(ctx context.Context, this *miner.Worker) {
 		fmt.Println("Before Action, I will add a HTTP header, then sleep wait cancel")
-		this.SetHeaderParm("Marmot", "v2")
-		this.SetHeaderParm("DUDUDUU", "DUDU")
+		this.SetHeaderParam("Marmot", "v2")
+		this.SetHeaderParam("DUDUDUU", "DUDU")
 		select {
 		case <-ctx.Done(): // block in here util cancel()
 			//fmt.Println(ctx.Err())
@@ -66,7 +66,7 @@ func main() {
 
 }
 
-// Parse HTML page
+// MyParse Parse HTML page
 func MyParse(data []byte) string {
 	doc, err := expert.QueryBytes(data)
 	if err != nil {

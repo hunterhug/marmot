@@ -37,17 +37,17 @@ func main() {
 	// SetUrl:Url必须设置
 	// SetMethod:HTTP方法可以是POST或GET,可不设置,默认GET,传错值默认为GET
 	// SetWaitTime:暂停时间,可不设置,默认不暂停
-	worker.SetUrl("https://github.com/hunterhug").SetMethod(miner.GET).SetWaitTime(2)
-	worker.SetUa(miner.RandomUa())                  //设置随机浏览器标志
-	worker.SetRefer("https://github.com/hunterhug") // 设置Refer头
-	worker.SetHeaderParm("diyheader", "diy")        // 自定义头部
+	worker.SetUrl("https://www.gov.cn").SetMethod(miner.GET).SetWaitTime(2)
+	worker.SetUa(miner.RandomUa())           //设置随机浏览器标志
+	worker.SetRefer("https://www.gov.cn")    // 设置Refer头
+	worker.SetHeaderParam("diyheader", "diy") // 自定义头部
 	//worker.SetBData([]byte("file data")) // 如果你要提交JSON数据/上传文件
-	//worker.SetFormParm("username","jinhan") // 提交表单
-	//worker.SetFormParm("password","123")
+	//worker.SetFormParam("username","jinhan") // 提交表单
+	//worker.SetFormParam("password","123")
 
 	// 第五步：开始爬
 	//worker.Get()             // 默认GET
-	//worker.Post()            // POST表单请求,数据在SetFormParm()
+	//worker.Post()            // POST表单请求,数据在SetFormParam()
 	//worker.PostJSON()        // 提交JSON请求,数据在SetBData()
 	//worker.PostXML()         // 提交XML请求,数据在SetBData()
 	//worker.PostFILE()        // 提交文件上传请求,数据在SetBData()
@@ -71,7 +71,7 @@ func main() {
 	miner.Pool.Set("worker1", worker)
 	if w, ok := miner.Pool.Get("worker1"); ok {
 		go func() {
-			data, _ := w.Clone().SetUrl("https://github.com/hunterhug").Get()
+			data, _ := w.Clone().SetUrl("https://www.gov.cn").Get()
 			log.Info(string(data))
 		}()
 		util.Sleep(10)

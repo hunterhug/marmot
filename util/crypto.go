@@ -18,7 +18,7 @@ import (
 	"strings"
 )
 
-// HMAC with the SHA256
+// ComputeHmac256 HMAC with the SHA256
 func ComputeHmac256(message string, secret string) string {
 	key := []byte(secret)
 	h := hmac.New(sha256.New, key)
@@ -26,8 +26,8 @@ func ComputeHmac256(message string, secret string) string {
 	return base64.StdEncoding.EncodeToString(h.Sum(nil))
 }
 
-// create md5 string
-func Strtomd5(s string) string {
+// StrToMd5 create md5 string
+func StrToMd5(s string) string {
 	h := md5.New()
 	h.Write([]byte(s))
 	rs := hex.EncodeToString(h.Sum(nil))
@@ -35,19 +35,17 @@ func Strtomd5(s string) string {
 }
 
 func Md5(str string) string {
-	return Strtomd5(str)
+	return StrToMd5(str)
 }
 
-// 字符串base64加密
-func Base64E(urlstring string) string {
-	str := []byte(urlstring)
+func Base64E(body string) string {
+	str := []byte(body)
 	data := base64.StdEncoding.EncodeToString(str)
 	return data
 }
 
-// 字符串base64解密
-func Base64D(urlxxstring string) string {
-	data, err := base64.StdEncoding.DecodeString(urlxxstring)
+func Base64D(body string) string {
+	data, err := base64.StdEncoding.DecodeString(body)
 	if err != nil {
 		return ""
 	}
@@ -56,12 +54,10 @@ func Base64D(urlxxstring string) string {
 	return s
 }
 
-//url转义
 func UrlE(s string) string {
 	return url.QueryEscape(s)
 }
 
-//url解义
 func UrlD(s string) string {
 	s, e := url.QueryUnescape(s)
 	if e != nil {
@@ -71,7 +67,6 @@ func UrlD(s string) string {
 	}
 }
 
-// 对一个文件流进行hash计算
 func Md5FS(src io.Reader) string {
 	h := md5.New()
 	if err := CopyFF(src, h); err != nil {

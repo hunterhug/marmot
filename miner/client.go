@@ -18,7 +18,7 @@ import (
 	"github.com/hunterhug/marmot/util"
 )
 
-// Cookie record Jar
+// NewJar Cookie record Jar
 func NewJar() *cookiejar.Jar {
 	cookieJar, _ := cookiejar.New(nil)
 	return cookieJar
@@ -26,7 +26,7 @@ func NewJar() *cookiejar.Jar {
 
 // Default Client
 var (
-	// Save Cookie
+	// Client Save Cookie
 	Client = &http.Client{
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {
 			Logger.Debugf("[GoWorker] Redirect:%v", req.URL)
@@ -39,7 +39,7 @@ var (
 		},
 	}
 
-	// Not Save Cookie
+	// NoCookieClient Not Save Cookie
 	NoCookieClient = &http.Client{
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {
 			Logger.Debugf("[GoWorker] Redirect:%v", req.URL)
@@ -52,7 +52,7 @@ var (
 	}
 )
 
-// New a Proxy client, Default save cookie, Can timeout
+// NewProxyClient New a Proxy client, Default save cookie, Can timeout
 // We should support some proxy way such as http(s) or socks
 func NewProxyClient(proxyString string) (*http.Client, error) {
 	proxyUrl, err := url.Parse(proxyString)
@@ -99,7 +99,7 @@ func NewProxyClient(proxyString string) (*http.Client, error) {
 	return client, nil
 }
 
-// New a client, diff from proxy client
+// NewClient New a client, diff from proxy client
 func NewClient() *http.Client {
 	client := &http.Client{
 		// Allow redirect

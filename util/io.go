@@ -23,6 +23,5 @@ func Input(say, defaults string) string {
 			return Input(say, defaults)
 		}
 	}
-	//fmt.Println("--" + str + "--")
 	return str
 }

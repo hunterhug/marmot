@@ -31,7 +31,7 @@ func (e *ErrorRsp) Error() string {
 	return fmt.Sprintf("%d_%v", e.ErrCode, e.ErrMsg)
 }
 
-// https://developers.weixin.qq.com/miniprogram/dev/api/open-api/subscribe-message/wx.requestSubscribeMessage.html
+// SendMessage https://developers.weixin.qq.com/miniprogram/dev/api/open-api/subscribe-message/wx.requestSubscribeMessage.html
 func SendMessage(token string, openId string, templateId, page string, data map[string]string, state string) error {
 	if token == "" || openId == "" || templateId == "" || state == "" {
 		return errors.New("empty")
@@ -63,7 +63,7 @@ func SendMessage(token string, openId string, templateId, page string, data map[
 		return err
 	}
 
-	miner.Logger.Infof("wx send message result:%v", string(body))
+	miner.Logger.Debugf("wx send message result:%v", string(body))
 
 	if worker.ResponseStatusCode != 200 {
 		return errors.New(fmt.Sprintf("wx send message http status:%d", worker.ResponseStatusCode))

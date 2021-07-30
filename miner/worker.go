@@ -18,7 +18,7 @@ import (
 	"mime/multipart"
 )
 
-// New Worker by Your Client
+// NewWorkerByClient New Worker by Your Client
 func NewWorkerByClient(client *http.Client) *Worker {
 	worker := new(Worker)
 	worker.Request = newRequest()
@@ -29,12 +29,12 @@ func NewWorkerByClient(client *http.Client) *Worker {
 	return worker
 }
 
-// New API Worker, No Cookie Keep, share the same http client
+// NewAPI New API Worker, No Cookie Keep, share the same http client
 func NewAPI() *Worker {
 	return NewWorkerByClient(NoCookieClient)
 }
 
-// New a worker, if ipString is a proxy address, New a proxy client. evey time gen a new http client!
+// NewWorker New a worker, if ipString is a proxy address, New a proxy client. evey time gen a new http client!
 // Proxy address such as:
 // 		http://[user]:[password@]ip:port, [] stand it can choose or not. case: socks5://127.0.0.1:1080
 func NewWorker(proxyIpString interface{}) (*Worker, error) {
@@ -55,18 +55,18 @@ func NewWorker(proxyIpString interface{}) (*Worker, error) {
 	}
 }
 
-// Alias func
+// NewWorkerWithProxy Alias func
 func NewWorkerWithProxy(proxyIpString interface{}) (*Worker, error) {
 	return NewWorker(proxyIpString)
 }
 
-// Alias func
+// NewWorkerWithNoProxy Alias func
 func NewWorkerWithNoProxy() *Worker {
 	w, _ := NewWorker(nil)
 	return w
 }
 
-// Alias Name for NewWorker
+// New Alias Name for NewWorker
 func New(ipString interface{}) (*Worker, error) {
 	return NewWorker(ipString)
 }
@@ -79,15 +79,14 @@ func newRequest() *Request {
 	return req
 }
 
-// Should Clone a new worker if you want to use repeat
+// Clone Should Clone a new worker if you want to use repeat
 func (worker *Worker) Clone() *Worker {
 	cloneWorker := NewWorkerByClient(worker.Client)
 	cloneWorker.Ip = worker.Ip
 	return cloneWorker
 }
 
-
-// Auto decide which method, Default Get.
+// Go Auto decide which method, Default Get.
 func (worker *Worker) Go() (body []byte, e error) {
 	switch strings.ToUpper(worker.Method) {
 	case POST:
@@ -119,7 +118,7 @@ func (worker *Worker) GoByMethod(method string) (body []byte, e error) {
 	return worker.SetMethod(method).Go()
 }
 
-// This make effect only your worker exec serial! Attention!
+// ToString This make effect only your worker exec serial! Attention!
 // Change Your Raw data To string
 func (worker *Worker) ToString() string {
 	if worker.Raw == nil {
@@ -128,7 +127,7 @@ func (worker *Worker) ToString() string {
 	return string(worker.Raw)
 }
 
-// This make effect only your worker exec serial! Attention!
+// JsonToString This make effect only your worker exec serial! Attention!
 // Change Your JSON'like Raw data to string
 func (worker *Worker) JsonToString() (string, error) {
 	if worker.Raw == nil {
@@ -147,7 +146,7 @@ func (worker *Worker) sent(method, contentType string, binary bool) (body []byte
 	worker.mux.Lock()
 	defer worker.mux.Unlock()
 
-	// Before FAction we can change or add something before Go()
+	// Before Action we can change or add something before Go()
 	if worker.BeforeAction != nil {
 		worker.BeforeAction(worker.Ctx, worker)
 	}
@@ -304,7 +303,6 @@ func (worker *Worker) sentFile(method string) ([]byte, error) {
 	return worker.sent(method, contentType, true)
 }
 
-// Put
 func (worker *Worker) Put() (body []byte, e error) {
 	return worker.sent(PUT, HTTPFORMContentType, false)
 }
@@ -319,11 +317,10 @@ func (worker *Worker) PutXML() (body []byte, e error) {
 
 func (worker *Worker) PutFILE() (body []byte, e error) {
 	return worker.sentFile(PUT)
-
 }
 
 /*
-Other Method
+OtherGo Method
 
      Method         = "OPTIONS"                ; Section 9.2
                     | "GET"                    ; Section 9.3

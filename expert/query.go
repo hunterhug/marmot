@@ -8,10 +8,9 @@ package expert
 
 // Package expert is use to parse content
 import (
+	"github.com/hunterhug/marmot/util/goquery"
 	"regexp"
 	"strings"
-
-	"github.com/hunterhug/marmot/util/goquery"
 )
 
 func QueryBytes(content []byte) (*goquery.Document, error) {
@@ -24,7 +23,7 @@ func QueryString(content string) (*goquery.Document, error) {
 	return doc, err
 }
 
-// Find All picture. Must prefix with http(s)
+// FindPicture Find All picture. Must prefix with http(s)
 func FindPicture(s string) []string {
 	picList := make([]string, 0)
 	re, _ := regexp.Compile(`src\s*=\s*["'](http[s]?:\/\/.*?\.(jpg|jpeg|png|gif))["']`)

@@ -38,17 +38,17 @@ func main() {
 	// SetUrl: required, the Url
 	// SetMethod: optional, HTTP method: POST/GET/..., default GET
 	// SetWaitTime: optional, HTTP request wait/pause time
-	worker.SetUrl("http://www.github.com/hunterhug").SetMethod(miner.GET).SetWaitTime(2)
-	worker.SetUa(miner.RandomUa())                     // optional, browser user agent: IE/Firefox...
-	worker.SetRefer("http://www.github.com/hunterhug") // optional, url refer
-	worker.SetHeaderParm("diyheader", "diy")           // optional, some other diy http header
+	worker.SetUrl("https://www.gov.cn").SetMethod(miner.GET).SetWaitTime(2)
+	worker.SetUa(miner.RandomUa())            // optional, browser user agent: IE/Firefox...
+	worker.SetRefer("https://www.gov.cn")     // optional, url refer
+	worker.SetHeaderParam("diy_header", "diy") // optional, some other diy http header
 	//worker.SetBData([]byte("file data"))    // optional, if you want post JSON data or upload file
-	//worker.SetFormParm("username","jinhan") // optional: if you want post form
-	//worker.SetFormParm("password","123")
+	//worker.SetFormParam("username","root") // optional: if you want post form
+	//worker.SetFormParam("password","123")
 
 	// 5: Start Run
 	//worker.Get()             // default GET
-	//worker.Post()            // POST form request data, data can fill by SetFormParm()
+	//worker.Post()            // POST form request data, data can fill by SetFormParam()
 	//worker.PostJSON()        // POST JSON dara, use SetBData()
 	//worker.PostXML()         // POST XML, use SetBData()
 	//worker.PostFILE()        // POST to Upload File, data in SetBData() too
@@ -62,7 +62,7 @@ func main() {
 
 	log.Debugf("%#v", worker.GetCookies) // if you not set log as debug, it will not appear
 
-	// You must Clear it! If you want to POST Data by SetFormParm()/SetBData() again
+	// You must Clear it! If you want to POST Data by SetFormParam()/SetBData() again
 	// After get the return data by post data, you can clear the data you fill
 	// I suggest use Clone()
 	worker.Clear()
@@ -72,7 +72,7 @@ func main() {
 	miner.Pool.Set("myfirstworker", worker)
 	if w, ok := miner.Pool.Get("myfirstworker"); ok {
 		go func() {
-			data, _ := w.Clone().SetUrl("https://github.com/hunterhug").Get()
+			data, _ := w.Clone().SetUrl("https://www.gov.cn").Get()
 			log.Info(string(data))
 		}()
 		util.Sleep(10)

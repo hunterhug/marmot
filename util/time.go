@@ -10,12 +10,10 @@ import (
 	"time"
 )
 
-// sleep
 func Sleep(waitTime int) {
 	time.Sleep(time.Duration(waitTime) * time.Second)
 }
 
-// time
 func Second(times int) time.Duration {
 	return time.Duration(times) * time.Second
 }

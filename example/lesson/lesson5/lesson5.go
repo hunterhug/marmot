@@ -49,6 +49,7 @@ func parse(data []byte) string {
 	doc, err := expert.QueryBytes(data)
 	if err != nil {
 		fmt.Println(err.Error())
+		return ""
 	}
 	return doc.Find("title").Text()
 }

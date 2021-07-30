@@ -35,11 +35,11 @@ func TestWorker(t *testing.T) {
 	worker.SetWaitTime(1)
 
 	// which url fetch
-	worker.SetUrl("https://github.com/hunterhug")
+	worker.SetUrl("https://www.gov.cn")
 
 	worker.SetUa(RandomUa())
 
-	// go!fetch url --||
+	// go! fetch url
 	body, err := worker.Go()
 	if err != nil {
 		Log().Error(err.Error())
@@ -50,5 +50,7 @@ func TestWorker(t *testing.T) {
 
 	// if file size small than 500KB
 	err = TooSortSizes(body, 500)
-	Log().Error(err.Error())
+	if err != nil {
+		Log().Error(err.Error())
+	}
 }

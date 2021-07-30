@@ -11,7 +11,7 @@ type Token struct {
 	AccessToken string `json:"access_token"`
 }
 
-// https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/access-token/auth.getAccessToken.html
+// GlobalToken https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/access-token/auth.getAccessToken.html
 func GlobalToken(appId, appSecret string) (token string, err error) {
 	if appId == "" || appSecret == "" {
 		return "", errors.New("empty")

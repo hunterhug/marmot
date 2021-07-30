@@ -63,28 +63,28 @@ type Response struct {
 	ResponseStatusCode int            // The last url response code, such as 404
 }
 
-// Java Bean Chain pattern
+// SetHeader Java Bean Chain pattern
 func (worker *Worker) SetHeader(header http.Header) *Worker {
 	worker.Header = header
 	return worker
 }
 
-// Default Worker SetHeader!
+// SetHeader Default Worker SetHeader!
 func SetHeader(header http.Header) *Worker {
 	return DefaultWorker.SetHeader(header)
 }
 
-func (worker *Worker) SetHeaderParm(k, v string) *Worker {
+func (worker *Worker) SetHeaderParam(k, v string) *Worker {
 	worker.Header.Set(k, v)
 	return worker
 }
 
-func SetHeaderParm(k, v string) *Worker {
-	return DefaultWorker.SetHeaderParm(k, v)
+func SetHeaderParam(k, v string) *Worker {
+	return DefaultWorker.SetHeaderParam(k, v)
 }
 
 func (worker *Worker) SetCookie(v string) *Worker {
-	worker.SetHeaderParm("Cookie", v)
+	worker.SetHeaderParam("Cookie", v)
 	return worker
 }
 
@@ -92,9 +92,9 @@ func SetCookie(v string) *Worker {
 	return DefaultWorker.SetCookie(v)
 }
 
-// Set Cookie by file.
+// SetCookieByFile Set Cookie by file.
 func (worker *Worker) SetCookieByFile(file string) (*Worker, error) {
-	haha, err := util.ReadfromFile(file)
+	haha, err := util.ReadFromFile(file)
 	if err != nil {
 		return nil, err
 	}
@@ -132,7 +132,7 @@ func (worker *Worker) SetHost(host string) *Worker {
 	return worker
 }
 
-// SetUrl, at the same time SetHost
+// SetUrl at the same time SetHost
 func (worker *Worker) SetUrl(url string) *Worker {
 	worker.Url = url
 	temp := strings.Split(url, "//")
@@ -220,16 +220,16 @@ func SetForm(form url.Values) *Worker {
 	return DefaultWorker.SetForm(form)
 }
 
-func (worker *Worker) SetFormParm(k, v string) *Worker {
+func (worker *Worker) SetFormParam(k, v string) *Worker {
 	worker.Data.Set(k, v)
 	return worker
 }
 
-func SetFormParm(k, v string) *Worker {
-	return DefaultWorker.SetFormParm(k, v)
+func SetFormParam(k, v string) *Worker {
+	return DefaultWorker.SetFormParam(k, v)
 }
 
-// Set Context so Action can soft
+// SetContext Set Context so Action can soft
 func (worker *Worker) SetContext(ctx context.Context) *Worker {
 	worker.Ctx = ctx
 	return worker
@@ -258,6 +258,7 @@ func SetAfterAction(fc func(context.Context, *Worker)) *Worker {
 }
 
 // Clear data we sent
+// I suggest use Clone() to avoid clear
 func (worker *Worker) Clear() *Worker {
 	worker.Request = newRequest()
 	worker.Response = new(Response)
@@ -268,7 +269,7 @@ func Clear() *Worker {
 	return DefaultWorker.Clear()
 }
 
-// All clear include header
+// ClearAll All clear include header
 func (worker *Worker) ClearAll() *Worker {
 	worker.Clear()
 	worker.Header = http.Header{}
@@ -279,7 +280,7 @@ func ClearAll() *Worker {
 	return DefaultWorker.ClearAll()
 }
 
-// Clear Cookie
+// ClearCookie Clear Cookie
 func (worker *Worker) ClearCookie() *Worker {
 	worker.Header.Del("Cookie")
 	return worker
@@ -289,7 +290,7 @@ func ClearCookie() *Worker {
 	return DefaultWorker.ClearCookie()
 }
 
-// Get Cookies
+// GetCookies Get Cookies
 func (worker *Worker) GetCookies() []*http.Cookie {
 	if worker.Response != nil && worker.Response.Response != nil {
 		return worker.Response.Response.Cookies()
@@ -298,7 +299,7 @@ func (worker *Worker) GetCookies() []*http.Cookie {
 	}
 }
 
-// Get ResponseStatusCode
+// GetResponseStatusCode Get ResponseStatusCode
 func (worker *Worker) GetResponseStatusCode() int {
 	if worker.Response != nil && worker.Response.Response != nil {
 		return worker.Response.ResponseStatusCode
@@ -313,8 +314,4 @@ func GetCookies() []*http.Cookie {
 
 func GetResponseStatusCode() int {
 	return DefaultWorker.GetResponseStatusCode()
-}
-
-// Deprecated
-func (worker *Worker) NewHeader(ua interface{}, host string, refer interface{}) {
 }

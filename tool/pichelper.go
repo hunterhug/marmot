@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-// Download one HTML page's all pictures
+// DownloadHTMLPictures Download one HTML page's all pictures
 // @URL: http://image.baidu.com
 // @SaveDir /home/images
 // @ProxyAddress : "socks5://127.0.0.1:1080"
@@ -39,7 +39,7 @@ func DownloadHTMLPictures(URL string, SaveDir string, MinerNum int, ProxyAddress
 	return DownloadURLPictures(pictures, SaveDir, MinerNum, worker)
 }
 
-// Download pictures faster!
+// DownloadURLPictures Download pictures faster!
 func DownloadURLPictures(PictureUrls []string, SaveDir string, MinerNum int, initWorker *miner.Worker) error {
 	// Empty, What a pity!
 	if len(PictureUrls) == 0 {

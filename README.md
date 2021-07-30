@@ -38,19 +38,23 @@ package main
 
 import (
 	"fmt"
-
 	"github.com/hunterhug/marmot/miner"
 )
 
 func main() {
-	// Use Default Worker, You can Also New One:
-	// worker:=miner.New(nil)
 	miner.SetLogLevel(miner.DEBUG)
-	_, err := miner.Clone().SetUrl("https://github.com/hunterhug").Go()
+
+	// Use Default Worker, You can Also New One:
+	//worker, _ := miner.New(nil)
+	//worker = miner.NewWorkerWithNoProxy()
+	//worker = miner.NewAPI()
+	//worker, _ = miner.NewWorkerWithProxy("socks5://127.0.0.1:1080")
+	worker := miner.Clone()
+	_, err := worker.SetUrl("https://www.gov.cn").Go()
 	if err != nil {
 		fmt.Println(err.Error())
 	} else {
-		fmt.Println(miner.ToString())
+		fmt.Println(worker.ToString())
 	}
 }
 ```
@@ -80,14 +84,14 @@ if you want to use worker twice, you can call `Clone()` method to clone a new wo
 
 Camouflage our worker:
 
-1. `worker.SetUrl("https://github.com/hunterhug")`  // required: set url you want to
+1. `worker.SetUrl("https://www.gov.cn")`  // required: set url you want to
 2. `worker.SetMethod(miner.GET)`  // optional: set http method `POST/GET/PUT/POSTJSON` and so on
 3. `worker.SetWaitTime(2)`                         // optional: set timeout of http request
 4. `worker.SetUa(miner.RandomUa())`                 // optional: set http browser user agent, you can see miner/config/ua.txt
-5. `worker.SetRefer("https://github.com/hunterhug")`       // optional: set http request Refer
-6. `worker.SetHeaderParm("diyheader", "diy")` // optional: set http diy header
+5. `worker.SetRefer("https://www.gov.cn")`       // optional: set http request Refer
+6. `worker.SetHeaderParam("diyheader", "diy")` // optional: set http diy header
 7. `worker.SetBData([]byte("file data"))` // optional: set binary data for post or put
-8. `worker.SetFormParm("username","jinhan")` // optional: set form data for post or put 
+8. `worker.SetFormParam("username","jinhan")` // optional: set form data for post or put 
 9. `worker.SetCookie("xx=dddd")` // optional: you can set a init cookie, some website you can login and F12 copy the cookie
 10. `worker.SetCookieByFile("/root/cookie.txt")` // optional: set cookie which store in a file
 
@@ -97,7 +101,7 @@ Run our worker:
 
 1. `body, err := worker.Go()` // if you use SetMethod(), auto use following ways, otherwise use Get()
 2. `body, err := worker.Get()` // default
-3. `body, err := worker.Post()` // post form request, data fill by SetFormParm()
+3. `body, err := worker.Post()` // post form request, data fill by SetFormParam()
 4. `body, err := worker.PostJSON()` // post JSON request, data fill by SetBData()
 5. `body, err := worker.PostXML()` // post XML request, data fill by SetBData()
 6. `body, err := worker.PostFILE()` // upload file, data fill by SetBData(), and should set SetFileInfo(fileName, fileFormName string)

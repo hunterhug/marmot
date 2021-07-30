@@ -8,7 +8,7 @@ package miner
 
 import "net/http"
 
-// Global Worker
+// DefaultWorker Global Worker
 var DefaultWorker *Worker
 
 func init() {
@@ -25,13 +25,13 @@ func init() {
 	DefaultWorker = worker
 }
 
-// This make effect only your Worker exec serial! Attention!
+// ToString This make effect only your Worker exec serial! Attention!
 // Change Your Raw data To string
 func ToString() string {
 	return DefaultWorker.ToString()
 }
 
-// This make effect only your Worker exec serial! Attention!
+// JsonToString This make effect only your Worker exec serial! Attention!
 // Change Your JSON like Raw data to string
 func JsonToString() (string, error) {
 	return DefaultWorker.JsonToString()

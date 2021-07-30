@@ -27,7 +27,7 @@ func TestConfig(t *testing.T) {
 	}
 
 	worker.BeforeAction = func(c context.Context, worker *Worker) {
-		worker.SetHeaderParm("Marmot", "v2")
+		worker.SetHeaderParam("Marmot", "v2")
 	}
 
 	raw, err := worker.SetUrl("http://www.baidu.com").Get()

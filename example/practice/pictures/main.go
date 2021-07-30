@@ -12,10 +12,10 @@ import (
 	"github.com/hunterhug/marmot/util"
 )
 
-// Num of miner, We can run it at the same time to crawl data fast
+// MinerNum Num of miner, We can run it at the same time to crawl data fast
 var MinerNum = 5
 
-// You can update this decide whether to proxy
+// ProxyAddress You can update this decide whether to proxy
 var ProxyAddress interface{}
 
 func main() {
