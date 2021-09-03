@@ -26,7 +26,7 @@ Example:
 		//worker = miner.NewAPI()
 		//worker, _ = miner.NewWorkerWithProxy("socks5://127.0.0.1:1080")
 		worker := miner.Clone()
-		_, err := worker.SetUrl("https://www.gov.cn").Go()
+		_, err := worker.SetUrl("https://www.bing.com").Go()
 		if err != nil {
 			fmt.Println(err.Error())
 		} else {

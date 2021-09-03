@@ -72,7 +72,7 @@ func main() {
 	//worker = miner.NewAPI()
 	//worker, _ = miner.NewWorkerWithProxy("socks5://127.0.0.1:1080")
 	worker := miner.Clone()
-	_, err := worker.SetUrl("https://www.gov.cn").Go()
+	_, err := worker.SetUrl("https://www.bing.com").Go()
 	if err != nil {
 		fmt.Println(err.Error())
 	} else {
@@ -98,7 +98,7 @@ func main() {
 
 模拟矿工设置头部:
 
-1. `worker.SetUrl("https://www.gov.cn")`  // 设置HTTP请求要抓取的网址，**必须**
+1. `worker.SetUrl("https://www.bing.com")`  // 设置HTTP请求要抓取的网址，**必须**
 2. `worker.SetMethod(miner.GET)`  // 设置HTTP请求的方法:`POST/GET/PUT/POSTJSON`等
 3. `worker.SetWaitTime(2)` // 设置HTTP请求超时时间
 4. `worker.SetUa(miner.RandomUa())`                // 设置HTTP请求浏览器标志，本项目提供445个浏览器标志，可选设置

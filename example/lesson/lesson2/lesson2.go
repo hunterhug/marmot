@@ -19,7 +19,7 @@ func main() {
 	worker, _ := miner.New(nil)
 
 	// 2. Set a URL And Fetch
-	html, err := worker.SetUrl("https://www.gov.cn").SetUa(miner.RandomUa()).SetMethod(miner.GET).Go()
+	html, err := worker.SetUrl("https://www.bing.com").SetUa(miner.RandomUa()).SetMethod(miner.GET).Go()
 	if err != nil {
 		fmt.Println(err.Error())
 	}

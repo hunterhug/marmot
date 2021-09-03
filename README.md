@@ -50,7 +50,7 @@ func main() {
 	//worker = miner.NewAPI()
 	//worker, _ = miner.NewWorkerWithProxy("socks5://127.0.0.1:1080")
 	worker := miner.Clone()
-	_, err := worker.SetUrl("https://www.gov.cn").Go()
+	_, err := worker.SetUrl("https://www.bing.com").Go()
 	if err != nil {
 		fmt.Println(err.Error())
 	} else {
@@ -84,11 +84,11 @@ if you want to use worker twice, you can call `Clone()` method to clone a new wo
 
 Camouflage our worker:
 
-1. `worker.SetUrl("https://www.gov.cn")`  // required: set url you want to
+1. `worker.SetUrl("https://www.bing.com")`  // required: set url you want to
 2. `worker.SetMethod(miner.GET)`  // optional: set http method `POST/GET/PUT/POSTJSON` and so on
 3. `worker.SetWaitTime(2)`                         // optional: set timeout of http request
 4. `worker.SetUa(miner.RandomUa())`                 // optional: set http browser user agent, you can see miner/config/ua.txt
-5. `worker.SetRefer("https://www.gov.cn")`       // optional: set http request Refer
+5. `worker.SetRefer("https://www.bing.com")`       // optional: set http request Refer
 6. `worker.SetHeaderParam("diyheader", "diy")` // optional: set http diy header
 7. `worker.SetBData([]byte("file data"))` // optional: set binary data for post or put
 8. `worker.SetFormParam("username","jinhan")` // optional: set form data for post or put 

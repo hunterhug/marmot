@@ -146,7 +146,7 @@ func (worker *Worker) sent(method, contentType string, binary bool) (body []byte
 	worker.mux.Lock()
 	defer worker.mux.Unlock()
 
-	// Before Action we can change or add something before Go()
+	// Before Action, we can change or add something before Go()
 	if worker.BeforeAction != nil {
 		worker.BeforeAction(worker.Ctx, worker)
 	}
@@ -157,7 +157,8 @@ func (worker *Worker) sent(method, contentType string, binary bool) (body []byte
 	}
 
 	// For debug
-	Logger.Debugf("[GoWorker] %s %s", method, worker.Url)
+	uuid := "[GoWorker]"
+	Logger.Debugf("%s %s %s", uuid, method, worker.Url)
 
 	// New a Request
 	var request *http.Request
@@ -196,7 +197,7 @@ func (worker *Worker) sent(method, contentType string, binary bool) (body []byte
 	worker.Request.Request = request
 
 	// Debug for RequestHeader
-	OutputMaps("Request header", request.Header)
+	OutputMaps(uuid, "Request Header", request.Header)
 
 	// Tolerate abnormal way to create a Worker
 	if worker.Client == nil {
@@ -216,8 +217,8 @@ func (worker *Worker) sent(method, contentType string, binary bool) (body []byte
 	}
 
 	// Debug
-	OutputMaps("Response header", response.Header)
-	Logger.Debugf("[GoWorker] %v %s", response.Proto, response.Status)
+	OutputMaps(uuid, "Response Header", response.Header)
+	Logger.Debugf("%s %s %s", uuid, response.Proto, response.Status)
 
 	// Read output
 	body, e = ioutil.ReadAll(response.Body)

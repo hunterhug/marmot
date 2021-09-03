@@ -21,7 +21,7 @@ func main() {
 	miner.SetLogLevel(miner.DEBUG)
 
 	// The url we want
-	url := "https://www.gov.cn"
+	url := "https://www.bing.com"
 
 	// IAM we can NewAPI
 	worker := miner.NewAPI()

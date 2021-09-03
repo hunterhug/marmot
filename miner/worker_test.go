@@ -13,7 +13,7 @@ import (
 
 func TestWorker(t *testing.T) {
 	// Global log record
-	SetLogLevel("debug")
+	SetLogLevel(DEBUG)
 
 	// GLOBAL TIMEOUT
 	SetGlobalTimeout(10)
@@ -35,7 +35,7 @@ func TestWorker(t *testing.T) {
 	worker.SetWaitTime(1)
 
 	// which url fetch
-	worker.SetUrl("https://www.gov.cn")
+	worker.SetUrl("https://www.bing.com")
 
 	worker.SetUa(RandomUa())
 

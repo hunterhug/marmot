@@ -20,7 +20,7 @@ func Wait(waitTime int) {
 	if waitTime <= 0 {
 		return
 	} else {
-		Logger.Debugf("Wait %d Second.", waitTime)
+		Logger.Debugf("[GoWorker] Wait %d Second.", waitTime)
 		util.Sleep(waitTime)
 	}
 }
@@ -48,10 +48,10 @@ func TooSortSizes(data []byte, sizes float64) error {
 }
 
 // OutputMaps Just debug a map
-func OutputMaps(info string, args map[string][]string) {
+func OutputMaps(uuid string, info string, args map[string][]string) {
 	s := "\n"
 	for k, v := range args {
-		s = s + fmt.Sprintf("%-25s| %-6s\n", k, strings.Join(v, "||"))
+		s = s + fmt.Sprintf("%-25s | %-6s\n", k, strings.Join(v, " |||| "))
 	}
-	Logger.Debugf("[GoWorker] %s-%s", info, s)
+	Logger.Debugf("%s %s-%s", uuid, info, s)
 }

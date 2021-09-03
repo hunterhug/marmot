@@ -38,9 +38,9 @@ func main() {
 	// SetUrl: required, the Url
 	// SetMethod: optional, HTTP method: POST/GET/..., default GET
 	// SetWaitTime: optional, HTTP request wait/pause time
-	worker.SetUrl("https://www.gov.cn").SetMethod(miner.GET).SetWaitTime(2)
-	worker.SetUa(miner.RandomUa())            // optional, browser user agent: IE/Firefox...
-	worker.SetRefer("https://www.gov.cn")     // optional, url refer
+	worker.SetUrl("https://www.bing.com").SetMethod(miner.GET).SetWaitTime(2)
+	worker.SetUa(miner.RandomUa())             // optional, browser user agent: IE/Firefox...
+	worker.SetRefer("https://www.bing.com")    // optional, url refer
 	worker.SetHeaderParam("diy_header", "diy") // optional, some other diy http header
 	//worker.SetBData([]byte("file data"))    // optional, if you want post JSON data or upload file
 	//worker.SetFormParam("username","root") // optional: if you want post form
@@ -72,7 +72,7 @@ func main() {
 	miner.Pool.Set("myfirstworker", worker)
 	if w, ok := miner.Pool.Get("myfirstworker"); ok {
 		go func() {
-			data, _ := w.Clone().SetUrl("https://www.gov.cn").Get()
+			data, _ := w.Clone().SetUrl("https://www.bing.com").Get()
 			log.Info(string(data))
 		}()
 		util.Sleep(10)

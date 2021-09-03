@@ -29,7 +29,7 @@ var (
 	// Client Save Cookie
 	Client = &http.Client{
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {
-			Logger.Debugf("[GoWorker] Redirect:%v", req.URL)
+			Logger.Debugf("[GoWorker] Redirect: %v", req.URL)
 			return nil
 		},
 		Jar:     NewJar(),
@@ -42,7 +42,7 @@ var (
 	// NoCookieClient Not Save Cookie
 	NoCookieClient = &http.Client{
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {
-			Logger.Debugf("[GoWorker] Redirect:%v", req.URL)
+			Logger.Debugf("[GoWorker] Redirect: %v", req.URL)
 			return nil
 		},
 		Timeout: util.Second(DefaultTimeOut),
@@ -86,7 +86,7 @@ func NewProxyClient(proxyString string) (*http.Client, error) {
 	client := &http.Client{
 		// Allow redirect
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {
-			Logger.Debugf("[GoWorker] Redirect:%v", req.URL)
+			Logger.Debugf("[GoWorker] Redirect: %v", req.URL)
 			return nil
 		},
 		// Allow proxy: http, https, socks5
@@ -104,7 +104,7 @@ func NewClient() *http.Client {
 	client := &http.Client{
 		// Allow redirect
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {
-			Logger.Debugf("[GoWorker] Redirect:%v", req.URL)
+			Logger.Debugf("[GoWorker] Redirect: %v", req.URL)
 			return nil
 		},
 		Jar:     NewJar(),

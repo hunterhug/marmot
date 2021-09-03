@@ -9,7 +9,7 @@ package miner
 import "net/http"
 
 const (
-	VERSION = "1.0.9"
+	VERSION = "1.0.10"
 
 	// GET HTTP method
 	GET      = "GET"
@@ -29,14 +29,6 @@ const (
 	HTTPJSONContentType = "application/json"
 	HTTPXMLContentType  = "text/xml"
 	HTTPFILEContentType = "multipart/form-data"
-
-	// CRITICAL Log mark
-	CRITICAL = "CRITICAL"
-	ERROR    = "ERROR"
-	WARNING  = "WARNING"
-	NOTICE   = "NOTICE"
-	INFO     = "INFO"
-	DEBUG    = "DEBUG"
 )
 
 var (
