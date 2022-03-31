@@ -11,3 +11,5 @@ example/music/songs_dir/*
 vendor
 .DS_Store
 /picture
+*.xxxx
+*.xxxxxx

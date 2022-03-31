@@ -9,8 +9,10 @@ package miner
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"net/http"
+	"net/textproto"
 	"net/url"
 	"strings"
 
@@ -128,7 +130,7 @@ func (worker *Worker) ToString() string {
 }
 
 // JsonToString This make effect only your worker exec serial! Attention!
-// Change Your JSON'like Raw data to string
+// Change Your JSON' like Raw data to string
 func (worker *Worker) JsonToString() (string, error) {
 	if worker.Raw == nil {
 		return "", nil
@@ -270,6 +272,12 @@ func (worker *Worker) PostFILE() (body []byte, e error) {
 
 }
 
+var quoteEscaper = strings.NewReplacer("\\", "\\\\", `"`, "\\\"")
+
+func escapeQuotes(s string) string {
+	return quoteEscaper.Replace(s)
+}
+
 func (worker *Worker) sentFile(method string) ([]byte, error) {
 	if worker.FileName == "" || worker.FileFormName == "" {
 		return nil, errors.New("fileName or fileFormName must not empty")
@@ -282,7 +290,23 @@ func (worker *Worker) sentFile(method string) ([]byte, error) {
 	bodyBuf := &bytes.Buffer{}
 	bodyWriter := multipart.NewWriter(bodyBuf)
 
-	fileWriter, err := bodyWriter.CreateFormFile(worker.FileFormName, worker.FileName)
+	h := make(textproto.MIMEHeader)
+	dispositionContent := fmt.Sprintf(`form-data; name="%s"; filename="%s"`,
+		escapeQuotes(worker.FileFormName), escapeQuotes(worker.FileName))
+
+	for k, v := range worker.Data {
+		for _, vv := range v {
+			if vv != "" {
+				dispositionContent = fmt.Sprintf(`%s; %s="%s"`,
+					dispositionContent, escapeQuotes(k), escapeQuotes(vv))
+			}
+		}
+	}
+
+	h.Set("Content-Disposition", dispositionContent)
+	h.Set("Content-Type", "application/octet-stream")
+	fileWriter, err := bodyWriter.CreatePart(h)
+
 	if err != nil {
 		return nil, err
 	}
