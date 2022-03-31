@@ -9,10 +9,8 @@ package miner
 import (
 	"bytes"
 	"errors"
-	"fmt"
 	"io/ioutil"
 	"net/http"
-	"net/textproto"
 	"net/url"
 	"strings"
 
@@ -290,23 +288,7 @@ func (worker *Worker) sentFile(method string) ([]byte, error) {
 	bodyBuf := &bytes.Buffer{}
 	bodyWriter := multipart.NewWriter(bodyBuf)
 
-	h := make(textproto.MIMEHeader)
-	dispositionContent := fmt.Sprintf(`form-data; name="%s"; filename="%s"`,
-		escapeQuotes(worker.FileFormName), escapeQuotes(worker.FileName))
-
-	for k, v := range worker.Data {
-		for _, vv := range v {
-			if vv != "" {
-				dispositionContent = fmt.Sprintf(`%s; %s="%s"`,
-					dispositionContent, escapeQuotes(k), escapeQuotes(vv))
-			}
-		}
-	}
-
-	h.Set("Content-Disposition", dispositionContent)
-	h.Set("Content-Type", "application/octet-stream")
-	fileWriter, err := bodyWriter.CreatePart(h)
-
+	fileWriter, err := bodyWriter.CreateFormFile(worker.FileFormName, worker.FileName)
 	if err != nil {
 		return nil, err
 	}
@@ -314,6 +296,14 @@ func (worker *Worker) sentFile(method string) ([]byte, error) {
 	_, err = fileWriter.Write(worker.BData)
 	if err != nil {
 		return nil, err
+	}
+
+	for k, v := range worker.Data {
+		for _, vv := range v {
+			if vv != "" {
+				bodyWriter.WriteField(k, vv)
+			}
+		}
 	}
 
 	contentType := bodyWriter.FormDataContentType()
