@@ -1,15 +1,9 @@
-/*
-	All right reserved https://github.com/hunterhug/marmot at 2016-2021
-	Attribution-NonCommercial-NoDerivatives 4.0 International
-	Notice: The following code's copyright by hunterhug, Please do not spread and modify.
-	You can use it for education only but can't make profits for any companies and individuals!
-*/
 package miner
 
 import (
 	"bytes"
 	"errors"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/url"
 	"strings"
@@ -36,7 +30,8 @@ func NewAPI() *Worker {
 
 // NewWorker New a worker, if ipString is a proxy address, New a proxy client. evey time gen a new http client!
 // Proxy address such as:
-// 		http://[user]:[password@]ip:port, [] stand it can choose or not. case: socks5://127.0.0.1:1080
+//
+//	http://[user]:[password@]ip:port, [] stand it can choose or not. case: socks5://127.0.0.1:1080
 func NewWorker(proxyIpString interface{}) (*Worker, error) {
 	if proxyIpString != nil {
 		client, err := NewProxyClient(strings.ToLower(proxyIpString.(string)))
@@ -221,7 +216,7 @@ func (worker *Worker) sent(method, contentType string, binary bool) (body []byte
 	Logger.Debugf("%s %s %s", uuid, response.Proto, response.Status)
 
 	// Read output
-	body, e = ioutil.ReadAll(response.Body)
+	body, e = io.ReadAll(response.Body)
 	worker.Raw = body
 
 	worker.ResponseStatusCode = response.StatusCode
@@ -337,18 +332,17 @@ func (worker *Worker) PutFILE() (body []byte, e error) {
 /*
 OtherGo Method
 
-     Method         = "OPTIONS"                ; Section 9.2
-                    | "GET"                    ; Section 9.3
-                    | "HEAD"                   ; Section 9.4
-                    | "POST"                   ; Section 9.5
-                    | "PUT"                    ; Section 9.6
-                    | "DELETE"                 ; Section 9.7
-                    | "TRACE"                  ; Section 9.8
-                    | "CONNECT"                ; Section 9.9
-                    | extension-method
-   extension-method = token
-     token          = 1*<any CHAR except CTLs or separators>
-
+	  Method         = "OPTIONS"                ; Section 9.2
+	                 | "GET"                    ; Section 9.3
+	                 | "HEAD"                   ; Section 9.4
+	                 | "POST"                   ; Section 9.5
+	                 | "PUT"                    ; Section 9.6
+	                 | "DELETE"                 ; Section 9.7
+	                 | "TRACE"                  ; Section 9.8
+	                 | "CONNECT"                ; Section 9.9
+	                 | extension-method
+	extension-method = token
+	  token          = 1*<any CHAR except CTLs or separators>
 
 Content Type
 

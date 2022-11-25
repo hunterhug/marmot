@@ -22,7 +22,10 @@ func TestFindPicture(t *testing.T) {
 		src = "http://s.jpg"
 		src="https:s.jpg"
 		"https://img1.jpg" "https://img1.jpgsss","https://img1.jpgss","https://img1.jpgss"
+
+src="https://up.enterdesk.com/edpic_360_360/bf/53/52/bf5352f28a839e01dd3fcb811669102c.jpg"
 		`
 	result := FindPicture(data)
+
 	fmt.Printf("%#v", result)
 }

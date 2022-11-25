@@ -1,9 +1,3 @@
-/*
-	All right reserved https://github.com/hunterhug/marmot at 2016-2021
-	Attribution-NonCommercial-NoDerivatives 4.0 International
-	Notice: The following code's copyright by hunterhug, Please do not spread and modify.
-	You can use it for education only but can't make profits for any companies and individuals!
-*/
 package main
 
 /*
@@ -26,7 +20,7 @@ func main() {
 	log := miner.Log() // optional, miner log you can choose to use
 
 	// 3: Must new a Worker object, three ways
-	//worker, err := miner.NewWorker("http://smart:smart2016@104.128.121.46:808") // proxy format: protocol://user(optional):password(optional)@ip:port
+	//worker, err := miner.NewWorker("http://xx:xxxx@103.118.111.26:808") // proxy format: protocol://user(optional):password(optional)@ip:port
 	//worker, err := miner.NewWorker(nil)  // normal worker, default keep Cookie
 	//worker := miner.NewAPI() // API worker, not keep Cookie
 	worker, err := miner.New(nil) // NewWorker alias

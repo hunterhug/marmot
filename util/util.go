@@ -1,9 +1,3 @@
-/*
-	All right reserved https://github.com/hunterhug/marmot at 2016-2021
-	Attribution-NonCommercial-NoDerivatives 4.0 International
-	Notice: The following code's copyright by hunterhug, Please do not spread and modify.
-	You can use it for education only but can't make profits for any companies and individuals!
-*/
 package util
 
 import (
@@ -29,22 +23,23 @@ func DivideStringList(files []string, num int) (map[int][]string, error) {
 	length := len(files)
 	split := map[int][]string{}
 	if num <= 0 {
-		return split, errors.New("num must not negtive")
+		return split, errors.New("num must not negative")
 	}
+
 	if num > length {
 		num = length
-		//return split, errors.New("num must not bigger than the list length")
 	}
+
 	process := length / num
 	for i := 0; i < num; i++ {
-		// slice inside has a refer, so must do this append
-		// split[i]=files[i*process : (i+1)*process] wrong!
 		split[i] = append(split[i], files[i*process:(i+1)*process]...)
 	}
+
 	remain := files[num*process:]
 	for i := 0; i < len(remain); i++ {
 		split[i%num] = append(split[i%num], remain[i])
 	}
+
 	return split, nil
 }
 
@@ -65,6 +60,7 @@ func Substr(str string, start, length int) string {
 	if start < 0 {
 		start = rl - 1 + start
 	}
+
 	end = start + length
 
 	if start > end {
@@ -74,14 +70,18 @@ func Substr(str string, start, length int) string {
 	if start < 0 {
 		start = 0
 	}
+
 	if start > rl {
 		start = rl
 	}
+
 	if end < 0 {
 		end = 0
 	}
+
 	if end > rl {
 		end = rl
 	}
+
 	return string(rs[start:end])
 }

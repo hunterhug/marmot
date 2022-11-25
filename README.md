@@ -23,7 +23,7 @@ in this context,  batch small data acquisition has become a problem. Integrated 
 
 The `Marmot` is very easy to understand, just like Python's library `requests`(Not yet Smile~ --| ). By enhancing native Golang HTTP library, help you deal with some trivial logic (such as collecting information, checking parameters), and add some fault-tolerant mechanisms (such as add lock, close time flow, ensure the high concurrent run without accident).
 It provides a human friendly API interface, you can reuse it often. Very convenient to support `Cookie Persistence`, `Crawler Proxy Settings`, as well as others general settings, such as  `HTTP request header settings, timeout/pause settings, data upload/post settings`.
-It support all of the HTTP methods `POST/PUT/GET/DELETE/...` and has built-in spider pool and browser UA pool, easy to develop UA+Cookie persistence distributed spider.
+It supports all the HTTP methods `POST/PUT/GET/DELETE/...` and has built-in spider pool and browser UA pool, easy to develop UA+Cookie persistence distributed spider.
 
 The library is simple and practical, just a few lines of code to replace the previous `Spaghetti code`, has been applied in some large projects.
 
@@ -73,7 +73,7 @@ go get -v github.com/hunterhug/marmot/miner
 
 There are four kinds of worker:
 
-1. `worker, err := miner.NewWorker("http://smart:smart2016@104.128.121.46:808") ` // proxy worker, format: `protocol://user(optional):password(optional)@ip:port`, alias to`New()`, support http(s), socks5
+1. `worker, err := miner.NewWorker("http://xx:xxxx@103.118.111.26:808") ` // proxy worker, format: `protocol://user(optional):password(optional)@ip:port`, alias to`New()`, support http(s), socks5
 2. `worker, err := miner.NewWorker(nil)`  // normal worker, default keep Cookie, alias to `New()`
 3. `worker := miner.NewAPI()` // API worker, will not keep Cookie
 4. `worker, err := miner.NewWorkerByClient(&http.Client{})` // You can also pass a `http.Client` if you want
@@ -91,7 +91,7 @@ Camouflage our worker:
 5. `worker.SetRefer("https://www.bing.com")`       // optional: set http request Refer
 6. `worker.SetHeaderParam("diyheader", "diy")` // optional: set http diy header
 7. `worker.SetBData([]byte("file data"))` // optional: set binary data for post or put
-8. `worker.SetFormParam("username","jinhan")` // optional: set form data for post or put 
+8. `worker.SetFormParam("username","hunterhug")` // optional: set form data for post or put 
 9. `worker.SetCookie("xx=dddd")` // optional: you can set a init cookie, some website you can login and F12 copy the cookie
 10. `worker.SetCookieByFile("/root/cookie.txt")` // optional: set cookie which store in a file
 
@@ -124,7 +124,7 @@ Deal the return data, all data will be return as binary, You can immediately sto
 
 Attention: 
 
-After every request for a url, the next request you should cover your http request header, otherwise http header you set still exist,
+After every request for an url, the next request you should cover your http request header, otherwise http header you set still exist,
 if just want clear post data, use `Clear()`, and want clear HTTP header too please use `ClearAll()`, but I suggest use `Clone()` to avoid this.
 
 ### 2.5 Other
@@ -137,13 +137,13 @@ Hook:
 # License
 
 ```
-Copyright [2016-2021] [github.com/hunterhug]
+Copyright [2016-2022] [github.com/hunterhug]
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+    https://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,

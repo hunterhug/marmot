@@ -1,21 +1,19 @@
-/*
-	All right reserved https://github.com/hunterhug/marmot at 2016-2021
-	Attribution-NonCommercial-NoDerivatives 4.0 International
-	Notice: The following code's copyright by hunterhug, Please do not spread and modify.
-	You can use it for education only but can't make profits for any companies and individuals!
-*/
 package main
 
 import (
+	"errors"
 	"fmt"
-	"github.com/hunterhug/marmot/tool"
+	"github.com/hunterhug/marmot/expert"
+	"github.com/hunterhug/marmot/miner"
 	"github.com/hunterhug/marmot/util"
+	"net/url"
+	"strings"
 )
 
 // MinerNum Num of miner, We can run it at the same time to crawl data fast
 var MinerNum = 5
 
-// ProxyAddress You can update this decide whether to proxy
+// ProxyAddress You can update this decides whether to proxy
 var ProxyAddress interface{}
 
 func main() {
@@ -24,14 +22,114 @@ func main() {
 
 	fmt.Println(`Welcome: Input "url" and picture keep "dir"`)
 	fmt.Println("---------------------------------------------")
-	url := util.Input(`URL(Like: "https://tu.enterdesk.com")`, "https://tu.enterdesk.com")
+	urlPicture := util.Input(`URL(Like: "https://www.bizhizj.com")`, "https://www.bizhizj.com/dongman")
 	dir := util.Input(`DIR(Default: "./picture")`, "./picture")
-	fmt.Printf("You will keep %s picture in dir %s\n", url, dir)
+	fmt.Printf("You will keep %s picture in dir %s\n", urlPicture, dir)
 	fmt.Println("---------------------------------------------")
 
 	// Start Catch
-	err := tool.DownloadHTMLPictures(url, dir, MinerNum, ProxyAddress)
+	err := DownloadHTMLPictures(urlPicture, dir, MinerNum, ProxyAddress)
 	if err != nil {
 		fmt.Println("Error:" + err.Error())
 	}
+}
+
+// DownloadHTMLPictures Download one HTML page's all pictures
+// @URL: http://image.baidu.com
+// @SaveDir /home/images
+// @ProxyAddress : "socks5://127.0.0.1:1080"
+func DownloadHTMLPictures(URL string, SaveDir string, MinerNum int, ProxyAddress interface{}) error {
+
+	// Check valid
+	_, err := url.Parse(URL)
+	if err != nil {
+		return err
+	}
+
+	// New a worker to get url
+	worker, err := miner.New(ProxyAddress)
+	if err != nil {
+		return err
+	}
+
+	result, err := worker.SetUrl(URL).SetUa(miner.RandomUa()).Get()
+	if err != nil {
+		return err
+	}
+
+	// Find all picture
+	pictures := expert.FindPicture(string(result))
+
+	return DownloadURLPictures(pictures, SaveDir, MinerNum, worker)
+}
+
+// DownloadURLPictures Download pictures faster!
+func DownloadURLPictures(PictureUrls []string, SaveDir string, MinerNum int, initWorker *miner.Worker) error {
+	// Empty, What a pity!
+	if len(PictureUrls) == 0 {
+		return errors.New("empty")
+	}
+
+	// Make dir!
+	err := util.MakeDir(SaveDir)
+	if err != nil {
+		return err
+	}
+
+	// Divide pictures into several worker
+	xxx, _ := util.DivideStringList(PictureUrls, MinerNum)
+
+	// Chanel to info exchange
+	chs := make(chan int, len(PictureUrls))
+
+	// Go at the same time
+	for num, pictureList := range xxx {
+		// Clone new worker
+		workerPicture := initWorker.Clone()
+		workerPicture.SetUa(miner.RandomUa())
+
+		// Go save picture!
+		go func(images []string, worker *miner.Worker, num int) {
+			for _, img := range images {
+
+				// Check, May be Pass
+				_, err := url.Parse(img)
+				if err != nil {
+					continue
+				}
+
+				// Change Name of our picture
+				filename := strings.Replace(util.ValidFileName(img), "#", "_", -1)
+
+				// Exist?
+				if util.FileExist(SaveDir + "/" + filename) {
+					fmt.Println("File Exist：" + SaveDir + "/" + filename)
+					chs <- 0
+				} else {
+
+					// Not Exsit?
+					imgsrc, e := worker.SetUrl(img).Get()
+					if e != nil {
+						fmt.Println("Download " + img + " error:" + e.Error())
+						chs <- 0
+						return
+					}
+
+					// Save it!
+					e = util.SaveToFile(SaveDir+"/"+filename, imgsrc)
+					if e == nil {
+						fmt.Printf("SP%d: Keep in %s/%s\n", num, SaveDir, filename)
+					}
+					chs <- 1
+				}
+			}
+		}(pictureList, workerPicture, num)
+	}
+
+	// Every picture should return
+	for i := 0; i < len(PictureUrls); i++ {
+		<-chs
+	}
+
+	return nil
 }

@@ -1,15 +1,9 @@
-/*
-	All right reserved https://github.com/hunterhug/marmot at 2016-2021
-	Attribution-NonCommercial-NoDerivatives 4.0 International
-	Notice: The following code's copyright by hunterhug, Please do not spread and modify.
-	You can use it for education only but can't make profits for any companies and individuals!
-*/
 package miner
 
 import "net/http"
 
 const (
-	VERSION = "1.0.10"
+	VERSION = "1.0.13"
 
 	// GET HTTP method
 	GET      = "GET"
@@ -50,6 +44,10 @@ func SetGlobalTimeout(num int) {
 	DefaultTimeOut = num
 }
 
+func SetDefaultTimeOut(num int) {
+	DefaultTimeOut = num
+}
+
 // MergeCookie Merge Cookie, not use
 func MergeCookie(before []*http.Cookie, after []*http.Cookie) []*http.Cookie {
 	cs := make(map[string]*http.Cookie)
@@ -80,7 +78,6 @@ func CloneHeader(h map[string][]string) map[string][]string {
 	if h == nil || len(h) == 0 {
 		h = DefaultHeader
 		return h
-		//return map[string][]string{}
 	}
 
 	if len(h["User-Agent"]) == 0 {

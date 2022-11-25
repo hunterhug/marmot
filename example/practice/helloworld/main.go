@@ -1,9 +1,3 @@
-/*
-	All right reserved https://github.com/hunterhug/marmot at 2016-2021
-	Attribution-NonCommercial-NoDerivatives 4.0 International
-	Notice: The following code's copyright by hunterhug, Please do not spread and modify.
-	You can use it for education only but can't make profits for any companies and individuals!
-*/
 package main
 
 import (
@@ -25,7 +19,7 @@ func main() {
 
 	// 第三步： 必须新建一个矿工对象
 	// 代理IP格式: 协议://代理帐号(可选):代理密码(可选)@ip:port
-	//worker, err := miner.NewWorker("http://smart:smart2016@104.128.121.46:808")
+	//worker, err := miner.NewWorker("http://xx:xxxx@103.118.111.26:808")
 	//worker, err := miner.NewWorker(nil)  // 正常矿工 默认带Cookie
 	//worker := miner.NewAPI() // API矿工 默认不带Cookie
 	worker, err := miner.New(nil) // NewWorker同名函数
@@ -42,7 +36,7 @@ func main() {
 	worker.SetRefer("https://www.bing.com")   // 设置Refer头
 	worker.SetHeaderParam("diyheader", "diy") // 自定义头部
 	//worker.SetBData([]byte("file data")) // 如果你要提交JSON数据/上传文件
-	//worker.SetFormParam("username","jinhan") // 提交表单
+	//worker.SetFormParam("username","hunterhug") // 提交表单
 	//worker.SetFormParam("password","123")
 
 	// 第五步：开始爬

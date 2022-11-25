@@ -1,15 +1,8 @@
-/*
-	All right reserved https://github.com/hunterhug/marmot at 2016-2021
-	Attribution-NonCommercial-NoDerivatives 4.0 International
-	Notice: The following code's copyright by hunterhug, Please do not spread and modify.
-	You can use it for education only but can't make profits for any companies and individuals!
-*/
 package util
 
 import (
 	"errors"
 	"io"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -27,8 +20,8 @@ func GetBinaryCurrentPath() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	path, err := filepath.Abs(file)
 
+	path, err := filepath.Abs(file)
 	if err != nil {
 		return "", err
 	}
@@ -36,14 +29,17 @@ func GetBinaryCurrentPath() (string, error) {
 	if strings.Contains(path, "command-line-arguments") {
 		return GetCurrentPath()
 	}
+
 	i := strings.LastIndex(path, "/")
 	if i < 0 {
 		i = strings.LastIndex(path, "\\")
 	}
+
 	if i < 0 {
 		return "", errors.New(`error: Can't find "/" or "\"`)
 	}
-	return string(path[0 : i+1]), nil
+
+	return path[0 : i+1], nil
 }
 
 func GetCurrentPath() (string, error) {
@@ -51,12 +47,12 @@ func GetCurrentPath() (string, error) {
 }
 
 func SaveToFile(filePath string, content []byte) error {
-	err := ioutil.WriteFile(filePath, content, 0777)
+	err := os.WriteFile(filePath, content, 0777)
 	return err
 }
 
 func ReadFromFile(filepath string) ([]byte, error) {
-	return ioutil.ReadFile(filepath)
+	return os.ReadFile(filepath)
 }
 
 func GetFilenameInfo(filepath string) (os.FileInfo, error) {
@@ -97,7 +93,6 @@ func WalkDir(dirPth, suffix string) (files []string, err error) {
 	files = make([]string, 0, 30)
 	suffix = strings.ToUpper(suffix)
 	err = filepath.Walk(dirPth, func(filename string, fi os.FileInfo, err error) error {
-
 		if fi.IsDir() {
 			return nil
 		}
@@ -111,29 +106,36 @@ func WalkDir(dirPth, suffix string) (files []string, err error) {
 
 func ListDir(dirPth string, suffix string) (files []string, err error) {
 	files = make([]string, 0, 10)
-	dir, err := ioutil.ReadDir(dirPth)
+	dir, err := os.ReadDir(dirPth)
 	if err != nil {
 		return nil, err
 	}
+
 	suffix = strings.ToUpper(suffix)
+
 	for _, fi := range dir {
 		if fi.IsDir() {
 			continue
 		}
+
 		if strings.HasSuffix(strings.ToUpper(fi.Name()), suffix) {
 			files = append(files, dirPth+"/"+fi.Name())
 		}
 	}
+
 	return files, nil
 }
 
 func ListDirOnlyName(dirPth string, suffix string) (files []string, err error) {
 	files = make([]string, 0, 10)
-	dir, err := ioutil.ReadDir(dirPth)
+
+	dir, err := os.ReadDir(dirPth)
 	if err != nil {
 		return nil, err
 	}
+
 	suffix = strings.ToUpper(suffix)
+
 	for _, fi := range dir {
 		if fi.IsDir() {
 			continue
@@ -142,6 +144,7 @@ func ListDirOnlyName(dirPth string, suffix string) (files []string, err error) {
 			files = append(files, fi.Name())
 		}
 	}
+
 	return files, nil
 }
 
@@ -197,7 +200,7 @@ func IsDir(filepath string) bool {
 
 func SizeofDir(dirPth string) int {
 	if IsDir(dirPth) {
-		files, _ := ioutil.ReadDir(dirPth)
+		files, _ := os.ReadDir(dirPth)
 		return len(files)
 	}
 

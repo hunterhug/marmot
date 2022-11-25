@@ -1,20 +1,14 @@
-/*
-	All right reserved https://github.com/hunterhug/marmot at 2016-2021
-	Attribution-NonCommercial-NoDerivatives 4.0 International
-	Notice: The following code's copyright by hunterhug, Please do not spread and modify.
-	You can use it for education only but can't make profits for any companies and individuals!
-*/
 package miner
 
 import (
 	"crypto/tls"
 	"errors"
+	"golang.org/x/net/proxy"
 	"net/http"
 	"net/http/cookiejar"
 	"net/url"
 	"strings"
 
-	"github.com/hunterhug/marmot/proxy"
 	"github.com/hunterhug/marmot/util"
 )
 
@@ -82,7 +76,7 @@ func NewProxyClient(proxyString string) (*http.Client, error) {
 		return nil, errors.New("this proxy way not allow:" + prefix)
 	}
 
-	// This a alone client, diff from global client.
+	// This alone client, diff from global client.
 	client := &http.Client{
 		// Allow redirect
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {

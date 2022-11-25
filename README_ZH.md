@@ -37,17 +37,12 @@ go get -v github.com/hunterhug/marmot/miner
 ├── example Example示例库
     ├── lession   示例
     ├── practice  练习    
-├── tool    小工具
-    ├── wx   微信开发相关接口
-├── proxy   Golang官方代理库
-└── util    基础库，为了避免外部依赖包失效，某些核心依赖包放置于此
 ```
 
 以下是几个实战例子：
 
 1. [多线程批量抓图片](/example/practice/pictures/README.md)。
 2. [模拟上传文件](/example/practice/upload/README.md)。
-3. [微信开发相关：如微信登录，小程序开发](/tool/wx/README.md)。
 
 ## 二. 使用
 
@@ -87,7 +82,7 @@ func main() {
 
 矿工有四种类型：
 
-1. `miner.NewWorker("http://user:password@104.128.121.46:808") `  // 代理矿工，默认自动化Cookie接力 格式:`协议://代理帐号(可选):代理密码(可选)@ip:port`，支持http(s)，socks5，别名函数 `New()`
+1. `miner.NewWorker("http://user:password@103.118.111.26:808") `  // 代理矿工，默认自动化Cookie接力 格式:`协议://代理帐号(可选):代理密码(可选)@ip:port`，支持http(s)，socks5，别名函数 `New()`
 2. `miner.NewWorker(nil)`   // 正常矿工，默认自动化Cookie接力，别名函数`New()`
 3. `miner.NewAPI()` // API矿工，默认Cookie不接力，主要用来对接服务端 API
 4. `miner.NewWorkerByClient(&http.Client{})`    // 可自定义客户端
@@ -105,7 +100,7 @@ func main() {
 5. `worker.SetRefer("http://www.baidu.com")`       // 设置HTTP请求Refer头
 6. `worker.SetHeaderParam("diyheader", "diy")` // 设置HTTP请求自定义头部
 7. `worker.SetBData([]byte("file data"))` // HTTP请求需要上传数据
-8. `worker.SetFormParam("username","jinhan")` // HTTP请求需要提交表单
+8. `worker.SetFormParam("username","hunterhug")` // HTTP请求需要提交表单
 9. `worker.SetCookie("xx=dddd")` // HTTP请求设置cookie，某些网站需要登录后F12复制cookie
 
 ### 第三步
@@ -151,13 +146,13 @@ func main() {
 # License
 
 ```
-Copyright [2016-2021] [github.com/hunterhug]
+Copyright [2016-2022] [github.com/hunterhug]
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+    https://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
