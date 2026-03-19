@@ -3,13 +3,16 @@ package miner
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
 	"net/url"
+	"os"
 	"strings"
 
-	"github.com/hunterhug/marmot/util"
 	"mime/multipart"
+
+	"github.com/hunterhug/marmot/util"
 )
 
 // NewWorkerByClient New Worker by Your Client
@@ -230,6 +233,135 @@ func (worker *Worker) sent(method, contentType string, binary bool) (body []byte
 	return
 }
 
+func (worker *Worker) sentByFile(method, contentType string, binary bool, filePath string) (e error) {
+	// Lock it for save
+	worker.mux.Lock()
+	defer worker.mux.Unlock()
+
+	// Before Action, we can change or add something before Go()
+	if worker.BeforeAction != nil {
+		worker.BeforeAction(worker.Ctx, worker)
+	}
+
+	// Wait if must
+	if worker.Wait > 0 {
+		Wait(worker.Wait)
+	}
+
+	// For debug
+	uuid := "[GoWorker]"
+	Logger.Debugf("%s %s %s", uuid, method, worker.Url)
+
+	// New a Request
+	var request *http.Request
+	var err error
+
+	// If binary value is true and BData is not empty
+	// suit for POSTJSON(), POSTFILE()
+	if len(worker.BData) != 0 && binary {
+		pr := bytes.NewReader(worker.BData)
+		request, err = http.NewRequest(method, worker.Url, pr)
+	} else if len(worker.Data) != 0 { // such POST() from table form
+		pr := strings.NewReader(worker.Data.Encode())
+		request, err = http.NewRequest(method, worker.Url, pr)
+	} else {
+		request, err = http.NewRequest(method, worker.Url, nil)
+	}
+
+	if err != nil {
+		return err
+	}
+
+	// Close avoid EOF
+	// For client requests, setting this field prevents re-use of
+	// TCP connections between requests to the same hosts, as if
+	// Transport.DisableKeepAlives were set.
+	// maybe you want long connection
+	//request.Close = true
+
+	// Clone Header, I add some HTTP header!
+	request.Header = CloneHeader(worker.Header)
+
+	// In fact content type must not empty
+	if contentType != "" {
+		request.Header.Set("Content-Type", contentType)
+	}
+	worker.Request.Request = request
+
+	// Debug for RequestHeader
+	OutputMaps(uuid, "Request Header", request.Header)
+
+	// Tolerate abnormal way to create a Worker
+	if worker.Client == nil {
+		worker.Client = Client
+	}
+
+	// Do it
+	response, err := worker.Client.Do(request)
+	if err != nil {
+		return err
+	}
+
+	// Close it attention response may be nil
+	if response != nil {
+		//response.Close = true
+		defer response.Body.Close()
+	}
+
+	// Debug
+	OutputMaps(uuid, "Response Header", response.Header)
+	Logger.Debugf("%s %s %s", uuid, response.Proto, response.Status)
+
+	totalSize := response.ContentLength
+	Logger.Debugf("Download Size: %.2f MB\n", float64(totalSize)/(1024*1024))
+
+	file, err := os.Create(filePath)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	var downloaded int64
+	buf := make([]byte, 5*1024*1024) // 5MB
+	for {
+		n, err := response.Body.Read(buf)
+		if n > 0 {
+			if _, writeErr := file.Write(buf[:n]); writeErr != nil {
+				os.Remove(filePath)
+				return writeErr
+			}
+			downloaded += int64(n)
+
+			if totalSize > 0 {
+				percent := float64(downloaded) / float64(totalSize) * 100
+				fmt.Printf("\rDownload: %.1f%% (%.2f/%.2f MB)",
+					percent,
+					float64(downloaded)/(1024*1024),
+					float64(totalSize)/(1024*1024))
+			}
+		}
+
+		if err == io.EOF {
+			fmt.Println("\nDownload Done")
+			break
+		}
+		if err != nil {
+			os.Remove(filePath)
+			return err
+		}
+	}
+
+	worker.ResponseStatusCode = response.StatusCode
+	worker.Response.Response = response
+
+	// After action
+	if worker.AfterAction != nil {
+		worker.AfterAction(worker.Ctx, worker)
+	}
+
+	return
+}
+
 // Get method
 func (worker *Worker) Get() (body []byte, e error) {
 	worker.Clear()
@@ -357,4 +489,8 @@ func (worker *Worker) OtherGo(method, contentType string) (body []byte, e error)
 
 func (worker *Worker) OtherGoBinary(method, contentType string) (body []byte, e error) {
 	return worker.sent(method, contentType, true)
+}
+
+func (worker *Worker) OtherDownload(method, contentType string, filePath string) (e error) {
+	return worker.sentByFile(method, contentType, true, filePath)
 }

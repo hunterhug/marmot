@@ -1,16 +1,16 @@
 package miner
 
 import (
-	"github.com/hunterhug/golog"
+	"github.com/hunterhug/golog/v2"
 )
 
 type Level = golog.Level
 
 const (
-	DEBUG = golog.DebugLevel
-	INFO  = golog.InfoLevel
-	WARN  = golog.WarnLevel
-	ERROR = golog.ErrorLevel
+	DEBUG Level = golog.DebugLevel
+	INFO  Level = golog.InfoLevel
+	WARN  Level = golog.WarnLevel
+	ERROR Level = golog.ErrorLevel
 )
 
 // Logger Global logger config for debug
