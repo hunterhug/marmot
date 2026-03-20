@@ -39,6 +39,9 @@ type Worker struct {
 	// Http header
 	Header http.Header
 
+	// DownloadFileReadMB is the size of the file read in MB
+	DownloadFileReadMB int64
+
 	// Mux lock
 	mux sync.RWMutex
 }
@@ -194,6 +197,18 @@ func (worker *Worker) SetWaitTime(num int) *Worker {
 
 func SetWaitTime(num int) *Worker {
 	return DefaultWorker.SetWaitTime(num)
+}
+
+func (worker *Worker) SetDownloadFileReadMB(downloadFileReadMB int64) *Worker {
+	if downloadFileReadMB <= 0 {
+		downloadFileReadMB = 5
+	}
+	worker.DownloadFileReadMB = downloadFileReadMB
+	return worker
+}
+
+func SetDownloadFileReadMB(downloadFileReadMB int64) *Worker {
+	return DefaultWorker.SetDownloadFileReadMB(downloadFileReadMB)
 }
 
 func (worker *Worker) SetBData(data []byte) *Worker {

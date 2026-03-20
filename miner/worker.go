@@ -3,7 +3,6 @@ package miner
 import (
 	"bytes"
 	"errors"
-	"fmt"
 	"io"
 	"net/http"
 	"net/url"
@@ -322,7 +321,12 @@ func (worker *Worker) sentByFile(method, contentType string, binary bool, filePa
 	defer file.Close()
 
 	var downloaded int64
-	buf := make([]byte, 5*1024*1024) // 5MB
+
+	sizeMB := worker.DownloadFileReadMB * 1024 * 1024
+	if sizeMB <= 0 {
+		sizeMB = 5 * 1024 * 1024 // Default 5MB
+	}
+	buf := make([]byte, sizeMB)
 	for {
 		n, err := response.Body.Read(buf)
 		if n > 0 {
@@ -334,7 +338,7 @@ func (worker *Worker) sentByFile(method, contentType string, binary bool, filePa
 
 			if totalSize > 0 {
 				percent := float64(downloaded) / float64(totalSize) * 100
-				fmt.Printf("\rDownload: %.1f%% (%.2f/%.2f MB)",
+				Logger.Debugf("\rDownload: %.1f%% (%.2f/%.2f MB)",
 					percent,
 					float64(downloaded)/(1024*1024),
 					float64(totalSize)/(1024*1024))
@@ -342,7 +346,7 @@ func (worker *Worker) sentByFile(method, contentType string, binary bool, filePa
 		}
 
 		if err == io.EOF {
-			fmt.Println("\nDownload Done")
+			Logger.Debugf("\nDownload Done")
 			break
 		}
 		if err != nil {
